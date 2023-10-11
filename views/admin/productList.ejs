@@ -1,0 +1,144 @@
+<%-include("header")-%>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Products List</h2>
+            </div>
+            <div>
+                <a href="/admin/addProduct" class="btn btn-primary btn-sm rounded">Add new Product</a>
+            </div>
+        </div>
+
+        <header class="card-header">
+            <div class="row align-items-center">
+                <div class="col-md-2 col-6 me-auto mb-md-0 mb-3">
+                    <select name="categoryId" class="form-select">
+                        <% categories.forEach(function(category) { %>
+                            <option value="<%= category._id %>">
+                                <%= category.name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+                <div class="col-md-2 col-6">
+                    <select class="form-select" id="filterSelect">
+                        <option value="all">Show all</option>
+                        <option value="unblocked">Active</option>
+                        <option value="blocked">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Images</th>
+                            <th>Name</th>
+                            <th>Sales price</th>
+                            <th>Avaiable stock</th>
+                            <th>Status</th>
+                            <th>Categories</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach((products)=> { %>
+                            <tr>
+                                <td>
+                                    <img src="/productsImages/<%=products.image[0]%>"
+                                        class="img-sm img-thumbnail" alt="Item">
+                                </td>
+                                <td>
+                                    <%= products.product_name %>
+                                </td>
+                                <td>
+                                    <%= products.sales_price %>
+                                </td>
+                                <td>
+                                    <%= products.stock %>
+                                </td>
+                                <td>
+                                    <% if (products.blocked===true) { %>
+                                        <span class="badge rounded-pill alert-danger">Inactive</span>
+                                        <% } else { %>
+                                            <span class="badge rounded-pill alert-success">Active</span>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <%= products.category%>
+                                </td>
+                                <td>
+                                    <a href="/admin/editProduct?productId=<%= products._id %>"
+                                        class="btn btn-sm font-sm rounded btn-brand">
+                                        <i class="material-icons md-edit"></i> Edit
+                                    </a>
+                                    <% if (products.blocked) { %>                                      
+                                        <button class="btn btn-success rounded btn-sm font-sm"
+                                            onclick="toggleBlockUnblock('<%= products._id %>', false)">Activate</button>
+                                        <% } else { %>                                           
+                                            <button class="btn btn-danger rounded btn-sm font-sm"
+                                                onclick="toggleBlockUnblock('<%= products._id %>', true)">Deactivate</button>
+                                            <% } %>
+                                </td>
+
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <%- include("footer") %>
+
+        </html>
+
+        <script>
+            function toggleBlockUnblock(productId, blockStatus) {                
+                fetch(`/admin/toggleBlockStatusProducts/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ blocked: blockStatus })
+                })
+                    .then(response => {
+                        if (response.ok) {               
+                            location.reload();
+                        } else {
+                            alert('Failed to toggle block status');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while toggling block status');
+                    });
+            }
+
+            // Get a reference to the select element
+            const filterSelect = document.getElementById('filterSelect');
+            filterSelect.addEventListener('change', function () {
+                const selectedOption = filterSelect.value;
+                const products = document.querySelectorAll('.products');
+                products.forEach((products) => {
+                    if (selectedOption === 'all') {
+                        // Show all products
+                        products.style.display = 'block';
+                    } else {
+                        // Get the blocked status of the product
+                        const isBlocked = products.getAttribute('data-blocked') === 'true';
+
+                        // Show/hide products based on the selected option
+                        if ((selectedOption === 'blocked' && isBlocked) || (selectedOption === 'unblocked' && !isBlocked)) {
+                            products.style.display = 'block';
+                        } else {
+                            products.style.display = 'none';
+                        }
+                    }
+                });
+            });
+
+        </script>

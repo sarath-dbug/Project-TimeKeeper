@@ -1,0 +1,143 @@
+<%-include("header")-%>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">User List</h2>
+            </div>
+        </div>
+
+        <header class="card-header">
+            <div class="row gx-3">
+                <form action="/admin/searchUser" method="post" class="d-flex col-lg-4 col-md-6 me-auto">
+                    <input class=" form-control me-2" name="name" type="search" placeholder="Search">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+
+                <div class="col-md-2 col-6">
+                    <select class="form-select" id="filterSelect">
+                        <option value="all">Show all</option>
+                        <option value="unblocked">Active</option>
+                        <option value="blocked">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile No</th>
+
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% user.forEach((user)=> { %>
+                            <tr>
+                                <td>
+                                    <%= user.firstName %>
+                                </td>
+                                <td>
+                                    <%= user.email %>
+                                </td>
+                                <td>
+                                    <%= user.mobile %>
+                                </td>
+                                <td>
+                                    <% if (user.is_blocked===true) { %>
+                                        <span class="badge rounded-pill alert-danger">Inactive</span>
+                                        <% } else { %>
+                                            <span class="badge rounded-pill alert-success">Active</span>
+                                            <% } %>
+                                </td>
+
+                                <td>
+                                    <% if (user.is_blocked) { %>
+                                        <button class="btn btn-success rounded btn-sm font-sm"
+                                            onclick="toggleBlockUnblock('<%= user._id %>', false)">Activate</button>
+                                        <% } else { %>
+                                            <button class="btn btn-danger rounded btn-sm font-sm"
+                                                onclick="toggleBlockUnblock('<%= user._id %>', true)">Deactivate</button>
+                                            <% } %>
+                                </td>
+
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <%- include("footer") %>
+
+        </html>
+
+        <script>
+            function toggleBlockUnblock(userId, blockStatus) {
+                fetch(`/admin/toggleBlockStatusUser/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ blocked: blockStatus })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Failed to toggle block status');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while toggling block status');
+                    });
+            }
+
+            // Get a reference to the select element
+            const filterSelect = document.getElementById('filterSelect');
+            filterSelect.addEventListener('change', function () {
+                const selectedOption = filterSelect.value;
+                const user = document.querySelectorAll('.user');
+                user.forEach((user) => {
+                    if (selectedOption === 'all') {
+                        // Show all user
+                        user.style.display = 'block';
+                    } else {
+                        // Get the blocked status of the user
+                        const isBlocked = user.getAttribute('data-blocked') === 'true';
+
+                        // Show/hide user based on the selected option
+                        if ((selectedOption === 'blocked' && isBlocked) || (selectedOption === 'unblocked' && !isBlocked)) {
+                            user.style.display = 'block';
+                        } else {
+                            user.style.display = 'none';
+                        }
+                    }
+                });
+            });
+
+            const searchButton = document.getElementById('searchButton');
+            const searchInput = document.getElementById('searchInput');
+            searchButton.addEventListener('click', function () {
+                const searchText = searchInput.value.trim().toLowerCase();
+
+                userRows.forEach(function (userRow) {
+                    const userName = userRow.querySelector('.users-name').textContent.toLowerCase();
+                    const userEmail = userRow.querySelector('.users-email').textContent.toLowerCase();
+
+                    if (userName.includes(searchText) || userEmail.includes(searchText)) {
+                        userRow.style.display = 'table-row';
+                    } else {
+                        userRow.style.display = 'none';
+                    }
+                });
+            });
+
+        </script>

@@ -1,0 +1,118 @@
+<%- include("header") %>
+
+    <section class="content-main">
+        <form action="/admin/addProduct" method="POST" enctype="multipart/form-data"
+            onsubmit="return addProductValidate()">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <% if (message) { %>
+                            <div id="successMessage" class="alert alert-success text-center mt-5" role="alert">
+                                <%= message %>
+                            </div>
+                            <% } %>
+                                <% if (errMessage) { %>
+                                    <div id="errorMessage" class="alert alert-danger text-center mt-5" role="alert">
+                                        <%= errMessage %>
+                                    </div>
+                                    <% } %>
+                                        <div>
+                                            <button class="btn btn-md rounded font-sm hover-up">Publish</button>
+                                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product Name</label>
+                                <input type="text" placeholder="Type here" class="form-control" id="product_name"
+                                    name="product_name" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <textarea placeholder="Type here" class="form-control" rows="4" name="description"
+                                    required></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Brand</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="Type here" type="text" class="form-control" name="brand"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <label class="form-label">Color</label>
+                                    <input placeholder="Type here" type="text" class="form-control" name="color"
+                                        required>
+                                </div>
+                                <div class="col-lg-4 mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select name="category" class="form-select">
+                                        <option>Select</option>
+                                        <% categories.forEach(function(category) { %>
+                                            <option value="<%= category._id %>">
+                                                <%= category.name %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Regular price</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="$" type="text" class="form-control" name="regular_price"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Sales price</label>
+                                        <input placeholder="$" type="text" class="form-control" name="sales_price"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Stock</label>
+                                        <input placeholder="0" type="text" class="form-control" name="stock" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <label for="">Can choose 4 images</label>
+                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
+                                <input class="form-control" type="file" name="images" multiple>
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+
+                </div>
+            </div>
+        </form>
+    </section> <!-- content-main end// -->
+
+    <%- include("footer") %>
