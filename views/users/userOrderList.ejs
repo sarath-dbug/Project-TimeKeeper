@@ -1,0 +1,80 @@
+
+<%-include("../userAccount/header.ejs")-%>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<section class="user-dashboard page-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="list-inline dashboard-menu text-center">
+                    <li><a href="/userAccount">Profile Details</a></li>
+					<!-- <li><a href="dashboard.html">Dashboard</a></li> -->
+					<li><a class="active" href="/userOrderList">Orders</a></li>
+					<li><a href="/userAddress">Address</a></li>
+					<!-- <li><a c href="/Coupons">Coupon</a></li> -->
+				</ul>
+				<div class="dashboard-wrapper user-dashboard">
+					<div class="table-responsive">
+						<table class="table"  id="myTable">
+							<thead>
+								<tr>
+									<th>Order No</th>
+									<th>Date</th>
+									<th>Total Price</th>
+									<th>Status</th>
+									<th>Detail view</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% myOders.forEach((order, index) => { %>
+								<tr>
+									<td ><%=index+1 %></td>
+									<td><%= order.createdAt.toLocaleDateString() %></td> 
+									<td><%=order.total%>rs</td>
+									<td>
+										<% if(order.status === 'Placed') { %>
+											<span class="badge rounded-pill" style="background-color: rgb(210, 107, 11);">Placed</span>
+										<% } else if (order.status === 'Delivered') { %>
+											<span class="badge rounded-pill" style="background-color: rgb(47, 152, 14);">Delivered</span>
+										<% } else if (order.status === 'Pending') { %>
+											<span class="badge rounded-pill" style="background-color: rgb(150, 112, 0);">Pending</span>
+										<% } else if(order.status === 'Requested Return') { %>
+											<span class="badge rounded-pill" style="background-color: rgb(165, 181, 45);">Requested Return</span>
+										<% } else if(order.status === 'Returned') { %>
+											<span class="badge rounded-pill" style="background-color: rgb(0, 115, 150);">Order Returned</span>
+										<% } else if(order.status === 'Return declined') { %>
+												<span class="badge rounded-pill" style="background-color: rgb(231, 75, 75);">Return declined</span>
+										<% } else if (order.status === 'Order Cancelled') { %>
+											<span class="badge rounded-pill" style="background-color: rgb(255, 19, 15);">Order Cancelled</span>
+										<% } else if (order.status === 'Dispatched') { %>
+											<span class="badge rounded-pill" style="background-color: purple;">Dispatched</span>
+										<% } %>
+									</td>
+									<td><a href="/viewOrder?orderId=<%=order._id%>" class="btn btn-default">View</a></td>
+									<td>
+										<% if (order.status === 'Placed' || order.status === 'Dispatched') { %>
+											<a href="/cancelOrder?orderId=<%=order._id %>">Cancel</a>
+										<% } else if(order.status === 'Delivered') { %>
+											<a href="/returnOrder?orderId=<%= order._id %>">Return</a>
+										<% } %>
+										
+									</td>
+								</tr>
+								<%})%>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
+
+<%-include("../userAccount/footer.ejs")-%>
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

@@ -6,13 +6,15 @@ const logger = require('morgan')
 const userRouter = express();
 
 const auth = require('../middleware/authentication')
-const userController = require('../controllers/usercontroller');
+const userController = require('../controllers/userController');
+const blocked = require('../middleware/blocked')
+
 const config = require('../config/config')
 userRouter.use(nocache());
 userRouter.use(session({
    secret:config.sessionSecretId,
    resave:false,
-   saveUninitialized:false,
+   saveUninitialized:true
 }))
 
 
@@ -37,7 +39,34 @@ userRouter.post('/login',auth.isLogout,userController.verfiyUser);
 
 userRouter.get('/home',auth.isLogin,userController.loadHome);
 userRouter.get('/logout',auth.isLogin,userController.userLogout);
+userRouter.get('/productDetails',blocked.checkBocked,userController.loadProductDetails);
+userRouter.get('/shop',blocked.checkBocked,userController.viewShop);
 
-userRouter.get('/productDetails',userController.loadProductDetails);
+//user Account
+userRouter.get('/userAccount',blocked.checkBocked,userController.userAccount);
+userRouter.post('/editInfo',blocked.checkBocked,userController.editInfo);
+userRouter.post('/editPassword',blocked.checkBocked,userController.editPassword);
+userRouter.get('/userAddress',blocked.checkBocked,userController.loadUserAddress);
+userRouter.post('/addAddress',blocked.checkBocked,userController.addAddress);
+userRouter.post('/editAddress',blocked.checkBocked,userController.editAddress);
+userRouter.get('/deleteAddress',blocked.checkBocked,userController.deleteAddress);
+userRouter.get('/userOrderList',blocked.checkBocked,auth.isLogin,userController.loadOrderList);
+userRouter.get('/viewOrder',blocked.checkBocked,userController.viewOrder);
+userRouter.get('/cancelOrder',blocked.checkBocked,auth.isLogin,userController.cancelOrder);
+userRouter.get('/returnOrder',blocked.checkBocked,userController.returnOrder);
+
+
+
+//addTocart
+userRouter.get('/userCart',blocked.checkBocked,userController.userCart);
+userRouter.post('/addToCart/:id',blocked.checkBocked,auth.isLogin,userController.addToCart);
+userRouter.post('/updateQuandity',blocked.checkBocked,userController.updateQuandity);
+userRouter.post('/removeCartItem',blocked.checkBocked,userController.removeCartItem);
+userRouter.get('/checkOut',blocked.checkBocked,userController.checkOut);
+userRouter.post('/placeOrder',blocked.checkBocked,userController.placeOrder);
+userRouter.get('/orderSucessfull',blocked.checkBocked,userController.orderSuccess);
+userRouter.get('/orderFailed',blocked.checkBocked,userController.orderFailed);
+
 
 module.exports = userRouter;       
+

@@ -1,4 +1,8 @@
-<%-include("header")-%>
+<%-include("header")-%> 
+
+<!-- table link -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<!-- end -->
 
     <section class="content-main">
         <div class="content-header">
@@ -32,7 +36,7 @@
         </header>
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table  id="myTable">
                     <thead>
                         <tr>
                             <th>Images</th>
@@ -77,10 +81,10 @@
                                     </a>
                                     <% if (products.blocked) { %>                                      
                                         <button class="btn btn-success rounded btn-sm font-sm"
-                                            onclick="toggleBlockUnblock('<%= products._id %>', false)">Activate</button>
+                                            onclick="toggleBlockUnblock('<%= products._id %>', false)">List</button>
                                         <% } else { %>                                           
                                             <button class="btn btn-danger rounded btn-sm font-sm"
-                                                onclick="toggleBlockUnblock('<%= products._id %>', true)">Deactivate</button>
+                                                onclick="toggleBlockUnblock('<%= products._id %>', true)">Unlist</button>
                                             <% } %>
                                 </td>
 
@@ -92,9 +96,18 @@
         </div>
     </section>
 
-    <%- include("footer") %>
+    <!-- table script -->
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<!-- end -->
 
-        </html>
+
+    <%- include("footer") %>
+    
 
         <script>
             function toggleBlockUnblock(productId, blockStatus) {                

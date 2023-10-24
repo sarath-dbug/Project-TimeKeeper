@@ -12,7 +12,7 @@ const session = require('express-session');
 adminRouter.use(session({
    secret:config.sessionSecretId,
    resave:false,
-   saveUninitialized:false,
+   saveUninitialized:true
 }))
 
 const bodyParser = require('body-parser');
@@ -24,6 +24,10 @@ adminRouter.set('view engine','ejs')
 adminRouter.set('views','./views/admin')
  
 const adminController = require('../controllers/adminController')
+const categoryController = require('../controllers/categoryController')
+const productController = require('../controllers/productController')
+const brandsController = require('../controllers/brandController')
+
 const auth = require('../middleware/adminAuth');
 const upload = require('../helpers/multer')
 
@@ -32,25 +36,34 @@ adminRouter.post('/',adminController.verifyUser);
 adminRouter.get('/home',auth.isLogin,adminController.loadhome);
 adminRouter.get('/logout',auth.isLogin,adminController.logout);
 
-adminRouter.get('/categories',auth.isLogin,adminController.categories);
-adminRouter.post('/categories',auth.isLogin,adminController.addCategories);
-adminRouter.post('/editCategory',auth.isLogin, adminController.editCategory);
-adminRouter.post('/toggleBlockStatus/:categoryId',auth.isLogin, adminController.toggleBlockStatus);
+adminRouter.get('/categories',auth.isLogin,categoryController.categories);
+adminRouter.post('/categories',auth.isLogin,categoryController.addCategories);
+adminRouter.post('/editCategory',auth.isLogin,categoryController.editCategory);
+adminRouter.post('/toggleBlockStatus/:categoryId',auth.isLogin,categoryController.toggleBlockStatus);
 
-adminRouter.get('/addProduct',auth.isLogin,adminController.product);
-adminRouter.post('/addProduct',upload.array('images'),adminController.addProduct);
-adminRouter.get('/productList',auth.isLogin,adminController.productList) 
-adminRouter.post('/toggleBlockStatusProducts/:productId',auth.isLogin, adminController.toggleBlockStatusProducts);
-adminRouter.get('/editProduct',auth.isLogin,adminController.editProduct)
-adminRouter.post('/editProduct/:productId',upload.array('images'),auth.isLogin,adminController.editProductAdd)
+adminRouter.get('/brands',auth.isLogin,brandsController.brands);
+adminRouter.post('/brands',auth.isLogin,brandsController.addBrands);
+adminRouter.post('/editBrand',auth.isLogin,brandsController.editBrand);
+adminRouter.post('/toggleBlockStatusbrand/:brandId',auth.isLogin,brandsController.toggleBlockStatusbrand);
+
+
+adminRouter.get('/addProduct',auth.isLogin,productController.product);
+adminRouter.post('/addProduct',upload.array('images'),productController.addProduct);
+adminRouter.get('/productList',auth.isLogin,productController.productList) 
+adminRouter.post('/toggleBlockStatusProducts/:productId',auth.isLogin,productController.toggleBlockStatusProducts);
+adminRouter.get('/editProduct',auth.isLogin,productController.editProduct)
+adminRouter.post('/editProduct/:productId',upload.array('images'),auth.isLogin,productController.editProductAdd)
 
 adminRouter.get('/userList',auth.isLogin,adminController.userList)
 adminRouter.post('/toggleBlockStatusUser/:userId',auth.isLogin, adminController.toggleBlockStatusUser);
 adminRouter.post('/searchUser',auth.isLogin,adminController.searchUser);
 
 
-
-
+adminRouter.get('/orderList',auth.isLogin,adminController.orderList);
+adminRouter.get('/orderDetails',auth.isLogin,adminController.orderDetails);
+adminRouter.get('/updateStatus',adminController.updateStatus);
+adminRouter.get('/acceptReturn',adminController.acceptReturn);
+adminRouter.get('/DeclineReturn/:orderId',adminController.DeclineReturn);
 
 
 

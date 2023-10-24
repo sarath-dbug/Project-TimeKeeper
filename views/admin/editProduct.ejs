@@ -1,144 +1,141 @@
+
 <%- include("header") %>
 
-    <section class="content-main">
-        <form action="/admin/editProduct/<%= products._id %>" method="POST" enctype="multipart/form-data"
-            onsubmit="return addProductValidate()">
-            <div class="row">
-                <div class="col-9">
-                    <div class="content-header">
-                        <h2 class="content-title">Edit Product</h2>                 
-                                        <div>
-                                            <button class="btn btn-md rounded font-sm hover-up">Publish</button>
-                                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Basic</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <label for="product_name" class="form-label">Product Name</label>
-                                <input type="text" placeholder="Type here" class="form-control" id="product_name"
-                                    name="product_name" value=" <%= products.product_name %>" required>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="description"
-                                required> <%= products.description %> </textarea>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Brand</label>
-                                        <div class="row gx-2">
-                                            <input placeholder="Type here" type="text" class="form-control" name="brand"
-                                               value="<%= products.brand %>" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <label class="form-label">Color</label>
-                                    <input placeholder="Type here" type="text" class="form-control" name="color"
-                                      value="<%= products.color %>"  required>
-                                </div>
-                                <div class="col-lg-4 mb-3">
-                                    <label class="form-label">Category</label>
-                                    <select name="category" class="form-select">
-                                        <option><%= products.category %></option>
-                                        <% categories.forEach(function(category) { %>
-                                            <option value="<%= category._id %>">
-                                                <%= category.name %>
-                                            </option>
-                                            <% }); %>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Regular price</label>
-                                        <div class="row gx-2">
-                                            <input placeholder="$" type="text" class="form-control" name="regular_price"
-                                              value="<%= products.regular_price %>"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Sales price</label>
-                                        <input placeholder="$" type="text" class="form-control" name="sales_price"
-                                           value=" <%= products.sales_price %>" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Stock</label>
-                                        <input placeholder="0" type="text" class="form-control" name="stock" value="<%= products.stock %>" required>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div> 
-                </div>
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Media</h4>
-                            </div>
-                            <div class="input-upload">
-                                <img src="productsImages/<%= products.image[0] %>" id="imgView1" alt="">
-                                <input class="form-control" id="input1" name="images" onchange="viewImage1(event),viewImage(event, 1)" type="file">
-                              
-                            </div>
-                            <div class="image-cropper" style="display:none;">
-                                <img src="" id="croppedImg1" alt="">
-                                <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
-                            </div>
-
-                        </div> <!-- card end// -->
-
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Media</h4>
-                            </div>
-                            <div class="input-upload">
-                                <img src="/productsImages/<%= products.image[1] %>" id="imgView2" alt="">
-                                <input class="form-control" id="input2" name="images" onchange="viewImage2(event),viewImage(event, 2)" type="file">
-                              
-                            </div>
-                            <div class="image-cropper" style="display:none;">
-                                <img src="" id="croppedImg2" alt="">
-                                <button type="button" id="saveButton2" class="btn-sm btn-primary">Save</button>
-                            </div>
-
-                        </div> <!-- card end// -->   
-
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Media</h4>
-                            </div>
-                            <div class="input-upload">
-                                <img src="/productsImages/<%= products.image[1] %>" id="imgView3" alt="">
-                                <input class="form-control" id="input3" name="images" onchange="viewImage3(event),viewImage(event, 3)" type="file">
-                               
-                            </div>
-                            <div class="image-cropper" style="display:none;">
-                                <img src="" id="croppedImg3" alt="">
-                                <button type="button" id="saveButton3" class="btn-sm btn-primary">Save</button>
-                            </div>
-                        </div> <!-- card end// -->
+<section class="content-main">
+    <form action="/admin/editProduct/<%= products._id %>" method="POST" enctype="multipart/form-data"
+        onsubmit="return editProductValidate()">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Edit Product</h2>                 
+                    <div>
+                        <button class="btn btn-md rounded font-sm hover-up" id="publishButton">Publish</button>
                     </div>
                 </div>
             </div>
-        </form>
-    </section> 
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Basic</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Product Name</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="product_name"
+                                name="product_name" value="<%= products.product_name %>" required>
+                            <div id="productNameError" class="error-message"></div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Description</label>
+                            <textarea placeholder="Type here" class="form-control" rows="4" id="description"
+                                name="description" required><%= products.description %></textarea>
+                            <div id="descriptionError" class="error-message"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Regular price</label>
+                                    <div class="row gx-2">
+                                        <input placeholder="$" type="text" class="form-control" id="regular_price"
+                                            name="regular_price" value="<%= products.regular_price %>" required>
+                                    </div>
+                                    <div id="regularPriceError" class="error-message"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Sales price</label>
+                                    <input placeholder="$" type="text" class="form-control" id="sales_price"
+                                        name="sales_price" value="<%= products.sales_price %>" required>
+                                    <div id="salesPriceError" class="error-message"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Stock</label>
+                                    <input placeholder="0" type="text" class="form-control" id="stock" name="stock"
+                                    value="<%= products.stock %>" required>
+                                    <div id="stockError" class="error-message"></div>
+                                </div>
+                            </div>                              
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 mb-3">
+                                <label class="form-label">Brand</label>
+                                <select name="brand" id="brand" class="form-select" required>
+                                    <option><%= products.brand%></option>
+                                    <% brands.forEach(function(brand) { %>
+                                        <option value="<%= brand._id %>">
+                                            <%= brand.name %>
+                                        </option>
+                                        <% }); %>
+                                </select>
+                                <div id="brandError" class="error-message"></div>
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label class="form-label">Category</label>
+                                <select name="category" id="category" class="form-select" required>
+                                    <option><%= products.category%></option>
+                                    <% categories.forEach(function(category) { %>
+                                        <option value="<%= category._id %>">
+                                            <%= category.name %>
+                                        </option>
+                                        <% }); %>
+                                </select>
+                                <div id="categoryError" class="error-message"></div>
+                            </div>
+                        </div>     
+                    </div>
+                </div> <!-- card end// -->
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="input-upload">
+                            <img src="productsImages/<%= products.image[0] %>" id="imgView1" alt="">
+                            <input class="form-control" id="input1" name="images" onchange="viewImage1(event,)" type="file">
+                        </div>
+                        <div class="image-cropper" style="display:none;">
+                            <img src="" id="croppedImg1" alt="">
+                            <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="input-upload">
+                            <img src="/productsImages/<%= products.image[1] %>" id="imgView2" alt="">
+                            <input class="form-control" id="input2" name="images" onchange="viewImage2(event)" type="file">
+                        </div>
+                        <div class="image-cropper" style="display:none;">
+                            <img src="" id="croppedImg2" alt="">
+                            <button type="button" id="saveButton2" class="btn-sm btn-primary">Save</button>
+                        </div>
+                    </div> <!-- card end// -->   
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="input-upload">
+                            <img src="/productsImages/<%= products.image[2] %>" id="imgView3" alt="">
+                            <input class="form-control" id="input3" name="images" onchange="viewImage3(event)" type="file">
+                        </div>
+                        <div class="image-cropper" style="display:none;">
+                            <img src="" id="croppedImg3" alt="">
+                            <button type="button" id="saveButton3" class="btn-sm btn-primary">Save</button>
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+            </div>
+        </div>
+    </form>
+</section> 
 
     <script>
         function viewImage1(event) {
@@ -156,3 +153,4 @@
     
 
     <%- include("footer") %>
+    

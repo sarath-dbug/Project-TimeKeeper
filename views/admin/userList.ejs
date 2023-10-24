@@ -1,5 +1,5 @@
 <%-include("header")-%>
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <section class="content-main">
         <div class="content-header">
             <div>
@@ -8,7 +8,7 @@
         </div>
 
         <header class="card-header">
-            <div class="row gx-3">
+            <!-- <div class="row gx-3">
                 <form action="/admin/searchUser" method="post" class="d-flex col-lg-4 col-md-6 me-auto">
                     <input class=" form-control me-2" name="name" type="search" placeholder="Search">
                     <button class="btn btn-primary" type="submit">Search</button>
@@ -21,11 +21,11 @@
                         <option value="blocked">Inactive</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
         </header>
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="myTable">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -59,10 +59,10 @@
                                 <td>
                                     <% if (user.is_blocked) { %>
                                         <button class="btn btn-success rounded btn-sm font-sm"
-                                            onclick="toggleBlockUnblock('<%= user._id %>', false)">Activate</button>
+                                            onclick="toggleBlockUnblock('<%= user._id %>', false)">Unblock</button>
                                         <% } else { %>
                                             <button class="btn btn-danger rounded btn-sm font-sm"
-                                                onclick="toggleBlockUnblock('<%= user._id %>', true)">Deactivate</button>
+                                                onclick="toggleBlockUnblock('<%= user._id %>', true)">Block</button>
                                             <% } %>
                                 </td>
 
@@ -141,3 +141,11 @@
             });
 
         </script>
+
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

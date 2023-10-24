@@ -75,10 +75,10 @@
                                             <td>
                                                 <% if (category.blocked) { %>
                                                     <button class="btn btn-success rounded btn-sm font-sm"
-                                                        onclick="toggleBlockUnblock('<%= category._id %>', false)">Unblock</button>
+                                                        onclick="toggleBlockUnblock('<%= category._id %>', false)">list</button>
                                                     <% } else { %>
                                                         <button class="btn btn-danger rounded btn-sm font-sm"
-                                                            onclick="toggleBlockUnblock('<%= category._id %>', true)">Block</button>
+                                                            onclick="toggleBlockUnblock('<%= category._id %>', true)">Unlist</button>
                                                         <% } %>
                                             </td>
 

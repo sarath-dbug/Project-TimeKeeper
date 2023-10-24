@@ -1,3 +1,12 @@
+<!-- Add Cropper.js CSS -->
+<link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
+
+<!-- Add jQuery (required by Cropper.js) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Add Cropper.js -->
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+
 <%- include("header") %>
 
     <section class="content-main">
@@ -17,9 +26,7 @@
                                         <%= errMessage %>
                                     </div>
                                     <% } %>
-                                        <div>
-                                            <button class="btn btn-md rounded font-sm hover-up">Publish</button>
-                                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -32,40 +39,13 @@
                                 <label for="product_name" class="form-label">Product Name</label>
                                 <input type="text" placeholder="Type here" class="form-control" id="product_name"
                                     name="product_name" required>
+                                <div id="productNameError" class="error-message"></div>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="description"
-                                    required></textarea>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Brand</label>
-                                        <div class="row gx-2">
-                                            <input placeholder="Type here" type="text" class="form-control" name="brand"
-                                                required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <label class="form-label">Color</label>
-                                    <input placeholder="Type here" type="text" class="form-control" name="color"
-                                        required>
-                                </div>
-                                <div class="col-lg-4 mb-3">
-                                    <label class="form-label">Category</label>
-                                    <select name="category" class="form-select">
-                                        <option>Select</option>
-                                        <% categories.forEach(function(category) { %>
-                                            <option value="<%= category._id %>">
-                                                <%= category.name %>
-                                            </option>
-                                            <% }); %>
-                                    </select>
-                                </div>
+                                <textarea placeholder="Type here" class="form-control" rows="4" id="description"
+                                    name="description" required></textarea>
+                                <div id="descriptionError" class="error-message"></div>
                             </div>
 
                             <div class="row">
@@ -73,46 +53,169 @@
                                     <div class="mb-4">
                                         <label class="form-label">Regular price</label>
                                         <div class="row gx-2">
-                                            <input placeholder="$" type="text" class="form-control" name="regular_price"
-                                                required>
+                                            <input placeholder="$" type="text" class="form-control" id="regular_price"
+                                                name="regular_price" required>
                                         </div>
+                                        <div id="regularPriceError" class="error-message"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label">Sales price</label>
-                                        <input placeholder="$" type="text" class="form-control" name="sales_price"
-                                            required>
+                                        <input placeholder="$" type="text" class="form-control" id="sales_price"
+                                            name="sales_price" required>
+                                        <div id="salesPriceError" class="error-message"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label">Stock</label>
-                                        <input placeholder="0" type="text" class="form-control" name="stock" required>
+                                        <input placeholder="0" type="text" class="form-control" id="stock" name="stock"
+                                            required>
+                                        <div id="stockError" class="error-message"></div>
                                     </div>
-                                </div>
-
+                                </div>                              
                             </div>
+
+                            <div class="row">
+                                <div class="col-lg-4 mb-3">
+                                    <label class="form-label">Brand</label>
+                                    <select name="brand" id="brand" class="form-select" required>
+                                        <option>Select</option>
+                                        <% brands.forEach(function(brand) { %>
+                                            <option value="<%= brand._id %>">
+                                                <%= brand.name %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                    <div id="brandError" class="error-message"></div>
+                                </div>
+                                <div class="col-lg-4 mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select name="category" id="category" class="form-select" required>
+                                        <option>Select</option>
+                                        <% categories.forEach(function(category) { %>
+                                            <option value="<%= category._id %>">
+                                                <%= category.name %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                    <div id="categoryError" class="error-message"></div>
+                                </div>
+                            </div>     
                         </div>
                     </div> <!-- card end// -->
                 </div>
-                <div class="col-lg-3">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Media</h4>
-                        </div>
-                        <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Picture.1</h4>
+                            </div>
                             <div class="input-upload">
-                                <label for="">Can choose 4 images</label>
-                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file" name="images" multiple>
+                                <img src="/imgs/theme/upload.svg" id="imgView1" alt="">
+                                <input class="form-control" id="input1" name="images" onchange="viewImage(event, 1)"
+                                    type="file">
+                            </div>
+                            <div class="image-cropper" style="display:none;">
+                                <img src="" id="croppedImg1" alt="">
+                                <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
+                            </div>
+
+                        </div> <!-- card end// -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Picture.2</h4>
+                            </div>
+                            <div class="input-upload">
+                                <img src="/imgs/theme/upload.svg" id="imgView2" alt="">
+                                <input class="form-control" id="input2" name="images" onchange="viewImage(event, 2)"
+                                    type="file">
+                            </div>
+                            <div class="image-cropper" style="display:none">
+                                <img src="" id="croppedImg2" alt="">
+                                <button type="button" id="saveButton2" class="btn-sm btn-primary">Save</button>
+                            </div>
+
+                        </div> <!-- card end// -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Picture.3</h4>
+                            </div>
+                            <div class="input-upload">
+                                <img src="/imgs/theme/upload.svg" id="imgView3" alt="">
+                                <input class="form-control" id="input3" name="images" onchange="viewImage(event, 3)"
+                                    type="file">
+                            </div>
+                            <div class="image-cropper" style="display:none;">
+                                <img src="" id="croppedImg3" alt="">
+                                <button type="button" id="saveButton3" class="btn-sm btn-primary">Save</button>
                             </div>
                         </div>
-                    </div> <!-- card end// -->
-
+                        <!-- card end// -->
+                        <div>
+                            <button class="btn btn-md rounded font-sm hover-up">Publish</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </section> <!-- content-main end// -->
+    <br>
 
     <%- include("footer") %>
+
+
+        <script>
+            function viewImage(event, index) {
+                let input = event.target;
+                let reader = new FileReader();
+
+                reader.onload = function () {
+                    let dataURL = reader.result;
+                    let image = document.getElementById('imgView' + index);
+                    image.src = dataURL;
+
+                    // Initialize Cropper.js on the image
+                    let cropper = new Cropper(image, {
+                        aspectRatio: 1 / 1, // Set the aspect ratio to 1:1 for square images
+                        viewMode: 1, // Set the view mode to crop box
+                        guides: true, // Show the crop guides
+                        background: false, // Do not show the background behind the image
+                        autoCropArea: 1, // Set the initial crop area to cover the whole image
+                        zoomable: true // Disable zooming to keep the image size fixed
+                    });
+
+                    // Show the image cropper container
+                    let cropperContainer = document.querySelector('#croppedImg' + index).parentNode;
+                    cropperContainer.style.display = 'block';
+
+                    // Update the cropped image when the "Save" button is clicked
+                    let saveButton = document.querySelector('#saveButton' + index);
+                    saveButton.addEventListener('click', async function () {
+                        let croppedCanvas = cropper.getCroppedCanvas({
+                            width: 1500,
+                            height: 1500
+                        });
+                        let croppedImage = document.getElementById("croppedImg" + index);
+                        croppedImage.src = croppedCanvas.toDataURL('image/jpeg', 1.0);
+
+                        // Generate a unique name for the cropped image file based on the current timestamp
+                        let timestamp = new Date().getTime();
+                        let fileName = `cropped-img-${timestamp}-${index}.png`;
+
+                        await croppedCanvas.toBlob(blob => {
+                            let input = document.getElementById('input' + index)
+                            let imgFile = new File([blob], fileName, blob)
+                            const fileList = new DataTransfer();
+                            fileList.items.add(imgFile);
+                            input.files = fileList.files
+                        });
+                        // cropperContainer.style.display = 'none';
+                    });
+
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        </script>

@@ -1,0 +1,148 @@
+<%-include("header")-%>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">User List</h2>
+            </div>
+        </div>
+
+        <header class="card-header">
+            <!-- <div class="row gx-3">
+                <form action="/admin/searchUser" method="post" class="d-flex col-lg-4 col-md-6 me-auto">
+                    <input class=" form-control me-2" name="name" type="search" placeholder="Search">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+
+                <div class="col-md-2 col-6">
+                    <select class="form-select" id="filterSelect">
+                        <option value="all">Show all</option>
+                        <option value="unblocked">Active</option>
+                        <option value="blocked">Inactive</option>
+                    </select>
+                </div>
+            </div> -->
+        </header>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>Order-ID</th>
+                            <th>Name</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%userOrder.forEach(order=>{%>
+                            <tr>
+                                <td><%=order._id%></td>
+                                <td><%=order.addressDetails.name%></td>
+                                <td><%=order.total%></td>
+                                <td><span class="badge rounded-pill alert-warning"><%=order.status%></span></td>
+                                <td><%= order.createdAt.toLocaleDateString() %></td>              
+                                <td>
+                                <a href="/admin/orderDetails?id=<%=order._id%>" class="btn btn-md rounded font-sm">Detail</a>
+                                <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                    <div class="dropdown-menu">
+                
+                                    <%if(order.status==='Placed'){%>
+                                            <a class="dropdown-item" href="/admin/updateStatus?id=<%= order._id %>&status=Dispatched" >Dispatch Order</a>
+                                            <a class="dropdown-item" href="/admin/updateStatus?id=<%= order._id %>&status=Order Cancelled" >Cancel Order</a>
+                                            <%}else if(order.status==='Dispatched'){%>
+                                            <a class="dropdown-item" href="/admin/updateStatus?id=<%= order._id %>&status=Delivered">delivered</a>
+                                            <%}else if(order.status==='Requested Return'){%>
+                                                <a class="dropdown-item" href="/admin/acceptReturn?id=<%=order._id%>">Accept</a>
+                                                <a class="dropdown-item" href="/admin/DeclineReturn/<%=order._id%>">Decline</a>  
+                                        <%}%>
+
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <%- include("footer") %>
+
+        </html>
+
+        <script>
+            function toggleBlockUnblock(userId, blockStatus) {
+                fetch(`/admin/toggleBlockStatusUser/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ blocked: blockStatus })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Failed to toggle block status');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while toggling block status');
+                    });
+            }
+
+            // Get a reference to the select element
+            const filterSelect = document.getElementById('filterSelect');
+            filterSelect.addEventListener('change', function () {
+                const selectedOption = filterSelect.value;
+                const user = document.querySelectorAll('.user');
+                user.forEach((user) => {
+                    if (selectedOption === 'all') {
+                        // Show all user
+                        user.style.display = 'block';
+                    } else {
+                        // Get the blocked status of the user
+                        const isBlocked = user.getAttribute('data-blocked') === 'true';
+
+                        // Show/hide user based on the selected option
+                        if ((selectedOption === 'blocked' && isBlocked) || (selectedOption === 'unblocked' && !isBlocked)) {
+                            user.style.display = 'block';
+                        } else {
+                            user.style.display = 'none';
+                        }
+                    }
+                });
+            });
+
+            const searchButton = document.getElementById('searchButton');
+            const searchInput = document.getElementById('searchInput');
+            searchButton.addEventListener('click', function () {
+                const searchText = searchInput.value.trim().toLowerCase();
+
+                userRows.forEach(function (userRow) {
+                    const userName = userRow.querySelector('.users-name').textContent.toLowerCase();
+                    const userEmail = userRow.querySelector('.users-email').textContent.toLowerCase();
+
+                    if (userName.includes(searchText) || userEmail.includes(searchText)) {
+                        userRow.style.display = 'table-row';
+                    } else {
+                        userRow.style.display = 'none';
+                    }
+                });
+            });
+
+        </script>
+
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

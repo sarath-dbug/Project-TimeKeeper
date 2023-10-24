@@ -1,42 +1,145 @@
-<section class="home-slider position-relative">
-    <div class="hero-slider-1 style-2 dot-style-1 dot-style-1-position-1">
+<!DOCTYPE html>
+<html class="no-js" lang="en">
 
-        <div style="position: relative;">
-            <img class="animated" src="assets/imgs/slider/slidewatch1.webP" alt="" style="width: 100%;">
-            <div class="hero-slider-content-2"
-                style="position: absolute; top: 50%; left: 80%; transform: translate(-50%, -50%); padding: 10px; font-size: 20px;">
-                <h5 class="animated">Upcoming Offer</h5>
-                <h3 class="animated fw-900">Big Deals From</h3>
-                <h2 class="animated fw-900 text-brand">Manufacturer</h2>
-                <p class="animated">Headphone, Gaming Laptop, PC and more...</p>
-                <a class="animated btn btn-brush btn-brush-3" href="shop-product-right.html"> Shop Now
-                </a>
-            </div>
-        </div>
 
-        <div class="single-hero-slider single-animation-wrap">
-            <img class="animated" src="assets/imgs/slider/slidewatch6.png" alt="">
-        </div>
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 
-        <div class="single-hero-slider single-animation-wrap">
-            <div class="container">
-                <div class="slider-1-height-2 slider-animated-1">
+<head>
+    <meta charset="utf-8">
+    <title>Time Keeper - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/timekeeper3.png">
+ 
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="../fe/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="../fe/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="../fe/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="../fe/plugins/slick/slick.css">
+  <link rel="stylesheet" href="../fe/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="../fe/css/style.css">
+  
 
-                    <div class="single-slider-img single-slider-img-1">
-                        <img class="animated" src="assets/imgs/slider/slider-2.png" alt="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+
+
+</head>
+
+<body>
+    <!-- Quick view -->
+    <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-gallery">
+                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="slider-arrow hero-slider-1-arrow"></div>
-</section>
+    <header class="header-area header-style-2 header-height-2">
+        <div class="header-middle header-middle-ptb-1 d-none d-lg-block" style="background-color: rgb(16, 16, 16)">
+            <div class="container">
+                <div class="header-wrap">
+                    <div class="logo logo-width-1">
+                        <a href=""><img src="assets/imgs/theme/timekeeper5.png" alt="logo"></a>
+                    </div>
+                    <div class="header-right">
+                        <!-- Search bar -->
+                        <div style="display: flex; align-items: center; border: 2px solid #ceb97a; border-radius: 25px; width: 300px; position: relative;
+                                cursor: pointer; transition: background-color 0.3s;"
+                            onmouseover="this.style.backgroundColor='white'; this.style.color='black';"
+                            onmouseout="this.style.backgroundColor='black'; this.style.color='white';">
+                            <input type="text"
+                                style="border: none; outline: none; padding: 10px; flex: 1; background: transparent;"
+                                placeholder="Search for items...">
+                        </div>
+                        <!-- end -->
+                        <div class="header-action-right">
+                            <div class="header-action-2">
+                                <div class="header-action-icon-2" style="padding-left: 10px;">
+                                    <a href="shop-wishlist.html">
+                                        <img class="svgInject" alt="Evara" src="assets/imgs/icons/heart.png">
+                                    </a>
+                                </div>
+                                <div class="header-action-icon-2">
+                                    <a class="mini-cart-icon" href="shop-cart.html">
+                                        <img alt="Evara" src="assets/imgs/icons/bag2.png">
+                                    </a>
+                                </div>
 
+                                <div id="loginContainer" style="padding-left: 20px;">
+                                    <% if (isAuthenticated===true) { %>
+                                        <a href="/logout" class="button-link">
+                                            <h4 style="color:#ceb97a;">Logout</h4>
+                                        </a>
+                                        <% } else { %>
+                                            <a href="/login" class="button-link">
+                                                <h4 style="color:#ceb97a;">Login</h4>
+                                            </a>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!-- ***** -->
-
-<!-- <% if (user) { %>
-<a href="/logout" class="button-link"><h4>Logout</h4></a>
- <% } else { %>
-<a href="/login" class="button-link"><h4>Login</h4></a>
-<% } %> -->
+        <div class="header-bottom header-bottom-bg-color sticky-bar">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative">
+                    <div class="logo logo-width-1 d-block d-lg-none">
+                        <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                    </div>
+                    <div class="header-nav d-none d-lg-flex">
+                        <div class="main-categori-wrap d-none d-lg-block">
+                            <a class="categori-button-active open" href="#" style="color:black">
+                                <span class="fi-rs-apps"></span> NEXT GeneratioN
+                            </a>
+                        </div>
+                        <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                            <nav>
+                                <ul>
+                                    <li>
+                                        <a class="active" href="/">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="shop-grid-right.html">Shop</a>
+                                    </li>                                                              
+                                    <li>
+                                        <a href="page-about.html">About</a>
+                                    </li>
+                                    <li>
+                                        <a href="/userAccount">Account</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </header>

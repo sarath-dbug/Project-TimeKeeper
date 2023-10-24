@@ -1,0 +1,126 @@
+<%- include("header") %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Brands</h2>
+                <p>Add, edit, or delete a brand</p>
+            </div>
+            <!-- <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        </div> -->
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <% if (message) { %>
+                            <div id="successMessage" class="alert alert-success text-center mt-5" role="alert">
+                                <%= message %>
+                            </div>
+                            <% } %>
+                                <% if (errMessage) { %>
+                                    <div id="errorMessage" class="alert alert-danger text-center mt-5" role="alert">
+                                        <%= errMessage %>
+                                    </div>
+                                    <% } %>
+                                        <form method="post" action="/admin/brands" id="createBrandName"
+                                            onsubmit="return brandErrorValidation()">
+                                            <div class="mb-4">
+                                                <label for="brandName" class="form-label">New Brand Name</label>
+                                                <input type="text" placeholder="Type here" name="brandName"
+                                                    class="form-control" id="brandName">
+                                                <small id="brandNameError"></small>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Create brand</button>
+                                            </div>
+                                        </form>
+                                        <form method="post" action="/admin/editBrand" id="editBrandForm"
+                                            style="display: none;" onsubmit="return editBrandErrorValidation()">
+                                            <input type="hidden" id="editBrandId" name="editBrandId">
+                                            <div class="mb-4">
+                                                <label for="editBrandName" class="form-label">Edit Brand
+                                                    Name</label>
+                                                <input type="text" placeholder="Type here" name="editBrandName"
+                                                    class="form-control" id="editBrandName">
+                                                <small id="editBrandNameError"></small>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            </div>
+                                        </form>
+
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Edit</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% brands.forEach((brand)=>{ %>
+                                        <tr>
+                                            <td>
+                                                <%= brand.name %>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-light rounded btn-sm font-sm"
+                                                    onclick="showEditBrandForm('<%= brand._id %>', '<%= brand.name %>')">Edit</button>
+                                            </td>
+                                            <td>
+                                                <% if (brand.blocked) { %>
+                                                    <button class="btn btn-success rounded btn-sm font-sm"
+                                                        onclick="toggleBlockUnblock('<%= brand._id %>', false)">list</button>
+                                                    <% } else { %>
+                                                        <button class="btn btn-danger rounded btn-sm font-sm"
+                                                            onclick="toggleBlockUnblock('<%= brand._id %>', true)">Unlist</button>
+                                                        <% } %>
+                                            </td>
+
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section>
+
+    <script>
+        function showEditBrandForm(brandId, brandName) {
+            document.getElementById('createBrandName').style.display = 'none';
+            document.getElementById('editBrandForm').style.display = 'block';
+            document.getElementById('editBrandName').value = brandName;
+            document.getElementById('editBrandId').value = brandId;
+        }
+        function toggleBlockUnblock(brandId, blockStatus) {
+            fetch(`/admin/toggleBlockStatusbrand/${brandId}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ blocked: blockStatus })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Reload the page to reflect the updated status
+                    } else {
+                        alert('Failed to toggle block status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while toggling block status');
+                });
+        }
+    </script>
+
+    <%- include("footer") %>
