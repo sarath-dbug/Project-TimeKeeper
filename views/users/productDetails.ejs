@@ -90,7 +90,7 @@
                                             <% if (products.stock !== 0) { %>
                                                 <div class="product-extra-link2">
                                                     <button type="submit" class="button button-add-to-cart" onclick="addToCart('<%=products._id%>','<%=products.stock%>')">Add to cart</button>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>  
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addToWishList('<%=products._id%>')"><i class="fi-rs-heart"></i></a>  
                                                 </div>                                               
                                             <% } else { %>
                                                 <li style="color: black">Availability:<span class="in-stock text-danger ml-5" >Out of stock</span></li>
@@ -351,6 +351,41 @@
             }
         }
         </script>
+
+<script>
+	function addToWishList(proId) {
+		event.preventDefault();
+    $.ajax({
+      url: '/addToWishlist',
+      method: 'POST',
+      data: {
+        proId: proId
+      },
+      success: (response) => {
+        if (response.status===true) {
+          // Product added to Wishlist successfully
+		  Swal.fire({
+			position: 'centre',
+			icon: 'success',
+			title: 'Product added to wish list',
+			showConfirmButton: false,
+			timer: 1500
+			})
+          
+
+        } else {
+          // Error adding product to Wishlist
+          Swal.fire({
+            icon: 'error',
+            title: 'Product already exist in Wishlist',
+            timer: 2000
+          });
+
+        }
+      }
+    })
+  }
+</script>
 
     <%-include("footer")-%>
     

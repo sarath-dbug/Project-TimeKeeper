@@ -137,7 +137,7 @@
               <li><a class="active" href="/userAccount">Profile Details</a></li>
               <li><a href="/userOrderList">Orders</a></li>
               <li><a href="/userAddress">Address</a></li>
-              <!-- <li><a href="/Coupons">Coupons</a></li> -->
+              <li><a href="/Coupons">Coupons</a></li>
 
             </ul>
             <div class="dashboard-wrapper dashboard-user-profile">
@@ -171,22 +171,25 @@
                   </ul>
                 </div>
 
-                <!-- <div class="media-body">
+                <div class="media-body">
                   <div class="col-md-7">
                     <div class="col-6">
                       <div class="inside">
                         <div class="wallet-top text-center">
                           <div class="card">
-                            <h1 style="text-align: center;font-size: 20px;">MY WALLET</h1>
-                           
-                            //here code delete.because that was showing error message. if you want to wallet code pick hari coode
-
+                            <h1 style="text-align: center;font-size: 20px;">MY WALLET  </h1>
+                            <span style="display: block; text-align: center;"> <%= users.email %></span>
+                            <%if(wallet){%>
+                            <h2 style="font-size: 22px;">: ₹<%=wallet.walletAmount%></h2>
+                            <%}else{%>
+                              <h2 style="font-size: 22px;">: ₹0</h2>
+                              <%}%>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div> 
-                </div>  -->
+                </div> 
 
               </div>
             </div>

@@ -151,8 +151,8 @@
                         </table>
                     </div>
 
-                    <!---Coupon section-->
-                    <!-- <div id="couponSection">
+                 <!-- Coupon section -->
+                 <div id="couponSection">
                     <ul class="list-group mb-3 sticky-top">
                         <li class="list-group-item d-flex justify-content-between bg-light">
                             <div class="text-success">
@@ -161,7 +161,7 @@
                             </div>
                             <span class="text-success"><span style="color: rgb(15, 48, 210)">You saved</span></span>
                          
-                        </li>
+                        </li> 
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total(INR)</span>
                             <strong></strong>
@@ -193,7 +193,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div> 
                
    
                     <div class="bt-1 border-color-1 mt-30 mb-30"></div>
@@ -216,13 +216,14 @@
                                 <input class="form-check-input" type="radio" name="paymentMethod" id="wallet" value="WALLET">
                                 <label class="form-check-label" for="wallet" data-bs-toggle="collapse" data-target="#wallet-info" aria-controls="">WALLET</label>
                                 
-                                <span class="wallet-balance">
-                                    </span>
-                              
-                                        <span class="wallet-balance">
-                                          </span>
-                                     
-                                </label>
+                                <%if(walletDetails){%>
+                                    <span class="wallet-balance">(Wallet Balance:
+                                        ₹<%=walletDetails.walletAmount%>)</span>
+                                        <%}else{%>
+                                            <span class="wallet-balance">(Wallet Balance:
+                                                ₹0)</span>
+                                            <%}%>
+                                    </label>
                                
                               </div>
                               <p id="error-message" class="text-danger"></p>
@@ -391,7 +392,7 @@ $(document).ready(function(){
                 "key": razorpayKeyId,
                 "amount": orderDetails.amount,
                 "currency": "INR",
-                "name": "Am Mobardo",
+                "name": "TimeKeeper",
                 "description": "Test Transaction",
                 "order_id": orderDetails.id,
                 "handler": function (response) {
@@ -415,22 +416,16 @@ $(document).ready(function(){
 
 
 
-        function verifyPayment(razorpayServerPaymentResponse, serverOrderDetails) {
-             
+        function verifyPayment(razorpayServerPaymentResponse, serverOrderDetails) {   
             console.log('razorpayServerPaymentResponse',razorpayServerPaymentResponse)
             console.log('serverOrderDetails',serverOrderDetails);
             $.ajax({
                 url: '/verify-payment',
                 data: {
-
                     razorpayServerPaymentResponse,
-
                     serverOrderDetails
-
                 },
-
                 method: 'POST',
-
                 success: (response) => {
                     if (response.status) {
                         location.href = '/orderSucessfull'

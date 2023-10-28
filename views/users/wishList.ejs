@@ -1,0 +1,147 @@
+<%-include('header')%>
+<!-- Template CSS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+<main class="main">
+
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <%if(wishListProduct.length!=0) {%>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th scope="col" colspan="2">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Stock Status</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%wishListProduct.forEach(function(item){%>
+                                <tr>
+                                    <td class="image product-thumbnail"><img src="/productsImages/<%=item.wishListed.image[0]%>" alt="#"></td>
+                                    <td class="product-des product-name">
+                                        <h5 class="product-name"><a href="shop-product-right.html"><%=item.wishListed.product_name%></a></h5>
+                                        <p class="font-xs">
+                                        </p>
+                                    </td>
+                                    <td class="price" data-title="Price"><span><%=item.wishListed.sales_price%></span></td>
+                                    <td class="text-center" data-title="Stock">
+                                        <%if(item.wishListed.stock>0){%>
+                                        <span class="color3 font-weight-bold">In Stock</span>
+                                        <%}else{%>
+                                            <span class="color3 font-weight-bold text-danger">out of stock</span>
+                                        <%}%>
+                                    </td>
+                                    <td class="text-right" data-title="Cart">
+                                        <button class="btn btn-sm" onclick="addToCart('<%=item.productId%>','<%=item.wishListed.stock%>')"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                    </td>
+                                    <td class="action" data-title="Remove"><a href="#"   onclick="removeFromWishList('<%=item.productId%>')"><i class="fi-rs-trash"></i></a></td>
+                                </tr>
+                             
+                                <%})%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <%}else{%>
+                    
+                <div style="display: flex; justify-content: center;">
+                    <div class="col-md-lg-5">
+                        <div class="typography" style="text-align: center;">
+                            <img style="width: 295px;" src="../fe/img/wishList.jpg" alt="">
+                            <h3>Oops! Your Wish List is empty</h3>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    function addToCart(proId, stock) {
+        if (stock <= 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Out of Stock",
+                text: "This product is currently out of stock.",
+            });
+        } else {
+            $.ajax({
+                url: "/addToCart/" + proId,
+                method: "POST",
+                success: (response) => {
+                    console.log(response, "response");
+                    if (response.status == true) {
+                        Swal.fire({
+                            title: "Added To Cart",
+                            text: "Your Product has been added to Cart",
+                            icon: "success",
+                            timer: 5000,
+                        }).then(() => {
+
+                            if (response.newStock !== undefined) {
+                                // Select the specific product card by its ID and update the stock
+                                const productStockElement = document.getElementById(`productStock_${proId}`);
+                                if (productStockElement) {
+                                    productStockElement.textContent = 'Available stock' + response.newStock;
+                                }
+                            }
+                        });
+
+                    }
+
+                     else {
+                        location.href = "/login";
+                    }
+                },
+                error: (error) => {
+                    console.error(error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "An error occurred while adding the product to the cart.",
+                    });
+                },
+            });
+        }
+    }
+    </script>
+
+<script>
+      // remove from wishList ajax call
+      function removeFromWishList(proId) {
+
+event.preventDefault()
+
+console.log("hereeeeeeeeeeeeee");
+$.ajax({
+  url: '/removeProductWishlist',
+  method: 'DELETE',
+  data: {
+    proId: proId,
+    
+  },
+  success: (response) => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Product removed from wishlist',
+      showConfirmButton: true,
+      timer: 3000
+    }).then(() => {
+      location.reload()
+    })
+  }
+})
+}
+</script>
+
+
+<%-include('footer')%>

@@ -1,6 +1,7 @@
 const admin = require('../models/adminModel');
 const User = require('../models/usermodel')
 const Order = require('../models/orderModel')
+const Wallet = require('../models/walletModel')
 const { ObjectId } = require('mongoose').Types;
 
 
@@ -64,10 +65,10 @@ const logout = async (req, res) => {
 
 
 
-const userList = async (req,res)=>{
+const userList = async (req, res) => {
    try {
       const userData = await User.find({})
-      res.render('userList',{user:userData})
+      res.render('userList', { user: userData })
    } catch (error) {
       console.log();
    }
@@ -95,13 +96,13 @@ const searchUser = async (req, res) => {
       const searchInput = (req.body.name);
       const usersData = await User.find({
          $or: [
-           { first_name: { $regex: searchInput, $options: 'i' } },
-           { last_name: { $regex: searchInput, $options: 'i' } },
-           { display_name: { $regex: searchInput, $options: 'i' } },
-           { email: { $regex: searchInput, $options: 'i' } }
+            { first_name: { $regex: searchInput, $options: 'i' } },
+            { last_name: { $regex: searchInput, $options: 'i' } },
+            { display_name: { $regex: searchInput, $options: 'i' } },
+            { email: { $regex: searchInput, $options: 'i' } }
          ]
-       }).sort({ name: 1 });
-             res.render('userList', { user: usersData });
+      }).sort({ name: 1 });
+      res.render('userList', { user: usersData });
    } catch (error) {
       console.log(error.message)
    }
@@ -110,16 +111,16 @@ const searchUser = async (req, res) => {
 
 
 //orderList -------
-const orderList = async (req,res)=>{
+const orderList = async (req, res) => {
    try {
       const Orders = await Order.find();
-      res.render("OrderList",{ userOrder:Orders});
+      res.render("OrderList", { userOrder: Orders });
    } catch (error) {
       console.log(error);
    }
 }
 
-const orderDetails = async (req,res)=>{
+const orderDetails = async (req, res) => {
    try {
       const id = req.query.id;
       const userOrder = await Order.findById({ _id: id }).populate("items.product").exec();
@@ -132,54 +133,83 @@ const orderDetails = async (req,res)=>{
 const updateStatus = async (req, res) => {
    const { id, status } = req.query;
    try {
-     const order = await Order.findById(id);
-     if (!order) {
-       return res.status(404).json({ message: "Order not found" });
-     }
- 
-     // Update the order status
-     order.status = status;
-     await order.save();
- 
-     return res.redirect("/admin/orderList"); // Redirect back to order list page
-   } catch (error) {
-     console.error(error.message);
-     res.status(500).json({ message: "Error updating order status" });
-   }
- };
+      const order = await Order.findById(id);
+      if (!order) {
+         return res.status(404).json({ message: "Order not found" });
+      }
 
- const acceptReturn = async (req,res)=>{
+      // Update the order status
+      order.status = status;
+      await order.save();
+
+      return res.redirect("/admin/orderList"); // Redirect back to order list page
+   } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Error updating order status" });
+   }
+};
+
+const acceptReturn = async (req, res) => {
    try {
       const id = req.query.id
       const order = await Order.findByIdAndUpdate(
          { _id: new ObjectId(id) },
          { $set: { status: "Returned" } },
          { new: true }
-       ).exec();
-       res.redirect('/admin/orderList')
+      ).exec();
+
+      // Check if the payment method is online and the order value is greater than 0
+      if ( (order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET") && order.total > 0) {
+         // Check if a wallet exists for the user
+         const wallet = await Wallet.findOne({ userId: order.user }).exec();
+
+         if (wallet) {
+            // Wallet exists, increment the wallet amount
+            const updatedWallet = await Wallet.findOneAndUpdate(
+               { userId: order.user },
+               { $inc: { walletAmount: order.total } },
+               { new: true }
+            ).exec();   
+
+         } else {
+            // Wallet doesn't exist, create a new wallet with the order value as the initial amount
+            const newWallet = new Wallet({
+               userId: order.user,
+               walletAmount: order.total,
+            });
+
+            const createdWallet = await newWallet.save();
+            console.log(createdWallet, "created new wallet with order value");
+         }
+      }
+
+
+
+
+      res.redirect('/admin/orderList')
    } catch (error) {
       console.log(error);
    }
- }
+}
 
 
- const DeclineReturn = async (req, res) => {
+const DeclineReturn = async (req, res) => {
    try {
-     
-      const orderId = req.params.orderId;
-   
-     const order = await Order.findById(orderId);
-     console.log(order);
-   
-     order.status = 'Return declined';
-     await order.save();
 
-     res.redirect("/admin/orderList");
+      const orderId = req.params.orderId;
+
+      const order = await Order.findById(orderId);
+      console.log(order);
+
+      order.status = 'Return declined';
+      await order.save();
+
+      res.redirect("/admin/orderList");
    } catch (error) {
-     console.log(error.message);
+      console.log(error.message);
    }
- };
- 
+};
+
 
 
 module.exports = {
