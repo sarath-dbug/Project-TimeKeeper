@@ -2,6 +2,7 @@ const User = require('../models/usermodel');
 const Address = require('../models/addressModel')
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
+const Coupon = require('../models/couponModel')
 
 
 //user Account
@@ -271,6 +272,25 @@ const userAccount = async (req, res) => {
   };
 
 
+  const loadCoupon = async (req,res)=>{
+   try {
+   
+     const newCoupon= await Coupon.find()
+     const userData = await User.findById({ _id: req.session.user_id });
+
+     if(req.session.user_id){
+      const isAuthenticated = true;
+      res.render('coupon',{user:userData,newCoupon,isAuthenticated})
+     }else{
+      const isAuthenticated = false;
+      res.render('coupon',{user:userData,newCoupon,isAuthenticated})
+     }
+
+   } catch (error) {
+      console.log(error);
+   }
+  }
+
   module.exports = {
     userAccount,
     editInfo,
@@ -283,4 +303,5 @@ const userAccount = async (req, res) => {
     viewOrder,
     cancelOrder,
     returnOrder,
+    loadCoupon
   }

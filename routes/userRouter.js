@@ -11,6 +11,7 @@ const userController = require('../controllers/userController');
 const cartController = require('../controllers/cartController');
 const userAccountController = require('../controllers/userAccountController');
 const wishListController = require('../controllers/wishListController');
+const orderController = require('../controllers/orderController');
 const blocked = require('../middleware/blocked')
 
 
@@ -58,6 +59,7 @@ userRouter.get('/userOrderList',blocked.checkBocked,auth.isLogin,userAccountCont
 userRouter.get('/viewOrder',blocked.checkBocked,userAccountController.viewOrder);
 userRouter.get('/cancelOrder',blocked.checkBocked,auth.isLogin,userAccountController.cancelOrder);
 userRouter.get('/returnOrder',blocked.checkBocked,userAccountController.returnOrder);
+userRouter.get('/coupons',blocked.checkBocked,userAccountController.loadCoupon);
 
 
 //addTocart
@@ -66,11 +68,15 @@ userRouter.post('/addToCart/:id',blocked.checkBocked,auth.isLogin,cartController
 userRouter.post('/updateQuandity',blocked.checkBocked,cartController.updateQuandity);
 userRouter.post('/removeCartItem',blocked.checkBocked,cartController.removeCartItem);
 userRouter.get('/checkOut',blocked.checkBocked,cartController.checkOut);
-userRouter.post('/placeOrder',blocked.checkBocked,cartController.placeOrder);
-userRouter.get('/orderSucessfull',blocked.checkBocked,cartController.orderSuccess);
-userRouter.get('/orderFailed',blocked.checkBocked,cartController.orderFailed);
-userRouter.post('/verify-payment',blocked.checkBocked,cartController.verifyPayment);
-userRouter.get('/wallet-placed',blocked.checkBocked,cartController.walletOrder);
+//order
+userRouter.post('/placeOrder',blocked.checkBocked,orderController.placeOrder);
+userRouter.get('/orderSucessfull',blocked.checkBocked,orderController.orderSuccess);
+userRouter.get('/orderFailed',blocked.checkBocked,orderController.orderFailed);
+userRouter.post('/verify-payment',blocked.checkBocked,orderController.verifyPayment);
+userRouter.get('/wallet-placed',blocked.checkBocked,orderController.walletOrder);
+userRouter.post('/apply-coupon-request',blocked.checkBocked,orderController.applyCoupon);
+
+
 
 
 //wishList

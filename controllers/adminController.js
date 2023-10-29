@@ -2,6 +2,8 @@ const admin = require('../models/adminModel');
 const User = require('../models/usermodel')
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
+const Coupon = require('../models/couponModel')
+const couponHelpers = require('../helpers/couponHelper')
 const { ObjectId } = require('mongoose').Types;
 
 
@@ -159,7 +161,7 @@ const acceptReturn = async (req, res) => {
       ).exec();
 
       // Check if the payment method is online and the order value is greater than 0
-      if ( (order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET") && order.total > 0) {
+      if ((order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET") && order.total > 0) {
          // Check if a wallet exists for the user
          const wallet = await Wallet.findOne({ userId: order.user }).exec();
 
@@ -169,7 +171,7 @@ const acceptReturn = async (req, res) => {
                { userId: order.user },
                { $inc: { walletAmount: order.total } },
                { new: true }
-            ).exec();   
+            ).exec();
 
          } else {
             // Wallet doesn't exist, create a new wallet with the order value as the initial amount
@@ -212,6 +214,9 @@ const DeclineReturn = async (req, res) => {
 
 
 
+
+
+
 module.exports = {
    loadLogin,
    verifyUser,
@@ -224,5 +229,6 @@ module.exports = {
    orderDetails,
    updateStatus,
    DeclineReturn,
-   acceptReturn
+   acceptReturn,
+
 }

@@ -33,7 +33,7 @@ module.exports = {
                     quantity: product.quantity,
                     price: product.subtotal
                 }))
-
+console.log(products + "**********");
                 if (products) {
                     resolve(products)
                 }
