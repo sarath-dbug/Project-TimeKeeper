@@ -10,13 +10,13 @@
                 <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
                   <div class="padding_eight_all bg-white">
                     <div class="heading_s1">
-                      <h3 class="mb-30">Create an Account</h3>
+                      <h3 class="mb-30" style="text-align: center;">Create an Account</h3>
                     </div>
                     <p class="mb-50 font-sm">
                       Your personal data will be used to support your experience throughout this website, to manage
-                      access to your account, and for other purposes described in our privacy policy
+                      access to your account, and for other purposes about a described in our privacy policy
                     </p>
-                    <form action="/register" method="post" onsubmit="return userRegisterValidation()">
+                    <form action="/send-otp" method="post" onsubmit="return userRegisterValidation()">
                       <!-- <form method="post" onsubmit="return handleFormSubmission()"> -->
                       <% if (message) { %>
                         <div id="successMessage" class="alert alert-success text-center mt-5" role="alert">
@@ -61,97 +61,14 @@
                                   id="confirmPassword">
                                 <small style="color: red;" id="confirmPasswordError"></small>
                               </div>
-                              <!-- <form action="/send-otp" method="post"> -->
-                              <div class="form-group">
-                                <div id="emailErrorMessage" class="text-danger"></div>
-                                <!-- <button class="btn btn-success" id="otpbtn" style="margin-bottom: 15px;"><button type="submit" class="btn btn-fill-out btn-block hover-up">Send OTP</button> -->
-                                <button id="otpbtn" style="margin-bottom: 15px;"
-                                  class="btn btn-fill-out btn-block hover-up">Send OTP</button>
-                                <input type="text" name="otp" placeholder="Enter OTP" id="otp">
-                                <small id="otpError"></small>
-                              </div>
-                              <!-- </form> -->
 
-                              <!-- <div class="login_footer form-group">
-                                            <div class="chek-form">
-                                                <div class="custome-checkbox">
-                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox12" value="">
-                                                    <label class="form-check-label" for="exampleCheckbox12"><span>I agree to terms &amp; Policy.</span></label>
-                                                </div>
-                                            </div>
-
-                                            <a href="page-privacy-policy.html"><i class="fi-rs-book-alt mr-5 text-muted"></i>Learn more</a>
-                                        </div> -->
-                              <!-- <% if (message) { %>
-                                            <div id="successMessage" class="alert alert-success text-center mt-5" role="alert">
-                                              <%= message %>
-                                            </div>
-                                          <% } %>
-                                          
-                                          <% if (errMessage) { %>
-                                            <div id="errorMessage" class="alert alert-danger text-center mt-5" role="alert">
-                                              <%= errMessage %>
-                                            </div>
-                                          <% } %>                                        -->
-                              <div class="form-group">
-                                <button type="submit" class="btn btn-fill-out btn-block hover-up">Submit &amp;
+                              <div class="form-group"  style="text-align: center;">
+                                <button type="submit" class="btn btn-fill-out btn-block hover-up" style="width: 470px; background-color:rgb(16, 16, 16); color: #ceb97a;">Submit &amp;
                                   Register</button>
-                              </div>
-                              <!--<div class="input-box button">
-                                            <button type="submit"  class="btn btn-fill-out btn-block hover-up">Sign Up</button>
-                                        </div> -->
+                              </div> 
 
                     </form>
-                    <!-- <form action="" method="POST" class="pt-3" onsubmit="return validate();return removeMessages()">
-
-                                        <div class="form-group">
-                                          <input type="text" class="form-control" style="margin-bottom: 20px" placeholder="name" name="name" id="name">
-                                          <p id="nameError"></p>
-                                        </div>
-                                
-                                        <div class="form-group">
-                                          <input type="tell" class="form-control" style="margin-bottom: 20px" placeholder="Mobile" name="mobile" id="mobile">
-                                          <p id="mobileError"></p>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                          <input type="email" class="form-control" style="margin-bottom: 20px" placeholder="email" name="email" id="email">
-                                          <p id="emailError"></p>
-                                        </div>
-                                
-                                        <div class="form-group">
-                                          <input type="password" class="form-control" name="password" id="password" placeholder="password">
-                                          <p id="passwordError"></p>
-                                        </div>
-                                
-                                        <div class="input-box button">
-                                          <button type="submit" class="btn btn-success rounded-pill">Sign Up</button>
-                                        </div>
-                                
-                                        {{#if message}}
-                                        <div id="successMessage" class="alert alert-success text-center mt-5" role="alert">
-                                          {{{message}}}
-                                        </div>
-                                        {{/if}}
-                                
-                                        {{#if errMessage}}
-                                        <div id="errorMessage" class="alert alert-danger text-center mt-5" role="alert">
-                                          {{{errMessage}}}
-                                        </div>
-                                        {{/if}}
-                                        
-                                        <div class="text">
-                                          <small>Already have an account? <a href="/login">Login now</a></small>
-                                        </div>
-                                
-                                      </form> -->
-                    <!-- <div class="divider-text-center mt-15 mb-15">
-                                        <span> or</span>
-                                    </div> -->
-                    <!-- <ul class="btn-login list_none text-center mb-15">
-                                        <li><a href="#" class="btn btn-facebook hover-up mb-lg-0 mb-sm-4">Login With Facebook</a></li>
-                                        <li><a href="#" class="btn btn-google hover-up">Login With Google</a></li>
-                                    </ul> -->
+                    
                     <div class="text-muted text-center">Already have an account? <a href="/login">Sign in now</a></div>
                   </div>
                 </div>
@@ -167,64 +84,4 @@
 
   <%-include("footer")-%>
 
-    <script>
-      $(document).ready(function () {
-        let otpSent = false; // Initialize the flag to track OTP sent status
-
-        $('#otpbtn').click(function (event) {
-          event.preventDefault(); // Prevent the default click behavior (e.g., for anchor tags)
-
-          // Check if OTP has been sent previously
-          // if (otpSent) {
-          //     // alert("Resend OTP");
-          //     return; // Don't proceed further if OTP has been sent
-          // }
-
-          // Get the form data and send it via AJAX
-          const email = document.getElementById('email').value;
-          const sendOtpButton = $('#otpbtn');
-          const emailErrorMessage = $('#emailErrorMessage'); // Get the error message element
-
-
-          // Disable the button to prevent multiple clicks while waiting for the OTP        
-          if (email === "") {
-            emailErrorMessage.text('Email is missing'); // Set the error message text
-            setTimeout(() => {
-              emailErrorMessage.text('');
-            }, 5000);
-            return; // Don't proceed further if email is empty
-          } else {
-            // emailErrorMessage.text('');
-            sendOtpButton.prop('disabled', true);
-
-            $.ajax({
-              url: '/send-otp',
-              method: 'post',
-              data: { mail: email },
-              success: function (response) {
-                // Handle the success response
-                console.log('Success:', response);
-                otpSent = true; // Set the flag to indicate OTP has been sent
-              },
-              error: function (xhr, textStatus, errorThrown) {
-                // Handle any errors
-                console.error('Error:', errorThrown);
-                sendOtpButton.prop('disabled', false); // Re-enable the button on error
-              }
-            });
-
-
-            // Change the button text to "Resend OTP" immediately after OTP is sent
-            sendOtpButton.text('Resend OTP');
-
-            // Re-enable the button after a delay (e.g., 3 seconds)
-            setTimeout(function () {
-              sendOtpButton.prop('disabled', false);
-            }, 1 * 60 * 1000); // 1 minute in milliseconds
-          }
-        });
-
-      });
-
-
-    </script>
+    

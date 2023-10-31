@@ -37,6 +37,7 @@ userRouter.get('/',auth.isLogout, userController.loadHome);
 userRouter.get('/register',auth.isLogout,userController.loadRegister);
 userRouter.post('/register',userController.insertUser);
 userRouter.post('/send-otp',auth.isLogout,userController.sendOtp)
+userRouter.get('/resend-otp',userController.resendOtp)
 // login user
 userRouter.get('/login',auth.isLogout,userController.loadLogin);
 userRouter.post('/login',auth.isLogout,userController.verfiyUser);
@@ -45,6 +46,7 @@ userRouter.get('/home',auth.isLogin,userController.loadHome);
 userRouter.get('/logout',auth.isLogin,userController.userLogout);
 userRouter.get('/productDetails',blocked.checkBocked,userController.loadProductDetails);
 userRouter.get('/shop',blocked.checkBocked,userController.viewShop);
+userRouter.post('/search',userController.searchProducts);
 
 
 //userAccount

@@ -1,5 +1,10 @@
 
 <%-include("../userAccount/header.ejs")-%>
+<!-- Template CSS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <section class="user-dashboard page-wrapper">
 	<div class="container">
@@ -50,13 +55,13 @@
 											<span class="badge rounded-pill" style="background-color: purple;">Dispatched</span>
 										<% } %>
 									</td>
-									<td><a href="/viewOrder?orderId=<%=order._id%>" class="btn btn-default">View</a></td>
+									<td><a href="/viewOrder?orderId=<%=order._id%>" class="">View</a></td>
 									<td>
 										<% if (order.status === 'Placed' || order.status === 'Dispatched') { %>
-											<a href="/cancelOrder?orderId=<%=order._id %>">Cancel</a>
-										<% } else if(order.status === 'Delivered') { %>
-											<a href="/returnOrder?orderId=<%= order._id %>">Return</a>
-										<% } %>
+                                            <a href="javascript:void(0);" onclick="confirmAction('cancel', '<%= order._id %>')">Cancel</a>
+                                        <% } else if (order.status === 'Delivered') { %>
+                                            <a href="javascript:void(0);" onclick="confirmAction('return', '<%= order._id %>')">Return</a>
+                                        <% } %>
 										
 									</td>
 								</tr>
@@ -73,6 +78,28 @@
     $(document).ready( function () {
     $('#myTable').DataTable();
 } );
+</script>
+<script>
+    function confirmAction(action, orderId) {
+        let actionText = action === 'cancel' ? 'cancel' : 'request a return';
+        Swal.fire({
+            title: `Confirm ${actionText}`,
+            text: `Are you sure you want to ${actionText} this order?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // User confirmed, perform the action here
+                if (action === 'cancel') {
+                    window.location.href = "/cancelOrder?orderId=" + orderId;
+                } else {
+                    window.location.href = "/returnOrder?orderId=" + orderId;
+                }
+            }
+        });
+    }
 </script>
 
 

@@ -27,7 +27,7 @@ const categories = async (req, res) => {
           name: categoryName,
        });
  
-       const existingCategory = await Category.findOne({ name: categoryName });
+       const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${categoryName}$`, 'i') } });
  
        if (existingCategory) {
           res.redirect(`/admin/categories?err=${true}&msg=category name already exists`);

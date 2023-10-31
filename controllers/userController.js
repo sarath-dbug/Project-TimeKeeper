@@ -28,22 +28,17 @@ const loadRegister = async (req, res) => {
 const insertUser = async (req, res) => {
    const isAuthenticated = false
    try {
-      const email = req.body.email
-      const checkData = await User.findOne({ email: email });
-      console.log('data', checkData);
-
-      if (checkData) {
-         res.render('signup', { errMessage: 'User already founded', message: '', isAuthenticated });
-      } else {
+          
          if (req.body.otp !== generatedOTP) {
-            res.render('signup', { errMessage: 'Invalid OTP', message: '', isAuthenticated })
+            res.render('otpVerify', { errMessage: 'Invalid OTP', message: '', isAuthenticated })
          } else {
+           
             const user = new User({
-               firstName: req.body.firstName,
-               lastName: req.body.lastName,
-               email: req.body.email,
-               password: req.body.password,
-               mobile: req.body.mobile
+               firstName:  req.session.userData.firstName,
+               lastName:  req.session.userData.lastName,
+               email:  req.session.userData.email,
+               password: req.session.userData.password,
+               mobile:  req.session.userData.mobile
             });
 
             const userData = await user.save();
@@ -52,9 +47,7 @@ const insertUser = async (req, res) => {
                res.render('signup', { message: 'Registration Successfull Go and Login', errMessage: '', isAuthenticated })
             }
          }
-
-      }
-
+      
    } catch (error) {
       console.log(error.message)
    }
@@ -65,7 +58,17 @@ const insertUser = async (req, res) => {
 const sendOtp = async (req, res) => {
    console.log("OTP Send");
    try {
-      const email = req.body.mail;
+
+      const email = req.body.email
+      const checkData = await User.findOne({ email: email });
+      if (checkData) {
+         res.render('signup', { errMessage: 'User already founded', message: '', isAuthenticated });
+      } else { 
+             req.session.userData = req.body ;
+            console.log(req.session.userData);
+         }
+
+     
       const my_Mail = "sarathpattambi2013@gmail.com";
       const my_password = "igqd kjgu mxfr noxm";
 
@@ -116,10 +119,66 @@ const sendOtp = async (req, res) => {
       }
       sendOTP();
 
+      const isAuthenticated = false
+      res.render('otpVerify', { message: '', errMessage: '', isAuthenticated})
    } catch (error) {
       console.log(error.message);
    }
 }
+
+
+
+
+const resendOtp = async (req, res) => {
+   console.log("OTP Send");
+   try {
+      const email = req.session.userData.email
+      const my_Mail = "sarathpattambi2013@gmail.com";
+      const my_password = "igqd kjgu mxfr noxm";
+      const transporter = nodemailer.createTransport({
+         host: 'smtp.gmail.com',
+         port: 587,
+         auth: {
+            user: my_Mail,
+            pass: my_password
+         }
+      });     
+      // Function to generate and send OTP
+      function sendOTP() {
+         generatedOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+    
+         req.session.generatedOTP = generatedOTP;
+       
+         const mailOptions = {
+            from: my_Mail,
+            to: email,
+            subject: 'Your OTP Code',
+            text: `Your OTP code is: ${generatedOTP}`,
+         };    
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.error('Error sending OTP:', error);
+            } else {
+               console.log('OTP sent:', info.response);
+            }
+         });
+         // Invalidate the OTP after 1 minute
+         setTimeout(() => {
+            generatedOTP = null;
+            console.log("OTP invalidated after 1 minute");
+         }, 1 * 60 * 1000);
+         // }
+      }
+      sendOTP();
+
+      const isAuthenticated = false
+      res.render('otpVerify', { message: '', errMessage: '', isAuthenticated})
+   } catch (error) {
+      console.log(error.message);
+   }
+}
+
+
 
 // home
 const loadHome = async (req, res) => {
@@ -133,6 +192,56 @@ const loadHome = async (req, res) => {
       res.render('home', { products: productData, isAuthenticated });
    }
 
+}
+
+
+// login user
+
+const loadLogin = async (req, res) => {
+   const isAuthenticated = false
+   try {
+      res.render('login', { message: '', errMessage: "", isAuthenticated });
+   } catch (error) {
+      console.log(error.message);
+   }
+}
+
+const verfiyUser = async (req, res) => {
+   const isAuthenticated = false
+   try {
+      const email = req.body.email;
+      const password = req.body.password;
+      const productData = await Product.find({})
+
+      const userData = await User.findOne({ email: email });
+      if (userData) {
+         if (userData.is_blocked === false) {
+            if (userData.password === password) {
+               const isAuthenticated = true
+               req.session.user_id = userData._id
+               res.render('home', { products: productData, isAuthenticated });
+            } else {
+               res.render('login', { message: '', errMessage: "Invalid email or password", isAuthenticated });
+            }
+         } else {
+            res.render('login', { message: '', errMessage: 'Your account is currently blocked', isAuthenticated })
+         }
+      } else {
+         res.render('login', { message: '', errMessage: 'Invalid email or password', isAuthenticated })
+      }
+   } catch (error) {
+      console.log(error.message)
+   }
+}
+
+
+const userLogout = async (req, res) => {
+   try {
+      req.session.user_id = null;
+      res.redirect('/');
+   } catch (error) {
+      console.log(error.message);
+   }
 }
 
 
@@ -208,55 +317,6 @@ const viewShop = async (req,res)=>{
 }
 
 
-// login user
-
-const loadLogin = async (req, res) => {
-   const isAuthenticated = false
-   try {
-      res.render('login', { message: '', errMessage: "", isAuthenticated });
-   } catch (error) {
-      console.log(error.message);
-   }
-}
-
-const verfiyUser = async (req, res) => {
-   const isAuthenticated = false
-   try {
-      const email = req.body.email;
-      const password = req.body.password;
-      const productData = await Product.find({})
-
-      const userData = await User.findOne({ email: email });
-      if (userData) {
-         if (userData.is_blocked === false) {
-            if (userData.password === password) {
-               const isAuthenticated = true
-               req.session.user_id = userData._id
-               res.render('home', { products: productData, isAuthenticated });
-            } else {
-               res.render('login', { message: '', errMessage: "Invalid email or password", isAuthenticated });
-            }
-         } else {
-            res.render('login', { message: '', errMessage: 'Your account is currently blocked', isAuthenticated })
-         }
-      } else {
-         res.render('login', { message: '', errMessage: 'Invalid email or password', isAuthenticated })
-      }
-   } catch (error) {
-      console.log(error.message)
-   }
-}
-
-
-const userLogout = async (req, res) => {
-   try {
-      req.session.user_id = null;
-      res.redirect('/');
-   } catch (error) {
-      console.log(error.message);
-   }
-}
-
 
 const loadProductDetails = async (req, res) => {
 
@@ -281,6 +341,26 @@ const loadProductDetails = async (req, res) => {
 
 
 
+const searchProducts = async (req, res) => {
+   try {
+       let regex = req.body.regex;
+       console.log("search result", regex);
+       const products = await Product.find({
+           $or: [
+               { product_name: { $regex: regex, $options: "i" } },
+               { category: { $regex: regex, $options: "i" } },
+               { brand: { $regex: regex, $options: "i" } }
+           ]
+       });
+       res.json({ products });
+   } catch (error) {
+       console.log(error.message);
+   }
+};
+
+
+
+
 
 
 
@@ -297,4 +377,6 @@ module.exports = {
    sendOtp,
    loadProductDetails,
    viewShop,
+   searchProducts,
+   resendOtp
 }

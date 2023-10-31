@@ -113,14 +113,16 @@ const searchUser = async (req, res) => {
 
 
 //orderList -------
+
 const orderList = async (req, res) => {
    try {
-      const Orders = await Order.find();
-      res.render("OrderList", { userOrder: Orders });
+      const orders = await Order.find().sort({ createdAt: -1 });
+      res.render("OrderList", { userOrder: orders });
    } catch (error) {
       console.log(error);
    }
 }
+
 
 const orderDetails = async (req, res) => {
    try {
