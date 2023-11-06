@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true
    },
+   referCode:{
+      type: String,
+      required: true,
+   },
    mobile: {
       type: Number,
       required: true,

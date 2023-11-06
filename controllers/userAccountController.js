@@ -6,6 +6,7 @@ const Coupon = require('../models/couponModel')
 const moment = require('moment');
 
 
+
 //user Account
 const userAccount = async (req, res) => {
    const userId = req.session.user_id
@@ -243,6 +244,32 @@ const cancelOrder = async (req, res) => {
       if (!order) {
          return res.status(404).json({ message: "Order not found" });
       }
+
+      //insert amt wallet
+      if ((order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET") && order.total > 0) {
+         // Check if a wallet exists for the user
+         const wallet = await Wallet.findOne({ userId: order.user }).exec();
+
+         if (wallet) {
+            // Wallet exists, increment the wallet amount
+            const updatedWallet = await Wallet.findOneAndUpdate(
+               { userId: order.user },
+               { $inc: { walletAmount: order.total } },
+               { new: true }
+            ).exec();
+
+         } else {
+            // Wallet doesn't exist, create a new wallet with the order value as the initial amount
+            const newWallet = new Wallet({
+               userId: order.user,
+               walletAmount: order.total,
+            });
+
+            const createdWallet = await newWallet.save();
+            console.log(createdWallet, "created new wallet with order value");
+         }
+      }
+
 
       // Update the order status to "Order Cancelled"
       order.status = "Order Cancelled";

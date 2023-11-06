@@ -92,6 +92,7 @@ function userRegisterValidation() {
          emailError.innerHTML = ''; // Clear error message
       }
    }
+   
 
    // Function to validate password
    function validatePassword() {
@@ -138,6 +139,8 @@ function userRegisterValidation() {
       }
    }
 
+
+
    // Validate fields one by one
    validateFirstName();
    if (isValid) validateLastName();
@@ -146,6 +149,7 @@ function userRegisterValidation() {
    if (isValid) validatePassword();
    if (isValid) validateConfirmPassword();
    if (isValid) validateOTP();
+  
 
    return isValid;
 }

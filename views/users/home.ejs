@@ -11,7 +11,7 @@
             <div class="hero-slider-1 style-2 dot-style-1 dot-style-1-position-1">
 
 
-                <!-- sample added slider -->
+                <!-- static banner -->
                 <div style="position: relative;">
                     <img class="animated" src="assets/imgs/slider/slide10.webp" alt="" style="width: 100%;">
                     <div class="hero-slider-content-2"
@@ -19,89 +19,29 @@
                         <h5 class="animated" style="color: whitesmoke">Upcoming Offer</h5>
                         <h3 class="animated fw-900" style="color: whitesmoke">Big Deals From</h3>
                         <h2 class="animated fw-900 text-brand">Manufacturer</h2>
-                        <p class="animated">Headphone, Gaming Laptop, PC and more...</p>
+                        <p class="animated">Men watches, Women's watches, Vintage and more...</p>
                         <a class="animated btn btn-brush btn-brush-3" href="/shop"
                             style="color: whitesmoke"> Shop Now
                         </a>
                     </div>
                 </div>
+
+                <%Banners.forEach(banner=>{%>
+                    <%if(!banner.unlist){%>
                 <div style="position: relative;">
-                    <img class="animated" src="assets/imgs/slider/slide2.webp" alt="" style="width: 100%;">
+                    <img class="animated" src="/bannerImages/<%= banner.image %>" alt="" style="width: 100%;">
                     <div class="hero-slider-content-2"
-                        style="position: absolute; top: 40%; left: 17%; transform: translate(-50%, -50%); padding: 10px; font-size: 20px;">
-                        <h5 class="animated">Upcoming Offer</h5>
-                        <h3 class="animated fw-900">Big Deals From</h3>
+                        style="position: absolute; top: 40%; left: 19%; transform: translate(-50%, -50%); padding: 10px; font-size: 20px;">
+                        <h5 class="animated"><%= banner.name %></h5>
+                        <h3 class="animated fw-900"><%= banner.discription%></h3>
                         <h2 class="" style="color: #ceb97a;">Manufacturer</h2>
-                        <p class="animated">Headphone, Gaming Laptop, PC and more...</p>
+                        <p class="animated">Men watches, Women's watches, Vintage and more...</p>
                         <a class="animated btn btn-brush btn-brush-3" href="/shop"> Shop Now
                         </a>
                     </div>
                 </div>
-                <div style="position: relative;">
-                    <img class="animated" src="assets/imgs/slider/slide6.webp" alt="" style="width: 100%;">
-                    <div class="hero-slider-content-2"
-                        style="position: absolute; top: 40%; left: 20%; transform: translate(-50%, -50%); padding: 10px; font-size: 20px;">
-                        <h5 class="animated">Upcoming Offer</h5>
-                        <h3 class="animated fw-900" style="color: whitesmoke">Big Deals From</h3>
-                        <h2 class="" style="color: #ceb97a;">Manufacturer</h2>
-                        <p class="animated">Headphone, Gaming Laptop, PC and more...</p>
-                        <a class="animated btn btn-brush btn-brush-3" href="/shop"
-                            style="color: white"> Shop Now
-                        </a>
-                    </div>
-                </div>
-                <!-- end -->
-
-                <!-- evara banner -->
-                <!-- <div class="single-hero-slider single-animation-wrap">
-                    <div class="container">
-                        <div class="slider-1-height-2 slider-animated-1">
-                            <div class="hero-slider-content-2">
-                                <h5 class="animated">Trade-In Offer</h5>
-                                <h3 class="animated fw-900">Supper Value Deals</h3>
-                                <h3 class="animated fw-900 text-brand">On All Products</h3>
-                                <p class="animated">Save more with coupons & up to 70% off</p>
-                                <a class="animated btn btn-brush btn-brush-3" href="shop-product-right.html"> Shop Now </a>
-                            </div>
-                            <div class="single-slider-img single-slider-img-1">
-                                <img class="animated" src="assets/imgs/slider/slider-3.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-hero-slider single-animation-wrap">
-                    <div class="container">
-                        <div class="slider-1-height-2 slider-animated-1">
-                            <div class="hero-slider-content-2">
-                                <h5 class="animated">Tech Promotions</h5>
-                                <h3 class="animated fw-900">Tech Trending</h3>
-                                <h3 class="animated fw-900 text-brand">Great Collection</h3>
-                                <p class="animated">Save more with coupons & up to 20% off</p>
-                                <a class="animated btn btn-brush btn-brush-1" href="shop-product-right.html"> Shop Now </a>
-                            </div>
-                            <div class="single-slider-img single-slider-img-1">
-                                <img class="animated" src="assets/imgs/slider/slider-1.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                 <div class="single-hero-slider single-animation-wrap">
-                    <div class="container">
-                        <div class="slider-1-height-2 slider-animated-1">
-                            <div class="hero-slider-content-2">
-                                <h5 class="animated">Upcoming Offer</h5>
-                                <h3 class="animated fw-900">Big Deals From</h3>
-                                <h2 class="animated fw-900 text-brand">Manufacturer</h2>
-                                <p class="animated">Headphone, Gaming Laptop, PC and more...</p>
-                                <a class="animated btn btn-brush btn-brush-3" href="shop-product-right.html"> Shop Now </a>
-                            </div>
-                            <div class="single-slider-img single-slider-img-1">
-                                <img class="animated" src="assets/imgs/slider/slider-2.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- end -->
+                <% }  %>
+                <%})%>
 
             </div>
             <div class="slider-arrow hero-slider-1-arrow"></div>

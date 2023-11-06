@@ -2,8 +2,7 @@ const admin = require('../models/adminModel');
 const User = require('../models/usermodel')
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
-const Coupon = require('../models/couponModel')
-const couponHelpers = require('../helpers/couponHelper')
+const Refer = require('../models/referralModel')
 const { ObjectId } = require('mongoose').Types;
 
 
@@ -163,7 +162,7 @@ const acceptReturn = async (req, res) => {
       ).exec();
 
       // Check if the payment method is online and the order value is greater than 0
-      if ((order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET") && order.total > 0) {
+      if ((order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET" || order.paymentMethod === "COD") && order.total > 0) {
          // Check if a wallet exists for the user
          const wallet = await Wallet.findOne({ userId: order.user }).exec();
 
@@ -215,6 +214,62 @@ const DeclineReturn = async (req, res) => {
 };
 
 
+const loadReferralOffer = async (req, res) => {
+   try {
+      const userData = await User.find({})
+      const referralData = await Refer.find({})
+      console.log(referralData + "*********");
+
+      res.render('referralOffer', { userData, refer: referralData })
+
+   } catch (error) {
+      console.log(error.message)
+   }
+}
+
+const editReferral = async (req, res) => {
+   try {
+
+      const referId = req.query.referId;
+
+      const referData = await Refer.findOne({ _id: referId })
+      console.log(referData + "**********");
+      const userData = await User.find({})
+
+      const referralData = {
+         referrer: req.body.referrer,
+         referee: req.body.referee
+      }
+
+      console.log(referralData + "**********");
+
+      if (referData) {
+         const couponAdd = await Refer.findByIdAndUpdate(
+            { _id: referId },
+            { $set: referralData }
+         );
+      } else {
+
+         const newreferral = new Refer({
+            referrer: 100,
+            referee: 100
+         });
+
+         const createdReferal = await newreferral.save();
+
+      }
+
+      const referraldata = await Refer.find()
+
+
+      res.render('referralOffer', { refer: referraldata, userData })
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+
+
 
 
 
@@ -232,5 +287,7 @@ module.exports = {
    updateStatus,
    DeclineReturn,
    acceptReturn,
-
+   loadReferralOffer,
+   editReferral,
+   
 }

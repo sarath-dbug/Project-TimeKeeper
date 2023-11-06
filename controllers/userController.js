@@ -3,7 +3,9 @@ const otpGenerator = require('otp-generator');
 const nodemailer = require('nodemailer');
 const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
-const wishListHelper = require("../helpers/wishListHelper");
+const Refer = require('../models/referralModel')
+const Wallet = require('../models/walletModel')
+const Banner = require("../models/bannerModel");
 const wishListModel = require('../models/wishListModel')
 const { ObjectId } = require("mongodb");
 
@@ -26,32 +28,72 @@ const loadRegister = async (req, res) => {
 }
 
 const insertUser = async (req, res) => {
-   const isAuthenticated = false
+   const isAuthenticated = false;
    try {
-          
-         if (req.body.otp !== generatedOTP) {
-            res.render('otpVerify', { errMessage: 'Invalid OTP', message: '', isAuthenticated })
-         } else {
-           
-            const user = new User({
-               firstName:  req.session.userData.firstName,
-               lastName:  req.session.userData.lastName,
-               email:  req.session.userData.email,
-               password: req.session.userData.password,
-               mobile:  req.session.userData.mobile
+      if (req.body.otp !== generatedOTP) {
+         return res.render('otpVerify', { errMessage: 'Invalid OTP', message: '', isAuthenticated });
+      }
+
+      const userData = new User({
+         firstName: req.session.userData.firstName,
+         lastName: req.session.userData.lastName,
+         email: req.session.userData.email,
+         password: req.session.userData.password,
+         mobile: req.session.userData.mobile,
+         referCode: generatedOTP
+      });
+
+      const savedUserData = await userData.save();
+
+      if (savedUserData) {
+         // Referer Update
+         const userRefer = await User.findOne({ referCode: req.session.userData.refer });
+
+         if (userRefer) {
+            // Initialize variables for referrer and referee amounts
+            const referAmt = await Refer.find();
+            let totalReferrerAmount = 0;
+            let totalRefereeAmount = 0;
+
+            referAmt.forEach((entry) => {
+               totalReferrerAmount += entry.referrer;
+               totalRefereeAmount += entry.referee;
             });
 
-            const userData = await user.save();
-            console.log(userData);
-            if (userData) {
-               res.render('signup', { message: 'Registration Successfull Go and Login', errMessage: '', isAuthenticated })
+            // Update the referrer's wallet
+            const referrerWallet = await Wallet.findOne({ userId: userRefer._id });
+            if (referrerWallet) {
+               referrerWallet.walletAmount += totalReferrerAmount;
+               await referrerWallet.save();
+            } else {
+               const newWallet = new Wallet({
+                  userId: userRefer._id,
+                  walletAmount: totalReferrerAmount,
+               });
+               await newWallet.save();
+            }
+
+            // Referee Update
+            const userReferee = await User.findOne({ email: req.session.userData.email });
+
+            if (userReferee) {
+               const refereeWallet = new Wallet({
+                  userId: userReferee._id,
+                  walletAmount: totalRefereeAmount,
+               });
+               await refereeWallet.save();
             }
          }
-      
+
+         return res.render('signup', { message: 'Registration Successful. Go and Login', errMessage: '', isAuthenticated });
+      }
    } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
+      return res.render('signup', { errMessage: 'Error during registration', message: '', isAuthenticated });
    }
-}
+};
+
+
 
 
 
@@ -63,12 +105,12 @@ const sendOtp = async (req, res) => {
       const checkData = await User.findOne({ email: email });
       if (checkData) {
          res.render('signup', { errMessage: 'User already founded', message: '', isAuthenticated });
-      } else { 
-             req.session.userData = req.body ;
-            console.log(req.session.userData);
-         }
+      } else {
+         req.session.userData = req.body;
+         console.log(req.session.userData);
+      }
 
-     
+
       const my_Mail = "sarathpattambi2013@gmail.com";
       const my_password = "igqd kjgu mxfr noxm";
 
@@ -120,7 +162,7 @@ const sendOtp = async (req, res) => {
       sendOTP();
 
       const isAuthenticated = false
-      res.render('otpVerify', { message: '', errMessage: '', isAuthenticated})
+      res.render('otpVerify', { message: '', errMessage: '', isAuthenticated })
    } catch (error) {
       console.log(error.message);
    }
@@ -142,19 +184,19 @@ const resendOtp = async (req, res) => {
             user: my_Mail,
             pass: my_password
          }
-      });     
+      });
       // Function to generate and send OTP
       function sendOTP() {
          generatedOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
-    
+
          req.session.generatedOTP = generatedOTP;
-       
+
          const mailOptions = {
             from: my_Mail,
             to: email,
             subject: 'Your OTP Code',
             text: `Your OTP code is: ${generatedOTP}`,
-         };    
+         };
          transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                console.error('Error sending OTP:', error);
@@ -172,7 +214,7 @@ const resendOtp = async (req, res) => {
       sendOTP();
 
       const isAuthenticated = false
-      res.render('otpVerify', { message: '', errMessage: '', isAuthenticated})
+      res.render('otpVerify', { message: '', errMessage: '', isAuthenticated })
    } catch (error) {
       console.log(error.message);
    }
@@ -185,11 +227,15 @@ const loadHome = async (req, res) => {
    if (req.session.user_id) {
       const isAuthenticated = true
       const productData = await Product.find({})
-      res.render('home', { products: productData, isAuthenticated });
+      const bannerData = await Banner.find();
+
+      res.render('home', { products: productData,Banners:bannerData, isAuthenticated });
    } else {
       const isAuthenticated = false
       const productData = await Product.find({})
-      res.render('home', { products: productData, isAuthenticated });
+      const bannerData = await Banner.find();
+
+      res.render('home', { products: productData,Banners:bannerData, isAuthenticated });
    }
 
 }
@@ -212,6 +258,7 @@ const verfiyUser = async (req, res) => {
       const email = req.body.email;
       const password = req.body.password;
       const productData = await Product.find({})
+      const bannerData = await Banner.find();
 
       const userData = await User.findOne({ email: email });
       if (userData) {
@@ -219,7 +266,7 @@ const verfiyUser = async (req, res) => {
             if (userData.password === password) {
                const isAuthenticated = true
                req.session.user_id = userData._id
-               res.render('home', { products: productData, isAuthenticated });
+               res.render('home', { products: productData,Banners:bannerData, isAuthenticated });
             } else {
                res.render('login', { message: '', errMessage: "Invalid email or password", isAuthenticated });
             }
@@ -246,12 +293,12 @@ const userLogout = async (req, res) => {
 
 
 //shop
-const viewShop = async (req,res)=>{
+const viewShop = async (req, res) => {
    try {
 
-      var search='';
-      if(req.query.search){
-          search=req.query.search
+      var search = '';
+      if (req.query.search) {
+         search = req.query.search
       }
 
       const category = await Category.find()
@@ -261,57 +308,57 @@ const viewShop = async (req,res)=>{
 
       let products;
       if (req.query.category) {
-        products = await Product.find({ category: req.query.category })
-          .skip((currentPage - 1) * perPage)
-          .limit(perPage);
+         products = await Product.find({ category: req.query.category })
+            .skip((currentPage - 1) * perPage)
+            .limit(perPage);
       } else {
-        products = await Product.find({
-       
-          $or:[
-            {name:{$regex:'.*'+search+'.*'}},
-            {category:{$regex:'.*'+search+'.*'}}
-          ]
-        })
-          .skip((currentPage - 1) * perPage)
-          .limit(perPage);
+         products = await Product.find({
+
+            $or: [
+               { name: { $regex: '.*' + search + '.*' } },
+               { category: { $regex: '.*' + search + '.*' } }
+            ]
+         })
+            .skip((currentPage - 1) * perPage)
+            .limit(perPage);
       }
 
       // Sorting
       if (req.query.sort === 'lowToHigh') {
          products.sort((a, b) => a.sales_price - b.sales_price);
-       } else if (req.query.sort === 'highToLow') {
+      } else if (req.query.sort === 'highToLow') {
          products.sort((a, b) => b.sales_price - a.sales_price);
-       }
+      }
 
-       const totalProducts = await Product.countDocuments();
-       const totalPages = Math.ceil(totalProducts / perPage);
+      const totalProducts = await Product.countDocuments();
+      const totalPages = Math.ceil(totalProducts / perPage);
 
       if (req.session.user_id) {
          const isAuthenticated = true
          res.render('shop', {
-         isAuthenticated,
-         user: userData,
-         category: category,
-         products: products,
-         req: req,
-         totalPages: totalPages,
-         currentPage: currentPage,
-         totalProducts: totalProducts,
-          });
+            isAuthenticated,
+            user: userData,
+            category: category,
+            products: products,
+            req: req,
+            totalPages: totalPages,
+            currentPage: currentPage,
+            totalProducts: totalProducts,
+         });
       } else {
-         const isAuthenticated =false
+         const isAuthenticated = false
          res.render('shop', {
-         isAuthenticated,
-         user: userData,
-         category: category,
-         products: products,
-         req: req,
-         totalPages: totalPages,
-         currentPage: currentPage,
-         totalProducts: totalProducts,
-          });
-       }
-     } catch (error) {
+            isAuthenticated,
+            user: userData,
+            category: category,
+            products: products,
+            req: req,
+            totalPages: totalPages,
+            currentPage: currentPage,
+            totalProducts: totalProducts,
+         });
+      }
+   } catch (error) {
       console.log(error);
    }
 }
@@ -343,18 +390,18 @@ const loadProductDetails = async (req, res) => {
 
 const searchProducts = async (req, res) => {
    try {
-       let regex = req.body.regex;
-       console.log("search result", regex);
-       const products = await Product.find({
-           $or: [
-               { product_name: { $regex: regex, $options: "i" } },
-               { category: { $regex: regex, $options: "i" } },
-               { brand: { $regex: regex, $options: "i" } }
-           ]
-       });
-       res.json({ products });
+      let regex = req.body.regex;
+      console.log("search result", regex);
+      const products = await Product.find({
+         $or: [
+            { product_name: { $regex: regex, $options: "i" } },
+            { category: { $regex: regex, $options: "i" } },
+            { brand: { $regex: regex, $options: "i" } }
+         ]
+      });
+      res.json({ products });
    } catch (error) {
-       console.log(error.message);
+      console.log(error.message);
    }
 };
 

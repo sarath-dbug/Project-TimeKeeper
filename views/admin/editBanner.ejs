@@ -1,0 +1,55 @@
+<%-include('header')%>
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Edit Banner</h2>
+               
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Basic</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/editBanner/<%= Banner.id %>" method="post" enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Banner Title</label>
+                            <input type="text"  name="name" id="name" placeholder="Type here" class="form-control" required value="<%= Banner.name %>" >
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Full description</label>
+                            <textarea placeholder="Type here"  name="discription" class="form-control" rows="4"  ><%= Banner.discription%> </textarea>
+                        </div>
+                        <div>
+                           
+                            <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Publish">
+                        </div>
+                    
+                </div>
+            </div> 
+        </div>
+        <div class="col-lg-3">
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h4>Media</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <img src="/bannerImages/<%=Banner.image%>" id="imgView1"  alt="">
+                        <input class="form-control" id="input1" type="file" name="image" onchange="viewImage1(event),viewImage(event, 1)">
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </form>
+    </div>
+</section> 
+
+<script>
+    function viewImage1(event) {
+        document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+<%-include('footer')%>

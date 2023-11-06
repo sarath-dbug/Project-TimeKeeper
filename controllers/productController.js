@@ -108,6 +108,7 @@ const product = async (req, res) => {
     }
  }
  
+
  const editProductAdd = async (req,res)=>{
     try {
        const productId = req.params.productId;

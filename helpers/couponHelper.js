@@ -81,6 +81,7 @@ module.exports = {
                     const activeCouponId = activeCoupon.couponId.toString();
     
                     const activeCouponData = await Coupon.findOne({ _id: new ObjectId(activeCouponId) });
+                  
     
                     const minimumOrderValue = parseInt(activeCouponData.minOrderValue);
     

@@ -28,10 +28,11 @@ const categoryController = require('../controllers/categoryController')
 const productController = require('../controllers/productController')
 const brandsController = require('../controllers/brandController')
 const couponController = require('../controllers/couponController')
+const bannerController = require('../controllers/bannerController')
 
 
 const auth = require('../middleware/adminAuth');
-const upload = require('../helpers/multer')
+const upload = require('../helpers/multer');
 
 adminRouter.get('/',auth.isLogout,adminController.loadLogin);
 adminRouter.post('/',adminController.verifyUser);
@@ -52,11 +53,11 @@ adminRouter.post('/toggleBlockStatusbrand/:brandId',auth.isLogin,brandsControlle
 
 //product
 adminRouter.get('/addProduct',auth.isLogin,productController.product);
-adminRouter.post('/addProduct',upload.array('images'),productController.addProduct);
+adminRouter.post('/addProduct',upload.productUpload.array('images'),productController.addProduct);   
 adminRouter.get('/productList',auth.isLogin,productController.productList) 
 adminRouter.post('/toggleBlockStatusProducts/:productId',auth.isLogin,productController.toggleBlockStatusProducts);
 adminRouter.get('/editProduct',auth.isLogin,productController.editProduct)
-adminRouter.post('/editProduct/:productId',upload.array('images'),auth.isLogin,productController.editProductAdd)
+adminRouter.post('/editProduct/:productId',upload.productUpload.array('images'),auth.isLogin,productController.editProductAdd)
 
 //user
 adminRouter.get('/userList',auth.isLogin,adminController.userList)
@@ -78,6 +79,22 @@ adminRouter.get('/couponList',couponController.couponList);
 adminRouter.get('/editCoupon',auth.isLogin,couponController.editCoupon)
 adminRouter.post('/editCoupon/:couponId',auth.isLogin,couponController.editCouponAdd)
 adminRouter.post('/toggleBlockStatusCoupons/:couponId',auth.isLogin,couponController.toggleBlockStatusCoupons)
+
+
+//Banner
+adminRouter.get('/addBanner',bannerController.loadAddBanner);
+adminRouter.post('/addBanner',upload.bannerUpload.single('image'),auth.isLogin,bannerController.addBanner);
+adminRouter.get('/bannerList',bannerController.bannerList);
+adminRouter.get('/listBanner',bannerController.listBanner);
+adminRouter.get('/unlistBanner',bannerController.unlistBanner);
+adminRouter.get('/editBanner',bannerController.loadEditBanner);
+adminRouter.post('/editBanner/:bannerId',upload.bannerUpload.single('image'),bannerController.editBanner);
+
+
+
+//referralOffer
+adminRouter.get('/referralOffer',auth.isLogin,adminController.loadReferralOffer);
+adminRouter.post('/editReferral',auth.isLogin,adminController.editReferral);
 
 
 
