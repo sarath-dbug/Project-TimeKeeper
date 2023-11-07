@@ -62,6 +62,7 @@ userRouter.get('/viewOrder',blocked.checkBocked,userAccountController.viewOrder)
 userRouter.get('/cancelOrder',blocked.checkBocked,auth.isLogin,userAccountController.cancelOrder);
 userRouter.get('/returnOrder',blocked.checkBocked,userAccountController.returnOrder);
 userRouter.get('/coupons',blocked.checkBocked,userAccountController.loadCoupon);
+userRouter.get('/wallet',blocked.checkBocked,userAccountController.loadWallet);
 
 
 //addTocart
@@ -85,6 +86,8 @@ userRouter.post('/apply-coupon-request',blocked.checkBocked,orderController.appl
 userRouter.get('/wishList',blocked.checkBocked,wishListController.loadWishList);
 userRouter.post('/addToWishlist',auth.isLogin,blocked.checkBocked,wishListController.addToWishlist);
 userRouter.delete('/removeProductWishlist',blocked.checkBocked,wishListController.removeProductWishlist);
+userRouter.post('/updatewishQuandity',auth.isLogin,blocked.checkBocked,wishListController.updatewishQuandity);
+
 
 
 

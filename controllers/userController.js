@@ -66,9 +66,16 @@ const insertUser = async (req, res) => {
                referrerWallet.walletAmount += totalReferrerAmount;
                await referrerWallet.save();
             } else {
+               const referrerTransaction = {
+                  status: "Referral", 
+                  amount: totalRefereeAmount, 
+                  debitOrCredit: "Credit" 
+                };
+
                const newWallet = new Wallet({
                   userId: userRefer._id,
                   walletAmount: totalReferrerAmount,
+                  transaction: [referrerTransaction]
                });
                await newWallet.save();
             }
@@ -77,9 +84,16 @@ const insertUser = async (req, res) => {
             const userReferee = await User.findOne({ email: req.session.userData.email });
 
             if (userReferee) {
+               const refereeTransaction = {
+                  status: "Referral", 
+                  amount: totalRefereeAmount, 
+                  debitOrCredit: "Credit" 
+                };
+
                const refereeWallet = new Wallet({
                   userId: userReferee._id,
                   walletAmount: totalRefereeAmount,
+                  transaction: [refereeTransaction]
                });
                await refereeWallet.save();
             }

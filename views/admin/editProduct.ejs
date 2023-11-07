@@ -98,13 +98,16 @@
                         </div>
                         <div class="input-upload">
                             <img src="productsImages/<%= products.image[0] %>" id="imgView1" alt="">
-                            <input class="form-control" id="input1" name="images" onchange="viewImage1(event,)" type="file">
+                            <input class="form-control" id="input1" name="images" onchange="viewImage1(event)" type="file">
                         </div>
-                        <div class="image-cropper" style="display:none;">
-                            <img src="" id="croppedImg1" alt="">
-                            <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
-                        </div>
+                        
+                        <div class="my-div">
+                            <a href="/admin/removeImage?productId=<%= products._id %>&imageIndex=0" class="btn btn-danger btn-sm mt-2 remove-button" data-image-filename="">
+                              <span style="font-size: 12px; padding: 5px 10px;">Remove</span>
+                            </a>
+                          </div>
                     </div> <!-- card end// -->
+
                     <div class="card mb-4">
                         <div class="card-header">
                             <h4>Media</h4>
@@ -112,12 +115,15 @@
                         <div class="input-upload">
                             <img src="/productsImages/<%= products.image[1] %>" id="imgView2" alt="">
                             <input class="form-control" id="input2" name="images" onchange="viewImage2(event)" type="file">
-                        </div>
-                        <div class="image-cropper" style="display:none;">
-                            <img src="" id="croppedImg2" alt="">
-                            <button type="button" id="saveButton2" class="btn-sm btn-primary">Save</button>
-                        </div>
+                        </div> 
+
+                        <div class="my-div">
+                            <a href="/admin/removeImage?productId=<%= products._id %>&imageIndex=1" class="btn btn-danger btn-sm mt-2 remove-button" data-image-filename="">
+                              <span style="font-size: 12px; padding: 5px 10px;">Remove</span>
+                            </a>
+                          </div>  
                     </div> <!-- card end// -->   
+
                     <div class="card mb-4">
                         <div class="card-header">
                             <h4>Media</h4>
@@ -126,11 +132,14 @@
                             <img src="/productsImages/<%= products.image[2] %>" id="imgView3" alt="">
                             <input class="form-control" id="input3" name="images" onchange="viewImage3(event)" type="file">
                         </div>
-                        <div class="image-cropper" style="display:none;">
-                            <img src="" id="croppedImg3" alt="">
-                            <button type="button" id="saveButton3" class="btn-sm btn-primary">Save</button>
-                        </div>
+
+                        <div class="my-div">
+                            <a href="/admin/removeImage?productId=<%= products._id %>&imageIndex=2" class="btn btn-danger btn-sm mt-2 remove-button" data-image-filename="">
+                              <span style="font-size: 12px; padding: 5px 10px;">Remove</span>
+                            </a>
+                          </div>
                     </div> <!-- card end// -->
+
                 </div>
             </div>
         </div>

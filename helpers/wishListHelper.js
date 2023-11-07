@@ -36,6 +36,8 @@ const getWishListProducts = async (userId) => {
           {
             $project: {
               productId: "$wishList.productId",
+              quantity: "$wishList.quantity",
+              subtotal: "$wishList.subtotal",
               createdAt: "$wishList.createdAt",
             },
           },
@@ -50,7 +52,9 @@ const getWishListProducts = async (userId) => {
           {
             $project: {
               productId: 1,
+              quantity: 1,
               createdAt: 1,
+              subtotal:1,
               wishListed: { $arrayElemAt: ["$wishListed", 0] },
             },
           },

@@ -17,7 +17,8 @@
                                 <tr class="main-heading">
                                     <th scope="col" colspan="2">Product</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Stock Status</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Subtotal</th>
                                     <th scope="col">Action</th>
                                     <th scope="col">Remove</th>
                                 </tr>
@@ -33,11 +34,15 @@
                                     </td>
                                     <td class="price" data-title="Price"><span><%=item.wishListed.sales_price%></span></td>
                                     <td class="text-center" data-title="Stock">
-                                        <%if(item.wishListed.stock>0){%>
-                                        <span class="color3 font-weight-bold">In Stock</span>
-                                        <%}else{%>
-                                            <span class="color3 font-weight-bold text-danger">out of stock</span>
-                                        <%}%>
+                                        <div class="detail-qty border radius m-auto" >
+                                            <a href="#" class="qty-down" onclick="changeQuantity('<%=item.productId%>',-1)"><i class="fi-rs-angle-small-down"></i></a>
+                                            <span class="qty-val"><%=item.quantity%></span>
+                                           
+                                            <a href="#" class="qty-up" onclick="changeQuantity('<%=item.productId%>',1)"><i class="fi-rs-angle-small-up"></i></a>
+                                        </div>
+                                    </td>
+                                    <td class="text-right" data-title="Cart">
+                                        <span>₹<span class="subtotal" id="subtotal-<%= item.productId %>"><%=item.subtotal%></span></span>
                                     </td>
                                     <td class="text-right" data-title="Cart">
                                         <button class="btn btn-sm" onclick="addToCart('<%=item.productId%>','<%=item.wishListed.stock%>')"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
@@ -65,6 +70,8 @@
         </div>
     </section>
 </main>
+
+
 <script>
     function addToCart(proId, stock) {
         if (stock <= 0) {
@@ -115,6 +122,7 @@
     }
     </script>
 
+
 <script>
       // remove from wishList ajax call
       function removeFromWishList(proId) {
@@ -141,6 +149,73 @@ $.ajax({
   }
 })
 }
+</script>
+
+
+<script>  
+    function changeQuantity(productId, quantityChange) {     
+        $.ajax({
+            type: 'POST',
+            url: '/updateWishQty',
+            data: {
+                productId: productId,
+                quantityChange: quantityChange
+            },
+            success: function (data) {
+                if (data.status) {
+                    // Update the quantity display
+                    const qtySpan = $(`span.qty-val[data-productid="${productId}"]`);
+                    const newQty = parseInt(qtySpan.text()) + quantityChange;
+                    qtySpan.text(newQty);
+                    // Update the subtotal display
+                    const price = parseFloat($(`td.price[data-productid="${productId}"] span`).text());
+                    const subtotal = (newQty * price).toFixed(2);
+                    $(`span#subtotal-${productId}`).text(subtotal);
+                    // Update the cart totals
+                    updateCartTotals();
+                    
+                    }
+                 
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    
+ }
+</script>
+
+<script>
+    function changeQuantity(productId, quantityChange) {     
+        $.ajax({
+            type: 'POST',
+            url: '/updatewishQuandity',
+            data: {
+                productId: productId,
+                quantityChange: quantityChange
+            },
+            success: function (data) {
+                if (data.status) {
+                    // Update the quantity display
+                    const qtySpan = $(`span.qty-val[data-productid="${productId}"]`);
+                    const newQty = parseInt(qtySpan.text()) + quantityChange;
+                    qtySpan.text(newQty);
+                    // Update the subtotal display
+                    const price = parseFloat($(`td.price[data-productid="${productId}"] span`).text());
+                    const subtotal = (newQty * price).toFixed(2);
+                    $(`span#subtotal-${productId}`).text(subtotal);
+                    // Update the cart totals
+                    updateCartTotals();
+                    
+                    }
+                 
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    
+ }
 </script>
 
 

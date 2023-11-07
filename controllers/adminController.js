@@ -170,7 +170,15 @@ const acceptReturn = async (req, res) => {
             // Wallet exists, increment the wallet amount
             const updatedWallet = await Wallet.findOneAndUpdate(
                { userId: order.user },
-               { $inc: { walletAmount: order.total } },
+               { $inc: { walletAmount: order.total },
+               $push: {
+                  transaction: {
+                    status: "Canceled Order", // You can set the appropriate status for increment
+                    amount: order.total,
+                    debitOrCredit: "Credit", // Assuming increment is a credit
+                  },
+                },
+             },
                { new: true }
             ).exec();
 

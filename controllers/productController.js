@@ -108,7 +108,6 @@ const product = async (req, res) => {
     }
  }
  
-
  const editProductAdd = async (req,res)=>{
     try {
        const productId = req.params.productId;
@@ -127,10 +126,10 @@ const product = async (req, res) => {
          color: req.body.color,
          category: req.body.category,
          stock: req.body.stock,
-         // image: product.image 
+         image: product.image 
        };
  
-         //  updatedData.image = req.files.map((image) => image.filename);
+          updatedData.image = req.files.map((image) => image.filename);
           
        const product1 = await Product.findByIdAndUpdate(
          { _id: productId},
@@ -141,6 +140,40 @@ const product = async (req, res) => {
        console.log(error.message);
      }
  }
+ 
+
+ const removeImage = async (req, res) => {
+   try {
+     const productId = req.query.productId;
+     const imageIndex = req.query.imageIndex;
+ 
+     if (!productId || !imageIndex) {
+       return res.status(400).json({ error: 'productId and imageIndex are required' });
+     }
+ 
+     const numericImageIndex = parseInt(imageIndex, 10);
+ 
+     const update = {
+       $unset: {}
+     };
+     update.$unset[`image.${numericImageIndex}`] = '';
+ 
+     const product = await Product.findByIdAndUpdate(productId, update);
+ 
+     if (!product) {
+       return res.status(404).json({ error: 'Product not found' });
+     }
+     const productData = await Product.findById(productId).populate('category');
+     const categorieData = await Category.find({})
+     const brandData = await Brand.find({})
+ 
+     res.render("editProduct",{message:"",errMessage:"",categories: categorieData, products: productData, brands:brandData});
+   } catch (error) {
+     console.log(error);
+     res.status(500).json({ error: 'An error occurred while removing the image' });
+   }
+ }
+ 
 
 
  module.exports = {
@@ -149,5 +182,6 @@ const product = async (req, res) => {
    productList,
    toggleBlockStatusProducts,
    editProduct,
-   editProductAdd
+   editProductAdd,
+   removeImage
  }

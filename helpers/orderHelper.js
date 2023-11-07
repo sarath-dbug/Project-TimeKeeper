@@ -280,11 +280,20 @@ console.log(products + "**********");
                     // Subtract orderValue from walletAmount
                     const updatedWalletAmount = wallet.walletAmount - orderDetails.total;
 
-                    // Update the walletAmount in the Wallet collection
-                    await Wallet.findOneAndUpdate(
+                    const transactionData = {
+                        status: 'Order',
+                        amount: orderDetails.total,
+                        debitOrCredit: 'Debit', 
+                      };
+
+                      const updatedWallet = await Wallet.findOneAndUpdate(
                         { userId: userId },
-                        { walletAmount: updatedWalletAmount }
-                    );
+                        {
+                          $set: { walletAmount: updatedWalletAmount },
+                          $push: { transaction: transactionData },
+                        },
+                        { new: true }
+                      ).exec();
 
                     resolve(updatedWalletAmount);
                 } else {

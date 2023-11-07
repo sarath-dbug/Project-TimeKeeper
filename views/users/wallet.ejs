@@ -1,0 +1,208 @@
+<%-include("../userAccount/header.ejs")-%>
+
+<style>
+    .inside {
+      width: 100%;
+      position: inherit;
+    }
+
+    .wallet-top {
+      margin-top: 30px;
+      text-align: center;
+      margin-right: 50px;
+      margin-left: 40px;
+      margin-bottom: 50px;
+    }
+
+    button {
+      border: 0;
+      transition: 0.3s;
+    }
+
+    h3 {
+      color: #00000061;
+      font-size: 13px;
+    }
+
+    .card span {
+      position: absolute;
+
+      bottom: 10px;
+      font-weight: 300;
+      font-size: 13px;
+      color: rgb(0, 0, 0);
+    }
+
+    .card h2 {
+      color: #00000061;
+      font-size: 35px;
+    }
+
+    .card i {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      font-size: 22px;
+      color: white;
+    }
+
+    .wallet-top h1 {
+      color: #00000061;
+      font-size: 35px;
+    }
+
+    .wallet-top .card {
+      background-image: linear-gradient(189deg, #c1d8ff 23%, #ffffff 114%);
+      width: 200%;
+      height: 250px;
+      box-shadow: 14px 11px 25px -9px #272b32b0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border-color: azure;
+      position: relative;
+      border: 0;
+
+    }
+
+    .form-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #f8f8f8;
+      border-radius: 0px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+      z-index: 10000;
+      padding: 40px;
+      color: #000000;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    .form-container {
+      height: 100%;
+    }
+
+    .form-popup input[type="text"],
+    .form-popup input[type="number"],
+    .form-popup input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .form-popup .btn-group {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .form-popup .btn {
+      margin-left: 10px;
+    }
+
+    .form-popup::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .form-popup::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+    }
+
+    .form-popup::-webkit-scrollbar-thumb {
+      background-color: #888;
+    }
+
+    .form-popup::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+
+    .code:hover {
+      background: green;
+      color: #fff;
+      cursor: pointer
+    }
+  </style>
+
+<!-- Template CSS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<section class="user-dashboard page-wrapper">
+	<div class="container">
+		<div class="row">
+            <ul class="list-inline dashboard-menu text-center">
+                <li><a href="/userAccount">Profile Details</a></li>
+                <li><a class="active" href="/userOrderList">Orders</a></li>
+                <li><a href="/userAddress">Address</a></li>
+                <li><a c href="/coupons">Coupon</a></li>
+                <li><a href="/wallet">wallet</a></li>
+            </ul>
+            
+                  
+          
+
+			<div class="col-md-8">  
+				<div class="dashboard-wrapper user-dashboard">
+					<div class="table-responsive">
+						<table class="table"  id="myTable">
+							<thead>
+								<tr>
+									
+									<th style="text-align: center;">Date</th>
+									<th style="text-align: center;">Amount</th>
+									<th style="text-align: center;">Status</th>
+                                    <th style="text-align: center;">Debit/Credit</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+                                <% wallet.transaction.forEach(function(transaction) { %>
+								<tr>                    
+                                    <td style="text-align: center;"><%= transaction.date.toLocaleDateString() %></td>
+									<td style="text-align: center;"> <%= transaction.amount %></td> 
+									<td style="text-align: center;"> <%= transaction.status %></td>	
+                                    <td style="text-align: center;"><%= transaction.debitOrCredit %></td>		
+								</tr>
+                                <% }); %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+            <div class="col-3">
+                  <div class="wallet-top text-center">
+                    <div class="card">
+                      <h1 style="text-align: center;font-size: 20px;">MY WALLET                        
+                      <%if(wallet){%>
+                           : ₹<%=wallet.walletAmount%>
+                      <%}else{%>
+                             : ₹0
+                        <%}%>
+                      </h1>
+                       
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+		</div>
+	
+</section>
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
+
+
+<%-include("../userAccount/footer.ejs")-%>
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

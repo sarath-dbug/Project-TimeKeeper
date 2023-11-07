@@ -58,6 +58,7 @@ adminRouter.get('/productList',auth.isLogin,productController.productList)
 adminRouter.post('/toggleBlockStatusProducts/:productId',auth.isLogin,productController.toggleBlockStatusProducts);
 adminRouter.get('/editProduct',auth.isLogin,productController.editProduct)
 adminRouter.post('/editProduct/:productId',upload.productUpload.array('images'),auth.isLogin,productController.editProductAdd)
+adminRouter.get('/removeImage',auth.isLogin,productController.removeImage)
 
 //user
 adminRouter.get('/userList',auth.isLogin,adminController.userList)

@@ -254,7 +254,16 @@ const cancelOrder = async (req, res) => {
             // Wallet exists, increment the wallet amount
             const updatedWallet = await Wallet.findOneAndUpdate(
                { userId: order.user },
-               { $inc: { walletAmount: order.total } },
+               { $inc: { walletAmount: order.total },
+               $push: {
+                  transaction: {
+                    status: "Canceled Order", // You can set the appropriate status for increment
+                    amount: order.total,
+                    debitOrCredit: "Credit", // Assuming increment is a credit
+                  },
+                },
+             },
+               
                { new: true }
             ).exec();
 
@@ -324,6 +333,29 @@ const loadCoupon = async (req, res) => {
    }
 }
 
+
+const loadWallet = async (req, res) => {
+   try {
+
+      const wallet = await Wallet.findOne({ userId: req.session.user_id });
+      const userData = await User.findById({ _id: req.session.user_id });
+      let userOrder = await Order.find({ user: req.session.user_id }).sort({ createdAt: -1 }).populate("items.product").exec();
+
+      console.log(wallet +'***************');
+
+      if (req.session.user_id) {
+         const isAuthenticated = true;
+         res.render('wallet', {wallet, userOrder , isAuthenticated })
+      } else {
+         const isAuthenticated = false;
+         res.render('wallet', {wallet, userOrder, isAuthenticated })
+      }
+
+   } catch (error) {
+      console.log(error);
+   }
+}
+
 module.exports = {
    userAccount,
    editInfo,
@@ -336,5 +368,6 @@ module.exports = {
    viewOrder,
    cancelOrder,
    returnOrder,
-   loadCoupon
+   loadCoupon,
+   loadWallet 
 }
