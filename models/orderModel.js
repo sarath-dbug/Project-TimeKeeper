@@ -34,9 +34,9 @@ const orderSchema = new mongoose.Schema({
     default:0
   },
   totalQuantity: {
-    type: Number, // Store the total quantity as a number
+    type: Number, 
     required: true,
-    min: 1 // Assuming quantity should be at least 1
+    min: 1 
   },
 
   status: {

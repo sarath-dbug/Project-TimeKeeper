@@ -1,244 +1,203 @@
 <%-include("header")-%>
 
-    <section class="content-main">
-        <div class="content-header">
-            <div>
-                <h2 class="content-title card-title">Dashboard </h2>
-                <p>Whole data about your business here</p>
-            </div>
-            <div>
-                <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create
-                    report</a>
-            </div>  
-        </div>
-        <div class="card mb-4">
-            <header class="card-header">
-                <h4 class="card-title">Latest orders</h4>
-                <div class="row align-items-center">
-                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                        <div class="custom_select">
-                            <select class="form-select select-nice">
-                                <option selected>All Categories</option>
-                                <option>Women's Clothing</option>
-                                <option>Men's Clothing</option>
-                                <option>Cellphones</option>
-                                <option>Computer & Office</option>
-                                <option>Consumer Electronics</option>
-                                <option>Jewelry & Accessories</option>
-                                <option>Home & Garden</option>
-                                <option>Luggage & Bags</option>
-                                <option>Shoes</option>
-                                <option>Mother & Kids</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-6">
-                        <input type="date" value="02.05.2021" class="form-control">
-                    </div>
-                    <div class="col-md-2 col-6">
-                        <div class="custom_select">
-                            <select class="form-select select-nice">
-                                <option selected>Status</option>
-                                <option>All</option>
-                                <option>Paid</option>
-                                <option>Chargeback</option>
-                                <option>Refund</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <div class="table-responsive">
-                        <table class="table align-middle table-nowrap mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col" class="text-center">
-                                        <div class="form-check align-middle">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck01">
-                                            <label class="form-check-label" for="transactionCheck01"></label>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle" scope="col">Order ID</th>
-                                    <th class="align-middle" scope="col">Billing Name</th>
-                                    <th class="align-middle" scope="col">Date</th>
-                                    <th class="align-middle" scope="col">Total</th>
-                                    <th class="align-middle" scope="col">Payment Status</th>
-                                    <th class="align-middle" scope="col">Payment Method</th>
-                                    <th class="align-middle" scope="col">View Details</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck02">
-                                            <label class="form-check-label" for="transactionCheck02"></label>
-                                        </div>
-                                    </td>
-                                    <td><a href="#" class="fw-bold">#SK2540</a> </td>
-                                    <td>Neal Matthews</td>
-                                    <td>
-                                        07 Oct, 2021
-                                    </td>
-                                    <td>
-                                        $400
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck03">
-                                            <label class="form-check-label" for="transactionCheck03"></label>
-                                        </div>
-                                    </td>
-                                    <td><a href="#" class="fw-bold">#SK2541</a> </td>
-                                    <td>Jamal Burnett</td>
-                                    <td>
-                                        07 Oct, 2021
-                                    </td>
-                                    <td>
-                                        $380
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-danger">Chargeback</span>
-                                    </td>
-                                    <td>
-                                        <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck04">
-                                            <label class="form-check-label" for="transactionCheck04"></label>
-                                        </div>
-                                    </td>
-                                    <td><a href="#" class="fw-bold">#SK2542</a> </td>
-                                    <td>Juan Mitchell</td>
-                                    <td>
-                                        06 Oct, 2021
-                                    </td>
-                                    <td>
-                                        $384
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck05">
-                                            <label class="form-check-label" for="transactionCheck05"></label>
-                                        </div>
-                                    </td>
-                                    <td><a href="#" class="fw-bold">#SK2543</a> </td>
-                                    <td>Barry Dick</td>
-                                    <td>
-                                        05 Oct, 2021
-                                    </td>
-                                    <td>
-                                        $412
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck06">
-                                            <label class="form-check-label" for="transactionCheck06"></label>
-                                        </div>
-                                    </td>
-                                    <td><a href="#" class="fw-bold">#SK2544</a> </td>
-                                    <td>Ronald Taylor</td>
-                                    <td>
-                                        04 Oct, 2021
-                                    </td>
-                                    <td>
-                                        $404
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-warning">Refund</span>
-                                    </td>
-                                    <td>
-                                        <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck07">
-                                            <label class="form-check-label" for="transactionCheck07"></label>
-                                        </div>
-                                    </td>
-                                    <td><a href="#" class="fw-bold">#SK2545</a> </td>
-                                    <td>Jacob Hunter</td>
-                                    <td>
-                                        04 Oct, 2021
-                                    </td>
-                                    <td>
-                                        $392
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success">Paid</span>
-                                    </td>
-                                    <td>
-                                        <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div> <!-- table-responsive end// -->
-            </div>
-        </div>
-        <div class="pagination-area mt-30 mb-50">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-start">
-                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">16</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i
-                                class="material-icons md-chevron_right"></i></a></li>
-                </ul>
-            </nav>
-        </div>
-    </section> <!-- content-main end// -->
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-lg-3">
+      <div class="card card-body mb-4">
+        <article class="icontext">
+          <span class="icon icon-sm rounded-circle bg-primary-light"><i
+              class="text-primary material-icons md-person"></i></span>
+          <div class="text">
+            <h6 class="mb-1 card-title">Total User</h6>
+            <span><h6 class="mb-0"></h6><%=totalUser%></h6><span>
+          </div>
+        </article>
+      </div>
+    </div>
 
-    <%-include("footer")-%>
+    <div class="col-lg-3">
+      <div class="card card-body mb-4">
+        <article class="icontext">
+          <span class="icon icon-sm rounded-circle bg-primary-light">
+            <i class="text-info material-icons md-shopping_basket"></i></span>
+          <div class="text">
+            <h6 class="mb-1 card-title">Today Sales</h6>
+            <%if(todaySales){%>
+            <span> <h6 class="mb-0">&#8377;<%=todaySales.totalAmount %></h6><span>
+              <%}else{%>
+                No sales 
+                <%}%>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="card card-body mb-4">
+        <article class="icontext">
+          <span class="icon icon-sm rounded-circle bg-primary-light"><i
+              class="text-info material-icons md-shopping_basket"></i></span>
+          <div class="text">
+            <h6 class="mb-1 card-title">Total Sales</h6>
+            <span> <h6 class="mb-0">&#8377;<%=totalSales.totalSum%></h6><span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="card card-body mb-4">
+        <article class="icontext">
+          <span class="icon icon-sm rounded-circle bg-primary-light"><i
+              class="text-info material-icons md-shopping_basket"></i></span>
+          <div class="text">
+            <h6 class="mb-1 card-title">Yearly Sales</h6>
+            <span><h6 class="mb-0">&#8377;<%=yearSales.totalSales%></h6><span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+   
+  </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+      <div class="col-sm-12 col-xl-6">
+          <div class="bg-light text-center rounded p-4">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                  <h6 class="mb-0">Monthly Sales</h6>
+                  <a href="">Show All</a>
+              </div>
+              <canvas id="worldwide-sales"></canvas>
+          </div>
+      </div>
+      <div class="col-sm-12 col-xl-6">
+          <div class="bg-light text-center rounded p-4">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                  <h6 class="mb-0">Payment Methods</h6>
+                  <a href="">Show All</a>
+              </div>
+              <canvas id="sales-revenue"></canvas>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Recent Sales Start -->
+<% if (orderDetails && orderDetails.length) { %>
+  <div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Recent Sales</h6>
+            <a href="">Show All</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0" id="myTable">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">DATE</th>
+                        <th scope="col">USER</th>
+                        <th scope="col">ORDER ID</th>
+                        <th scope="col">TOTAL PRICE</th>
+                        <th scope="col">PAYMENT METHOD</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col">ORDERS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orderDetails.forEach(function(order) { %>
+                    <tr>
+                        <td scope="row"><%= order.date %></td>
+                        <td><%= order.userName %></td>
+                        <td><%= order._id %></td>
+                        <td><%= order.total %></td>
+                        <td><%= order.paymentMethod %></td>
+                        <td><%= order.status %></td>
+                        <td>
+                            <a href="/admin/orderDetails?id=<%= order._id %>"
+                                class="btn btn-primary btn-sm btn-block view-btn" style="color: #ffffff;"
+                                type="button">Details</a>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <% } %>
+<!-- Recent Sales End -->
+
+<%-include("footer")-%>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+  $(document).ready(function () {
+      // Monthly Sales Chart
+      const salesbymonth = JSON.parse(decodeURIComponent('<%=salesbymonth%>'));
+      const sales = salesbymonth.map(data => data.totalSales);
+      console.log(sales, 'sales');
+      var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
+      var myChart1 = new Chart(ctx1, {
+          type: "bar",
+          data: {
+              labels: ['June', 'July', 'Aug', 'Sept', 'Oct','Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
+              datasets: [{
+                  label: "SALES HISTORY",
+                  data: sales,
+                  backgroundColor: "rgba(0, 156, 255, .7)"
+              }]
+          },
+          options: {
+              responsive: true
+          }
+      });
+  
+      // Payment Method Chart
+      const paymentMethod = JSON.parse(decodeURIComponent('<%=paymentMethod%>'));
+
+      const paymentMethods = paymentMethod.map(data => data._id)
+      const orderValues = paymentMethod.map(data => data.totalOrderValue);
+      const counts = paymentMethod.map(data => data.count);
+
+      var ctx2 = $("#sales-revenue").get(0).getContext("2d");
+      var myChart2 = new Chart(ctx2, {
+          type: "line",
+          data: {
+              labels: paymentMethods,
+              datasets: [
+                  {
+                      label: "Total order value",
+                      data: orderValues,
+                      backgroundColor: "rgba(0, 156, 255, .5)",
+                      fill: true,
+                  },
+                  {
+                      label: "Count",
+                      data: counts,
+                      backgroundColor: "rgba(255, 99, 132, 0.5)",
+                      fill: true,
+                  },
+              ],
+          },
+          options: {
+              responsive: true,
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      precision: 0,
+                  },
+              },
+          },
+      });
+
+  });
+</script>
+

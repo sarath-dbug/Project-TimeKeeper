@@ -241,52 +241,6 @@
 
 </section>
             
-<!-- <script>
-    function validateAddressAndPlaceOrder() {
-    // Check if any of the address fields is empty
-    
-    if (
-        !selectedAddress ||
-        !selectedAddress.name ||
-        !selectedAddress.mobile ||
-        !selectedAddress.homeAddress ||
-        !selectedAddress.city ||
-        !selectedAddress.street ||
-        !selectedAddress.postalCode
-    ) 
-    {
-        // Show the error message
-        const addressError = document.getElementById('addressError');
-        addressError.textContent = 'Please fill in the address before placing the order.';
-        return; // Prevent form submission
-    }
-    var name = document.getElementById("nameInput").value;
-    var mobileNumber = document.getElementById("mobileNumberInput").value;
-    var pincode = document.getElementById("pincodeInput").value;
-           // Validate the input values
-    if (name.trim() === "") {
-        alert("Name cannot be empty");
-        return;
-      }
-      if (!/^\+?\d{1,12}$/.test(mobileNumber)) {
-                alert("Mobile Number should contain a maximum of 12 numbers only");
-                return;
-    }
-      if (!/^[a-zA-Z ]+$/.test(name)) {
-                alert("Name should not contain numbers or special characters");
-                return;
-      }
-      if (!/^\d{6}$/.test(pincode)) {
-                alert("Pincode should contain exactly 6 digits");
-                return;
-     }
-
-    // If the address is filled, submit the form
-    document.querySelector('form').submit();
-}
-</script> -->
-
-
 
 <script>
     let selectedAddress = null;

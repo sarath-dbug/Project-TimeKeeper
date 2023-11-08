@@ -126,10 +126,10 @@ const product = async (req, res) => {
          color: req.body.color,
          category: req.body.category,
          stock: req.body.stock,
-         image: product.image 
+         // image: product.image 
        };
  
-          updatedData.image = req.files.map((image) => image.filename);
+         //  updatedData.image = req.files.map((image) => image.filename);
           
        const product1 = await Product.findByIdAndUpdate(
          { _id: productId},

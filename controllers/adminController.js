@@ -1,4 +1,5 @@
 const admin = require('../models/adminModel');
+const salesReportHelper = require('../helpers/salesReportHelper')
 const User = require('../models/usermodel')
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
@@ -31,7 +32,7 @@ const verifyUser = async (req, res) => {
       if (adminData) {
          if (adminData.password === password) {
             req.session.admin_id = adminData._id;
-            res.render('home');
+            res.redirect("/admin/home");
          } else {
             res.redirect(`/admin/?err=${true}&msg=Invalid Password`);
          }
@@ -43,17 +44,32 @@ const verifyUser = async (req, res) => {
    }
 }
 
-const loadhome = async (req, res) => {
+const loadDashboard = async (req, res) => {
    try {
-      if (req.session.admin_id) {
-         res.render('home');
-      } else {
-         res.redirect('/admin')
-      }
+     const dashBoardDetails = await salesReportHelper.loadingDashboard(req, res);
+     const orderDetails = await salesReportHelper.OrdersList(req, res);
+     const totalUser = dashBoardDetails.totaluser;
+     const totalSales = dashBoardDetails.totalSales;
+     const salesbymonth = dashBoardDetails.salesbymonth;
+     const paymentMethod = dashBoardDetails.paymentMethod;
+
+     const yearSales = dashBoardDetails.yearSales;
+     const todaySales = dashBoardDetails.todaySales;
+     let sales = encodeURIComponent(JSON.stringify(salesbymonth));
+ 
+     res.render("home", {
+       totalUser,
+       todaySales: todaySales[0],
+       totalSales: totalSales[0],
+       salesbymonth: encodeURIComponent(JSON.stringify(salesbymonth)),
+       paymentMethod: encodeURIComponent(JSON.stringify(paymentMethod)),
+       yearSales: yearSales[0],
+       orderDetails: orderDetails,
+     });
    } catch (error) {
-      console.log(error.message)
+     console.log(error.message);
    }
-}
+ };
 
 const logout = async (req, res) => {
    try {
@@ -141,11 +157,10 @@ const updateStatus = async (req, res) => {
          return res.status(404).json({ message: "Order not found" });
       }
 
-      // Update the order status
       order.status = status;
       await order.save();
 
-      return res.redirect("/admin/orderList"); // Redirect back to order list page
+      return res.redirect("/admin/orderList"); 
    } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Error updating order status" });
@@ -161,21 +176,19 @@ const acceptReturn = async (req, res) => {
          { new: true }
       ).exec();
 
-      // Check if the payment method is online and the order value is greater than 0
+    
       if ((order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET" || order.paymentMethod === "COD") && order.total > 0) {
-         // Check if a wallet exists for the user
          const wallet = await Wallet.findOne({ userId: order.user }).exec();
 
          if (wallet) {
-            // Wallet exists, increment the wallet amount
             const updatedWallet = await Wallet.findOneAndUpdate(
                { userId: order.user },
                { $inc: { walletAmount: order.total },
                $push: {
                   transaction: {
-                    status: "Canceled Order", // You can set the appropriate status for increment
+                    status: "Canceled Order", 
                     amount: order.total,
-                    debitOrCredit: "Credit", // Assuming increment is a credit
+                    debitOrCredit: "Credit", 
                   },
                 },
              },
@@ -183,7 +196,6 @@ const acceptReturn = async (req, res) => {
             ).exec();
 
          } else {
-            // Wallet doesn't exist, create a new wallet with the order value as the initial amount
             const newWallet = new Wallet({
                userId: order.user,
                walletAmount: order.total,
@@ -193,9 +205,6 @@ const acceptReturn = async (req, res) => {
             console.log(createdWallet, "created new wallet with order value");
          }
       }
-
-
-
 
       res.redirect('/admin/orderList')
    } catch (error) {
@@ -226,10 +235,8 @@ const loadReferralOffer = async (req, res) => {
    try {
       const userData = await User.find({})
       const referralData = await Refer.find({})
-      console.log(referralData + "*********");
 
       res.render('referralOffer', { userData, refer: referralData })
-
    } catch (error) {
       console.log(error.message)
    }
@@ -241,15 +248,12 @@ const editReferral = async (req, res) => {
       const referId = req.query.referId;
 
       const referData = await Refer.findOne({ _id: referId })
-      console.log(referData + "**********");
       const userData = await User.find({})
 
       const referralData = {
          referrer: req.body.referrer,
          referee: req.body.referee
       }
-
-      console.log(referralData + "**********");
 
       if (referData) {
          const couponAdd = await Refer.findByIdAndUpdate(
@@ -269,7 +273,6 @@ const editReferral = async (req, res) => {
 
       const referraldata = await Refer.find()
 
-
       res.render('referralOffer', { refer: referraldata, userData })
    } catch (error) {
       console.log(error);
@@ -279,23 +282,22 @@ const editReferral = async (req, res) => {
 
 
 
-
-
-
 module.exports = {
    loadLogin,
    verifyUser,
    logout,
-   loadhome,
+   loadDashboard,
+
    userList,
    toggleBlockStatusUser,
    searchUser,
+
    orderList,
    orderDetails,
    updateStatus,
    DeclineReturn,
    acceptReturn,
+
    loadReferralOffer,
    editReferral,
-   
 }

@@ -21,16 +21,16 @@ var instance = new Razorpay({
 const userCart = async (req,res)=>{
     try {
        const userId = req.session.user_id
+
+       if (userId){
        const userData = await User.findById({_id:userId})
        let cart = await Cart.findOne({ user: userData._id }).populate("products.productId");
-       
-       if (cart){
           const isAuthenticated = true
           let products = cart.products;
+
           res.render("userCart",{user:userData,products:products,isAuthenticated});
        }else{
-          const isAuthenticated = false
-          res.render("userCart", { user:userData,products:null,isAuthenticated});
+        res.redirect('/login')
        }  
     } catch (error) {
        console.log(error);

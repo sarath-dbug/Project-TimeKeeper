@@ -29,6 +29,7 @@ const productController = require('../controllers/productController')
 const brandsController = require('../controllers/brandController')
 const couponController = require('../controllers/couponController')
 const bannerController = require('../controllers/bannerController')
+const salesReportController = require('../controllers/salesReportController')
 
 
 const auth = require('../middleware/adminAuth');
@@ -36,7 +37,7 @@ const upload = require('../helpers/multer');
 
 adminRouter.get('/',auth.isLogout,adminController.loadLogin);
 adminRouter.post('/',adminController.verifyUser);
-adminRouter.get('/home',auth.isLogin,adminController.loadhome);
+adminRouter.get('/home',auth.isLogin,adminController.loadDashboard);
 adminRouter.get('/logout',auth.isLogin,adminController.logout);
 
 //category
@@ -90,6 +91,15 @@ adminRouter.get('/listBanner',bannerController.listBanner);
 adminRouter.get('/unlistBanner',bannerController.unlistBanner);
 adminRouter.get('/editBanner',bannerController.loadEditBanner);
 adminRouter.post('/editBanner/:bannerId',upload.bannerUpload.single('image'),bannerController.editBanner);
+
+//sales report
+adminRouter.get('/salesReport',auth.isLogin,salesReportController.salesReport);
+adminRouter.get('/todaySales',auth.isLogin,salesReportController.todaySales);
+adminRouter.get('/weeklySales',auth.isLogin,salesReportController.weeklySales);
+adminRouter.get('/monthlySales',auth.isLogin,salesReportController.monthlySales);
+adminRouter.get('/yearlySales',auth.isLogin,salesReportController.yearlySales);
+adminRouter.post('/salesWithDate',auth.isLogin,salesReportController.salesWithDate);
+adminRouter.get('/salesReportdwn',auth.isLogin,salesReportController.downloadSalesReport);
 
 
 

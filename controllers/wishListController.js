@@ -10,23 +10,22 @@ const { ObjectId } = require("mongodb");
 const loadWishList = async (req, res) => {
     try {
       const userId = req.session.user_id;
-  
+
+
+      if (userId) {
       const userData = await User.findById({ _id: userId });
       const wishlistCount = await wishListHelper.getWishListCount(userId);
-  
       const wishListProduct = await wishListHelper.getWishListProducts(userId);
- 
-      if (userId) {
+
        const isAuthenticated = true
+       
        res.render("wishList", { user: userData, wishListProduct, wishlistCount ,isAuthenticated});
     } else {
-       const isAuthenticated = false
-       res.render("wishList", { user: userData, wishListProduct, wishlistCount ,isAuthenticated});
+       res.redirect('/login')
     }
   
     } catch (error) {
       console.log(error.message);
-      res.redirect("/user-error");
     }
   };
  

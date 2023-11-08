@@ -71,6 +71,7 @@ userRouter.post('/addToCart/:id',blocked.checkBocked,auth.isLogin,cartController
 userRouter.post('/updateQuandity',blocked.checkBocked,cartController.updateQuandity);
 userRouter.post('/removeCartItem',blocked.checkBocked,cartController.removeCartItem);
 userRouter.get('/checkOut',blocked.checkBocked,cartController.checkOut);
+
 //order
 userRouter.post('/placeOrder',blocked.checkBocked,orderController.placeOrder);
 userRouter.get('/orderSucessfull',blocked.checkBocked,orderController.orderSuccess);
@@ -78,9 +79,6 @@ userRouter.get('/orderFailed',blocked.checkBocked,orderController.orderFailed);
 userRouter.post('/verify-payment',blocked.checkBocked,orderController.verifyPayment);
 userRouter.get('/wallet-placed',blocked.checkBocked,orderController.walletOrder);
 userRouter.post('/apply-coupon-request',blocked.checkBocked,orderController.applyCoupon);
-
-
-
 
 //wishList
 userRouter.get('/wishList',blocked.checkBocked,wishListController.loadWishList);
