@@ -214,6 +214,8 @@ const applyCoupon = async (req, res) => {
   
           console.log("after Discount", totalOrderValue);
         }
+         // Updating the total order value with category discount applied
+        totalOrderValue -= orderDetails.discountAmount;
  
         if (req.body["paymentMethod"] === "COD") {
           orderHelper.placingOrder(userId, orderDetails, orderedProducts, totalOrderValue).then(async (orderId, error) => {

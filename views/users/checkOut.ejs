@@ -143,7 +143,7 @@
                                     <td colspan="2" class="product-subtotal"><span  id="total" name="total" class="font-xl text-brand fw-900">₹<%= total%></span></td>
                                         <input type="hidden" name="discountPercentage" id="discountPercentage"
                                         value="0">
-                                        <input type="hidden" name="discountAmount" id="discountAmount" value="0">
+                                        <input type="hidden" name="discountAmount" id="discountAmount" value="<%=saved%>">
                                         <input type="hidden" name="total" value="<%= totalAmount.toFixed(2)%>" id="totalVal">
                                 </tr>
 
@@ -156,10 +156,10 @@
                     <ul class="list-group mb-3 sticky-top">
                         <li class="list-group-item d-flex justify-content-between bg-light">
                             <div class="text-success">
-                                <h6 class="my-0">Coupon code</h6>
-                                <small>EXAMPLECODE</small>
+                                <h6 class="my-0"></h6>
+                                <small>OFFER APPLIED</small>
                             </div>
-                            <span class="text-success"><span style="color: rgb(15, 48, 210)">You saved</span>-₹<%=couponDiscount%></span>
+                            <span class="text-success" name="saved" id="saved"><span style="color: rgb(15, 48, 210)" >You saved</span>-₹<%=saved%></span>
                          
                         </li> 
                         <li class="list-group-item d-flex justify-content-between">
@@ -237,10 +237,10 @@
             </form>
         </div>
     </div>
-
-
+    
 </section>
             
+
 
 <script>
     let selectedAddress = null;

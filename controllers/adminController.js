@@ -1,9 +1,9 @@
+
 const admin = require('../models/adminModel');
 const salesReportHelper = require('../helpers/salesReportHelper')
 const User = require('../models/usermodel')
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
-const Refer = require('../models/referralModel')
 const { ObjectId } = require('mongoose').Types;
 
 
@@ -231,53 +231,6 @@ const DeclineReturn = async (req, res) => {
 };
 
 
-const loadReferralOffer = async (req, res) => {
-   try {
-      const userData = await User.find({})
-      const referralData = await Refer.find({})
-
-      res.render('referralOffer', { userData, refer: referralData })
-   } catch (error) {
-      console.log(error.message)
-   }
-}
-
-const editReferral = async (req, res) => {
-   try {
-
-      const referId = req.query.referId;
-
-      const referData = await Refer.findOne({ _id: referId })
-      const userData = await User.find({})
-
-      const referralData = {
-         referrer: req.body.referrer,
-         referee: req.body.referee
-      }
-
-      if (referData) {
-         const couponAdd = await Refer.findByIdAndUpdate(
-            { _id: referId },
-            { $set: referralData }
-         );
-      } else {
-
-         const newreferral = new Refer({
-            referrer: 100,
-            referee: 100
-         });
-
-         const createdReferal = await newreferral.save();
-
-      }
-
-      const referraldata = await Refer.find()
-
-      res.render('referralOffer', { refer: referraldata, userData })
-   } catch (error) {
-      console.log(error);
-   }
-}
 
 
 
@@ -297,7 +250,4 @@ module.exports = {
    updateStatus,
    DeclineReturn,
    acceptReturn,
-
-   loadReferralOffer,
-   editReferral,
 }

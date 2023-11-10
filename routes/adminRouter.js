@@ -30,6 +30,8 @@ const brandsController = require('../controllers/brandController')
 const couponController = require('../controllers/couponController')
 const bannerController = require('../controllers/bannerController')
 const salesReportController = require('../controllers/salesReportController')
+const offerController = require('../controllers/offerController')
+
 
 
 const auth = require('../middleware/adminAuth');
@@ -102,11 +104,12 @@ adminRouter.post('/salesWithDate',auth.isLogin,salesReportController.salesWithDa
 adminRouter.get('/salesReportdwn',auth.isLogin,salesReportController.downloadSalesReport);
 
 
-
-//referralOffer
-adminRouter.get('/referralOffer',auth.isLogin,adminController.loadReferralOffer);
-adminRouter.post('/editReferral',auth.isLogin,adminController.editReferral);
-
+//Offer
+adminRouter.get('/referralOffer',auth.isLogin,offerController.loadReferralOffer);
+adminRouter.post('/editReferral',auth.isLogin,offerController.editReferral);
+adminRouter.get('/categoryOffer',auth.isLogin,offerController.loadCategoryOffer);
+adminRouter.post('/categoryOffer',auth.isLogin,offerController.addCategoryOffer);
+adminRouter.post('/editcategoryOffer',auth.isLogin,offerController.editcategoryOffer);
 
 
 

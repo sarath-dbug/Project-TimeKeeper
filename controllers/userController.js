@@ -6,6 +6,7 @@ const Category = require('../models/categoryModel')
 const Refer = require('../models/referralModel')
 const Wallet = require('../models/walletModel')
 const Banner = require("../models/bannerModel");
+const categoryOffer = require ('../models/categoryOfferModel')
 const wishListModel = require('../models/wishListModel')
 const { ObjectId } = require("mongodb");
 
@@ -384,15 +385,17 @@ const loadProductDetails = async (req, res) => {
    try {
       const product_id = req.query.product_id;
       const productData = await Product.findOne({ _id: product_id });
+      const categoryOfferData = await categoryOffer.findOne({ name:productData.category});
+    
       if (!productData) {
          return res.status(404).send('Product not found');
       }
       if (req.session.user_id) {
          const isAuthenticated = true
-         res.render('productDetails', { products: productData, isAuthenticated });
+         res.render('productDetails', { products: productData,categoryOffer:categoryOfferData, isAuthenticated });
       } else {
          const isAuthenticated = false
-         res.render('productDetails', { products: productData, isAuthenticated });
+         res.render('productDetails', { products: productData,categoryOffer:categoryOfferData, isAuthenticated });
       }
 
    } catch (error) {
@@ -420,6 +423,21 @@ const searchProducts = async (req, res) => {
 };
 
 
+const loadAbout = async (req,res)=>{
+   try {
+      if (req.session.user_id) {
+         const isAuthenticated = true
+         res.render('about', { isAuthenticated });
+      } else {
+         const isAuthenticated = false
+         res.render('about', {isAuthenticated });
+      }
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+
 
 
 
@@ -439,5 +457,6 @@ module.exports = {
    loadProductDetails,
    viewShop,
    searchProducts,
-   resendOtp
+   resendOtp,
+   loadAbout
 }

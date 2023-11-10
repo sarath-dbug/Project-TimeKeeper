@@ -1,0 +1,124 @@
+<%- include("header") %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Categories Offer</h2>
+                <p>Add or Edit a Category Offer</p>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <% if (message) { %>
+                            <div id="successMessage" class="alert alert-success text-center mt-5" role="alert">
+                                <%= message %>
+                            </div>
+                            <% } %>
+                                <% if (errMessage) { %>
+                                    <div id="errorMessage" class="alert alert-danger text-center mt-5" role="alert">
+                                        <%= errMessage %>
+                                    </div>
+                                    <% } %>
+
+                                        <form method="post" action="/admin/categoryOffer" id="createBrandName"
+                                            onsubmit="return brandErrorValidation()">
+                                            <div class="mb-4">
+                                                <label for="categoryName" class="form-label">Categories</label>
+                                                <select name="categoryName" id="categoryName" class="form-select">
+                                                    <option>Select</option>
+                                                    <% categories.forEach(function(category) { %>
+                                                        <option value="<%= category._id %>">
+                                                            <%= category.name %>
+                                                        </option>
+                                                        <% }); %>
+                                                </select>
+                                                <small style="color: red;" id="categoryName"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="offerPrice" class="form-label">Offer Price</label>
+                                                <input type="number" class="form-control"
+                                                    placeholder="Enter Offer Price" name="offerPrice" id="offerPrice">
+                                                <small style="color: red;" id="offerPriceError"></small>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Create</button>
+                                            </div>
+                                        </form>
+
+                                        <form method="post" action="/admin/editcategoryOffer" id="editBrandForm"
+                                            style="display: none;" onsubmit="">
+                                            <input type="hidden" id="editBrandId" name="editBrandId">
+                                            <div class="mb-4">
+                                                <label for="editBrandName" class="form-label">Edit Category</label>
+                                                <select name="editBrandName" id="editBrandName" class="form-select">
+                                                    <option>Select</option>
+                                                    <% categories.forEach(function(category) { %>
+                                                        <option value="<%= category.name %>">
+                                                            <%= category.name %>
+                                                        </option>
+                                                        <% }); %>
+                                                </select>
+                                                <small style="color: red;" id="categoryName"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="offerPrice" class="form-label">Offer Price</label>
+                                                <input type="number" class="form-control"
+                                                    placeholder="Enter Offer Price" name="offerPrice" id="offerPrice"
+                                                    value="<%= categories.name %>">
+                                                <small style="color: red;" id="offerPriceError"></small>
+                                            </div>
+
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            </div>
+                                        </form>
+
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Category name</th>
+                                        <th>Offer Price</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% categoryOffer.forEach((offer)=>{ %>
+                                        <tr>
+                                            <td>
+                                                <%= offer.name %>
+                                            </td>
+                                            <td>
+                                                <%= offer.price %>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-light rounded btn-sm font-sm"
+                                                    onclick="showEditBrandForm('<%= offer._id %>', '<%= offer.name %>','<%= offer.price %>')">Edit</button>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section>
+
+    <script>
+        function showEditBrandForm(brandId, brandName, brandPrice) {
+            document.getElementById('createBrandName').style.display = 'none';
+            document.getElementById('editBrandForm').style.display = 'block';
+            document.getElementById('editBrandName').value = brandName;
+            document.getElementById('editBrandId').value = brandId;
+            document.getElementById('offerPrice').value = brandPrice;
+        }
+    </script>
+
+    <%- include("footer") %>

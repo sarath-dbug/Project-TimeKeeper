@@ -54,6 +54,7 @@
                                             <div class="pro-details-brand">
                                                 <span> Brands: <a href="shop-grid-right.html" style="color: black"><%=products.brand%></a></span>
                                             </div>
+                                            
                                             <div class="product-rate-cover text-end">
                                                 <!-- <div class="product-rate d-inline-block">
                                                     <div class="product-rating" style="width:90%">
@@ -61,6 +62,9 @@
                                                 </div> -->
                                                 <!-- <span class="font-small ml-5 text-muted"> (25 reviews)</span> -->
                                             </div>
+                                        </div>
+                                        <div class="short-desc mb-30">
+                                            <p><%=products.description%></p>
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
@@ -70,9 +74,13 @@
                                             </div>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+
+                                        <% if (categoryOffer) { %>
                                         <div class="short-desc mb-30">
-                                            <p><%=products.description%></p>
+                                            <p style="color: rgb(29, 195, 59)">Special offer ₹<%=categoryOffer.price%></p>
                                         </div>
+                                        <% } %> 
+
                                         <div class="product_sort_info font-xs mb-30">
                                             <ul>
                                                 <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand Warranty</li>

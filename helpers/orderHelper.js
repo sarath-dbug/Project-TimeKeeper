@@ -73,7 +73,7 @@ console.log(products + "**********");
     placingOrder: async (userId, orderData, orderedProducts, totalOrderValue) => {
         return new Promise(async (resolve, reject) => {
             try {
-
+                
                 let orderStatus
                 console.log('Ordered Producttss', orderedProducts)
 
@@ -93,7 +93,7 @@ console.log(products + "**********");
                     user: userId,
                     date: Date(),
                     orderValue: totalOrderValue,
-                    // couponDiscount: orderData.couponDiscount,
+                    couponDiscount: orderData.couponDiscount,
                     paymentMethod: orderData['paymentMethod'],
                     status: orderStatus,
                     items: orderedProducts,
@@ -104,13 +104,10 @@ console.log(products + "**********");
 
                 const placedOrder = await orderDetails.save();
 
-                // console.log(placedOrder, 'placedOrder');
-
                 // Remove the products from the cart
                 await Cart.deleteMany({ user: userId });
 
                 let dbOrderId = placedOrder._id.toString();
-                console.log(dbOrderId, 'order id in stringggggggggggg');
 
                 resolve(dbOrderId)
             } catch (error) {
@@ -133,8 +130,6 @@ console.log(products + "**********");
                 };
 
                 instance.orders.create(orderDetails, function (err, orderDetails) {
-
-
                     if (err) {
                         console.log('Order Creation Error from Razorpay: ' + err);
                         reject(err);
@@ -237,7 +232,6 @@ console.log(products + "**********");
     
     updateOnlineOrderPaymentStatus: (ordersCollectionId, onlinePaymentStatus) => {
         return new Promise(async (resolve, reject) => {
-            console.log(onlinePaymentStatus + "***************************************************///*********");
             try {
                 if (onlinePaymentStatus) {
                     const orderUpdate = await Order.findByIdAndUpdate({ _id: new ObjectId(ordersCollectionId) }, { $set: { status: "Placed" } }).then(() => {

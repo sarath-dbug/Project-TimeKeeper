@@ -47,7 +47,7 @@ userRouter.get('/logout',auth.isLogin,userController.userLogout);
 userRouter.get('/productDetails',blocked.checkBocked,userController.loadProductDetails);
 userRouter.get('/shop',blocked.checkBocked,userController.viewShop);
 userRouter.post('/search',userController.searchProducts);
-
+userRouter.get('/about',blocked.checkBocked,userController.loadAbout);
 
 //userAccount
 userRouter.get('/userAccount',blocked.checkBocked,userAccountController.userAccount);
