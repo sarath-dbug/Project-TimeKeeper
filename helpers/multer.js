@@ -30,6 +30,6 @@ const bannerStorage = multer.diskStorage({
 const bannerUpload = multer({ storage: bannerStorage });
 
 module.exports = {
-  productUpload,
-  bannerUpload
+   productUpload,
+   bannerUpload
 };

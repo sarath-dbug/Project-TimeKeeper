@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Time Keeper - eCommerce HTML Template</title>
+    <title>Time Keeper</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,28 +47,32 @@
                         <a href=""><img src="assets/imgs/theme/timekeeper5.png" alt="logo"></a>
                     </div>
                     <div class="header-right">
-                        <!-- Search bar -->
-                        <div style="display: flex; align-items: center; border: 2px solid #ceb97a; border-radius: 25px; width: 300px; position: relative;
-                                cursor: pointer; transition: background-color 0.3s;"
+                        <!-- Search bar moved to the end -->
+                        <div style="display: flex; align-items: center; border: 2px solid #ceb97a; border-radius: 25px; width: 250px; position: relative;
+                                cursor: pointer; transition: background-color 0.3s; margin-left: 65%;"
                             onmouseover="this.style.backgroundColor='white'; this.style.color='black';"
                             onmouseout="this.style.backgroundColor='black'; this.style.color='white';">
                             <input type="text"
                                 style="border: none; outline: none; padding: 10px; flex: 1; background: transparent;"
                                 placeholder="Search for items...">
                         </div>
+                    </div>
+                    
                         <!-- end -->
                         <div class="header-action-right">
                             <div class="header-action-2">
-                                <div class="header-action-icon-2" style="padding-left: 10px;">
-                                    <a href="/wishList">
-                                        <img class="svgInject" alt="Evara" src="assets/imgs/icons/heart.png">
-                                    </a>
-                                </div>
-                                <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="/userCart">
-                                        <img alt="Evara" src="assets/imgs/icons/bag2.png">
-                                    </a>
-                                </div>
+            
+                                    <div class="header-action-icon-2" style="padding-left: 10px;">
+                                        <a href="/wishList">
+                                            <img class="svgInject" alt="Evara" src="assets/imgs/icons/heart1.png">
+                                        </a>
+                                    </div>
+                                    <div class="header-action-icon-2">
+                                        <a class="mini-cart-icon" href="/userCart">
+                                            <img alt="Evara" src="assets/imgs/icons/bag1.png">
+                                        </a>
+                                    </div>
+                                
 
                                 <div id="loginContainer" style="padding-left: 20px;">
                                     <% if (isAuthenticated===true) { %>
@@ -81,15 +85,9 @@
                                             </a>
                                             <% } %>
                                 </div>
-                                <!-- //user profile -->
-                                <!-- <div class="header-action-icon-2">
-                                        <a class="mini-cart-icon" href="shop-cart.html">
-                                            <img alt="Evara" src="assets/imgs/theme/icons/user1.png">                              
-                                        </a>
-                                        </div> -->
                             </div>
                         </div>
-                    </div>
+            
                 </div>
             </div>
         </div>

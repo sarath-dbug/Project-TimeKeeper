@@ -1,9 +1,9 @@
-<%-include("header")-%>
+<%-include("../userHome/header.ejs")-%>
 
     <!-- Template CSS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 
     <main class="main">
 
@@ -20,28 +20,31 @@
                         <h3 class="animated fw-900" style="color: whitesmoke">Big Deals From</h3>
                         <h2 class="animated fw-900 text-brand">Manufacturer</h2>
                         <p class="animated">Men watches, Women's watches, Vintage and more...</p>
-                        <a class="animated btn btn-brush btn-brush-3" href="/shop"
-                            style="color: whitesmoke"> Shop Now
+                        <a class="animated btn btn-brush btn-brush-3" href="/shop" style="color: whitesmoke"> Shop Now
                         </a>
                     </div>
                 </div>
 
                 <%Banners.forEach(banner=>{%>
                     <%if(!banner.unlist){%>
-                <div style="position: relative;">
-                    <img class="animated" src="/bannerImages/<%= banner.image %>" alt="" style="width: 100%;">
-                    <div class="hero-slider-content-2"
-                        style="position: absolute; top: 40%; left: 19%; transform: translate(-50%, -50%); padding: 10px; font-size: 20px;">
-                        <h5 class="animated"><%= banner.name %></h5>
-                        <h3 class="animated fw-900"><%= banner.discription%></h3>
-                        <h2 class="" style="color: #ceb97a;">Manufacturer</h2>
-                        <p class="animated">Men watches, Women's watches, Vintage and more...</p>
-                        <a class="animated btn btn-brush btn-brush-3" href="/shop"> Shop Now
-                        </a>
-                    </div>
-                </div>
-                <% }  %>
-                <%})%>
+                        <div style="position: relative;">
+                            <img class="animated" src="/bannerImages/<%= banner.image %>" alt="" style="width: 100%;">
+                            <div class="hero-slider-content-2"
+                                style="position: absolute; top: 40%; left: 19%; transform: translate(-50%, -50%); padding: 10px; font-size: 20px;">
+                                <h5 class="animated">
+                                    <%= banner.name %>
+                                </h5>
+                                <h3 class="animated fw-900">
+                                    <%= banner.discription%>
+                                </h3>
+                                <h2 class="" style="color: #ceb97a;">Manufacturer</h2>
+                                <p class="animated">Men watches, Women's watches, Vintage and more...</p>
+                                <a class="animated btn btn-brush btn-brush-3" href="/shop"> Shop Now
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                            <%})%>
 
             </div>
             <div class="slider-arrow hero-slider-1-arrow"></div>
@@ -73,15 +76,10 @@
                                                                     src="/productsImages/<%=products.image[1]%>" alt="">
                                                             </a>
                                                         </div>
-                                                        <div class="product-action-1">
-                                                            <!-- <a aria-label="Quick view" class="action-btn hover-up"
-                                                        data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                                                            class="fi-rs-eye"></i></a> -->
+                                                        <div class="product-action-1">                                                      
                                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                            onclick="addToWishList('<%=products._id%>')"><i
-                                                                    class="fi-rs-heart"></i></a>
-                                                            <!-- <a aria-label="Compare" class="action-btn hover-up"
-                                                        href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
+                                                                onclick="addToWishList('<%=products._id%>')"><i
+                                                                    class="fi-rs-heart"></i></a>                                                          
                                                         </div>
                                                         <div
                                                             class="product-badges product-badges-position product-badges-mrg">
@@ -106,22 +104,24 @@
                                                             <span style="color: black">₹<%=products.sales_price%>
                                                             </span>
                                                             <span class="old-price" style="color: black">₹
-                                                                <%=products.regular_price%></span>
+                                                                <%=products.regular_price%>
+                                                            </span>
                                                         </div>
 
-                                                        <% if (products.stock !== 0) { %>
+                                                        <% if (products.stock !==0) { %>
                                                             <div class="product-action-1 show">
                                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                                onclick="addToCart('<%=products._id%>','<%=products.stock%>')"><i
+                                                                    onclick="addToCart('<%=products._id%>','<%=products.stock%>')"><i
                                                                         class="fi-rs-shopping-bag-add"></i></a>
                                                             </div>
-                                                        <% } else { %>
-                                                            <div class="product-action-1 show">
-                                                              <h2 class="in-stock text-danger ml-5" >Out of Stock</h2>
-                                                            </div>                                                    
-                                                        <% } %>
+                                                            <% } else { %>
+                                                                <div class="product-action-1 show">
+                                                                    <h2 class="in-stock text-danger ml-5">Out of Stock
+                                                                    </h2>
+                                                                </div>
+                                                                <% } %>
 
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,9 +345,10 @@
                             <div class="product-img-action-wrap">
                                 <div class="product-img product-img-zoom">
                                     <a href="shop-product-right.html">
-                                        <img class="default-img" src="assets/imgs/runningImage/runningslide4.webp"
+                                        <img class="default-img" src="assets/imgs/runningImage/runningslide10.webp"
                                             alt="">
-                                        <img class="hover-img" src="assets/imgs/runningImage/runningslide4.webp" alt="">
+                                        <img class="hover-img" src="assets/imgs/runningImage/runningslide10.webp"
+                                            alt="">
                                     </a>
                                 </div>
                                 <div class="product-action-1">
@@ -424,8 +425,8 @@
                                 icon: "success",
                                 timer: 5000,
                             }).then(() => {
-    
-                                if (response.newStock !== undefined){
+
+                                if (response.newStock !== undefined) {
                                     // Select the specific product card by its ID and update the stock
                                     const productStockElement = document.getElementById(`productStock_${proId}`);
                                     if (productStockElement) {
@@ -433,10 +434,10 @@
                                     }
                                 }
                             });
-    
+
                         }
-    
-                         else {
+
+                        else {
                             location.href = "/login";
                         }
                     },
@@ -451,42 +452,42 @@
                 });
             }
         }
-        </script>
+    </script>
 
-<script>
-	function addToWishList(proId) {
-		event.preventDefault();
-    $.ajax({
-      url: '/addToWishlist',
-      method: 'POST',
-      data: {
-        proId: proId
-      },
-      success: (response) => {
-        if (response.status===true) {
-          // Product added to Wishlist successfully
-		  Swal.fire({
-			position: 'centre',
-			icon: 'success',
-			title: 'Product added to wish list',
-			showConfirmButton: false,
-			timer: 1500
-			})
-          
+    <script>
+        function addToWishList(proId) {
+            event.preventDefault();
+            $.ajax({
+                url: '/addToWishlist',
+                method: 'POST',
+                data: {
+                    proId: proId
+                },
+                success: (response) => {
+                    if (response.status === true) {
+                        // Product added to Wishlist successfully
+                        Swal.fire({
+                            position: 'centre',
+                            icon: 'success',
+                            title: 'Product added to wish list',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
 
-        } else {
-          // Error adding product to Wishlist
-          Swal.fire({
-            icon: 'error',
-            title: 'Product already exist in Wishlist',
-            timer: 2000
-          });
 
+                    } else {
+                        // Error adding product to Wishlist
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Product already exist in Wishlist',
+                            timer: 2000
+                        });
+
+                    }
+                }
+            })
         }
-      }
-    })
-  }
-</script>
+    </script>
 
 
-    <%-include("footer")-%>
+<%-include("../userHome/footer.ejs")-%>

@@ -4,13 +4,13 @@ const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    
+
   },
 
   items: [{
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"product",
+      ref: "product",
       required: true
     },
     quantity: {
@@ -27,21 +27,21 @@ const orderSchema = new mongoose.Schema({
 
   total: {
     type: Number,
-   
+
   },
-  couponDiscount:{
-    type:Number,
-    default:0
+  couponDiscount: {
+    type: Number,
+    default: 0
   },
   totalQuantity: {
-    type: Number, 
+    type: Number,
     required: true,
-    min: 1 
+    min: 1
   },
 
   status: {
     type: String,
-    enum: ['Pending', 'Shipped', 'Delivered', 'Returned','Dispatched','Order Cancelled','Requested Return','Placed','Return declined'],
+    enum: ['Pending', 'Shipped', 'Delivered', 'Returned', 'Dispatched', 'Order Cancelled', 'Requested Return', 'Placed', 'Return declined'],
     default: 'Pending',
   },
   createdAt: {
@@ -49,42 +49,42 @@ const orderSchema = new mongoose.Schema({
     default: Date.now
   },
 
-  paymentMethod:{
-    type:String,
-    require:true
+  paymentMethod: {
+    type: String,
+    require: true
   },
-  
-  addressDetails:{
+
+  addressDetails: {
     name: {
-      type:String,
-      require:true
-    
+      type: String,
+      require: true
+
     },
-    mobile:{
-      type:String,
-      require:true
+    mobile: {
+      type: String,
+      require: true
     },
-    homeAddress:{
-      type:String,
-      require:true
+    homeAddress: {
+      type: String,
+      require: true
     },
-    city:{
-      type:String,
-      require:true
+    city: {
+      type: String,
+      require: true
     },
-    street:{
-      type:String,
-      require:true
+    street: {
+      type: String,
+      require: true
     },
-    postalCode:{
-      type:String,
-      require:true
+    postalCode: {
+      type: String,
+      require: true
     }
-  
+
   },
 
 });
 
 const Order = mongoose.model('Order', orderSchema);
 
-module.exports=Order;
+module.exports = Order;

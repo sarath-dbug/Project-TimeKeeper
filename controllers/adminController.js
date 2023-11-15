@@ -46,30 +46,30 @@ const verifyUser = async (req, res) => {
 
 const loadDashboard = async (req, res) => {
    try {
-     const dashBoardDetails = await salesReportHelper.loadingDashboard(req, res);
-     const orderDetails = await salesReportHelper.OrdersList(req, res);
-     const totalUser = dashBoardDetails.totaluser;
-     const totalSales = dashBoardDetails.totalSales;
-     const salesbymonth = dashBoardDetails.salesbymonth;
-     const paymentMethod = dashBoardDetails.paymentMethod;
+      const dashBoardDetails = await salesReportHelper.loadingDashboard(req, res);
+      const orderDetails = await salesReportHelper.OrdersList(req, res);
+      const totalUser = dashBoardDetails.totaluser;
+      const totalSales = dashBoardDetails.totalSales;
+      const salesbymonth = dashBoardDetails.salesbymonth;
+      const paymentMethod = dashBoardDetails.paymentMethod;
 
-     const yearSales = dashBoardDetails.yearSales;
-     const todaySales = dashBoardDetails.todaySales;
-     let sales = encodeURIComponent(JSON.stringify(salesbymonth));
- 
-     res.render("home", {
-       totalUser,
-       todaySales: todaySales[0],
-       totalSales: totalSales[0],
-       salesbymonth: encodeURIComponent(JSON.stringify(salesbymonth)),
-       paymentMethod: encodeURIComponent(JSON.stringify(paymentMethod)),
-       yearSales: yearSales[0],
-       orderDetails: orderDetails,
-     });
+      const yearSales = dashBoardDetails.yearSales;
+      const todaySales = dashBoardDetails.todaySales;
+      let sales = encodeURIComponent(JSON.stringify(salesbymonth));
+
+      res.render("home", {
+         totalUser,
+         todaySales: todaySales[0],
+         totalSales: totalSales[0],
+         salesbymonth: encodeURIComponent(JSON.stringify(salesbymonth)),
+         paymentMethod: encodeURIComponent(JSON.stringify(paymentMethod)),
+         yearSales: yearSales[0],
+         orderDetails: orderDetails,
+      });
    } catch (error) {
-     console.log(error.message);
+      console.log(error.message);
    }
- };
+};
 
 const logout = async (req, res) => {
    try {
@@ -160,7 +160,7 @@ const updateStatus = async (req, res) => {
       order.status = status;
       await order.save();
 
-      return res.redirect("/admin/orderList"); 
+      return res.redirect("/admin/orderList");
    } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Error updating order status" });
@@ -176,22 +176,23 @@ const acceptReturn = async (req, res) => {
          { new: true }
       ).exec();
 
-    
+
       if ((order.paymentMethod === "ONLINE" || order.paymentMethod === "WALLET" || order.paymentMethod === "COD") && order.total > 0) {
          const wallet = await Wallet.findOne({ userId: order.user }).exec();
 
          if (wallet) {
             const updatedWallet = await Wallet.findOneAndUpdate(
                { userId: order.user },
-               { $inc: { walletAmount: order.total },
-               $push: {
-                  transaction: {
-                    status: "Canceled Order", 
-                    amount: order.total,
-                    debitOrCredit: "Credit", 
+               {
+                  $inc: { walletAmount: order.total },
+                  $push: {
+                     transaction: {
+                        status: "Canceled Order",
+                        amount: order.total,
+                        debitOrCredit: "Credit",
+                     },
                   },
-                },
-             },
+               },
                { new: true }
             ).exec();
 

@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true
    },
-   referCode:{
+   referCode: {
       type: String,
       required: true,
    },

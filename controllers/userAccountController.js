@@ -159,7 +159,7 @@ const loadOrderList = async (req, res) => {
    try {
       const userId = req.session.user_id
       let userOrder = await Order.find({ user: userId }).sort({ createdAt: -1 }).populate("items.product").exec();
-          
+
       console.log(userOrder)
       if (userId) {
          const isAuthenticated = true
@@ -235,7 +235,67 @@ const viewOrder = async (req, res) => {
    }
 }
 
+const viewInvoice = async (req,res)=>{
+   try {
+      const orderId = req.query.orderId;
+      console.log(orderId+"orderId");
+      const userId = req.session.user_id
+      const order = await Order.findOne({ _id: orderId }).populate({ path: 'items.product', select: 'product_name sales_price image', })
 
+      const orderDetails = order.items.map(item => {
+         const image = item.product.image || [];                       
+         const images = image.length > 0 ? image[0] : ''; 
+         return {
+            name: item.product.product_name,
+            images: images,
+            price: item.product.sales_price,
+            total: item.price,
+            quantity: item.quantity,
+            status: order.status,
+
+         };
+      });
+
+      const deliveryAddress = {
+         name: order.addressDetails.name,
+         homeAddress: order.addressDetails.homeAddress,
+         city: order.addressDetails.city,
+         street: order.addressDetails.street,
+         postalCode: order.addressDetails.postalCode,
+      };
+
+      const subtotal = order.total;
+      const total = order.total
+      const date = moment(order.createdAt).format('YYYY-MM-DD HH:mm:ss');
+
+
+      if (userId) {
+         const isAuthenticated = true
+         res.render('viewInvoices', {
+            orderDetails: orderDetails,
+            deliveryAddress: deliveryAddress,
+            total: total,
+            orderId: orderId,
+            order: order,
+            date: date,
+            isAuthenticated
+         });
+      } else {
+         const isAuthenticated = false
+         res.render('viewInvoices', {
+            orderDetails: orderDetails,
+            deliveryAddress: deliveryAddress,
+            total: total,
+            orderId: orderId,
+            order: order,
+            date: date,
+            isAuthenticated
+         });
+      }
+   } catch (error) {
+      console.log(error);
+   }
+}
 
 const cancelOrder = async (req, res) => {
    const orderId = req.query.orderId;
@@ -254,16 +314,17 @@ const cancelOrder = async (req, res) => {
             // Wallet exists, increment the wallet amount
             const updatedWallet = await Wallet.findOneAndUpdate(
                { userId: order.user },
-               { $inc: { walletAmount: order.total },
-               $push: {
-                  transaction: {
-                    status: "Canceled Order", // You can set the appropriate status for increment
-                    amount: order.total,
-                    debitOrCredit: "Credit", // Assuming increment is a credit
+               {
+                  $inc: { walletAmount: order.total },
+                  $push: {
+                     transaction: {
+                        status: "Canceled Order", // You can set the appropriate status for increment
+                        amount: order.total,
+                        debitOrCredit: "Credit", // Assuming increment is a credit
+                     },
                   },
-                },
-             },
-               
+               },
+
                { new: true }
             ).exec();
 
@@ -341,14 +402,14 @@ const loadWallet = async (req, res) => {
       const userData = await User.findById({ _id: req.session.user_id });
       let userOrder = await Order.find({ user: req.session.user_id }).sort({ createdAt: -1 }).populate("items.product").exec();
 
-      console.log(wallet +'***************');
+      console.log(wallet + '***************');
 
       if (req.session.user_id) {
          const isAuthenticated = true;
-         res.render('wallet', {wallet, userOrder , isAuthenticated })
+         res.render('wallet', { wallet, userOrder, isAuthenticated })
       } else {
          const isAuthenticated = false;
-         res.render('wallet', {wallet, userOrder, isAuthenticated })
+         res.render('wallet', { wallet, userOrder, isAuthenticated })
       }
 
    } catch (error) {
@@ -369,5 +430,6 @@ module.exports = {
    cancelOrder,
    returnOrder,
    loadCoupon,
-   loadWallet 
+   loadWallet,
+   viewInvoice
 }

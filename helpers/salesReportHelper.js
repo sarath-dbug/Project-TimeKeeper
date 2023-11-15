@@ -7,7 +7,7 @@ const moment = require("moment-timezone");
 
 
 
-const loadingDashboard= async (req, res) => {
+const loadingDashboard = async (req, res) => {
     return new Promise(async (resolve, reject) => {
         try {
             const users = await User.find({}).lean().exec();
@@ -16,7 +16,7 @@ const loadingDashboard= async (req, res) => {
             const totalSales = await Order.aggregate([
                 {
                     $match: {
-                        status: { $in: ["Placed","Delivered"] },
+                        status: { $in: ["Placed", "Delivered"] },
 
                     },
                 },
@@ -31,7 +31,7 @@ const loadingDashboard= async (req, res) => {
             const salesbymonth = await Order.aggregate([
                 {
                     $match: {
-                        status: { $nin: ["Order Cancelled","Pending"] },
+                        status: { $nin: ["Order Cancelled", "Pending"] },
                     },
                 },
                 {
@@ -50,7 +50,7 @@ const loadingDashboard= async (req, res) => {
             const paymentMethod = await Order.aggregate([
                 {
                     $match: {
-                        status: { $in: ["Placed", "Delivered"] }, 
+                        status: { $in: ["Placed", "Delivered"] },
                     },
                 },
                 {
@@ -144,10 +144,10 @@ const loadingDashboard= async (req, res) => {
 
 }
 
-const OrdersList= async (req, res) => {
+const OrdersList = async (req, res) => {
     try {
         let orderDetails = await Order.find().populate('user').lean();
-       
+
         orderDetails = orderDetails.reverse();
 
         const orderHistory = orderDetails.map(history => {
@@ -167,24 +167,24 @@ const OrdersList= async (req, res) => {
 
 
 //new salesReport function
-const orderSuccess= () => {
+const orderSuccess = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            
-                 const order = await Order
+
+            const order = await Order
                 .find({ status: { $in: ["Placed", "Delivered"] } })
                 .sort({ date: -1 })
                 .lean()
                 .exec();
-  
+
             const orderHistory = order.map(history => {
                 let createdOnIST = moment(history.createdAt)
                     .tz('Asia/Kolkata')
                     .format('DD-MM-YYYY h:mm A');
-  
+
                 return { ...history, date: createdOnIST, userName: history.user.name };
             });
-  
+
             const total = await Order.aggregate([
                 {
                     $match: {
@@ -203,7 +203,7 @@ const orderSuccess= () => {
                     },
                 },
             ]);
-    
+
             const orderDetails = {
                 orderHistory,
                 total
@@ -213,11 +213,11 @@ const orderSuccess= () => {
             reject(error)
         }
     })
-  }
+}
 
 
 
-  const salesToday= () => {
+const salesToday = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const todaysales = new Date();
@@ -246,20 +246,20 @@ const orderSuccess= () => {
                     $lt: endOfDay
                 }
             }).sort({ date: -1 })
-  
+
             const orderHistory = order.map(history => {
                 const createdOnIST = moment(history.createdAt).tz('Asia/Kolkata').format('DD-MM-YYYY h:mm A');
                 return { ...history._doc, date: createdOnIST, userName: history.user.name };
             });
-  
+
             const total = await Order.aggregate([
                 {
                     $match: {
-  
+
                         status: { $in: ["Placed", "Delivered"] },
-  
+
                         createdAt: {
-                            $gte: startOfDay, 
+                            $gte: startOfDay,
                             $lt: endOfDay,
                         },
                     },
@@ -276,7 +276,7 @@ const orderSuccess= () => {
                 orderHistory,
                 total
             }
-  
+
             if (order) {
                 resolve(salesToday)
             }
@@ -287,9 +287,9 @@ const orderSuccess= () => {
             reject(error)
         }
     })
-  }
+}
 
-  const weeklySales= () => {
+const weeklySales = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const currentDate = new Date();
@@ -311,7 +311,7 @@ const orderSuccess= () => {
             );
 
             const order = await Order.find({
-                status: { $nin: ["Order Cancelled","Pending","Returned"] },
+                status: { $nin: ["Order Cancelled", "Pending", "Returned"] },
                 createdAt: {
                     $gte: startOfWeek,
                     $lt: endOfWeek
@@ -355,75 +355,75 @@ const orderSuccess= () => {
 }
 
 
-const monthlySales= () => {
-  return new Promise(async (resolve, reject) => {
-      try {
-          const thisMonth = new Date().getMonth() + 1;
-          const startofMonth = new Date(
-              new Date().getFullYear(),
-              thisMonth - 1,
-              1,
-              0,
-              0,
-              0,
-              0
-          );
-          const endofMonth = new Date(
-              new Date().getFullYear(),
-              thisMonth,
-              0,
-              23,
-              59,
-              59,
-              999
-          );
-     
-          const order = await Order.find({
-              status: { $nin: ["Order Cancelled","Returned","Pending"] },
-              createdAt: {
-                  $lt: endofMonth,
-                  $gte: startofMonth,
-              }
-          }).sort({ date: -1 });
+const monthlySales = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const thisMonth = new Date().getMonth() + 1;
+            const startofMonth = new Date(
+                new Date().getFullYear(),
+                thisMonth - 1,
+                1,
+                0,
+                0,
+                0,
+                0
+            );
+            const endofMonth = new Date(
+                new Date().getFullYear(),
+                thisMonth,
+                0,
+                23,
+                59,
+                59,
+                999
+            );
+
+            const order = await Order.find({
+                status: { $nin: ["Order Cancelled", "Returned", "Pending"] },
+                createdAt: {
+                    $lt: endofMonth,
+                    $gte: startofMonth,
+                }
+            }).sort({ date: -1 });
 
 
-          const orderHistory = order.map(history => {
-              const createdOnIST = moment(history.createdAt).tz('Asia/Kolkata').format('DD-MM-YYYY h:mm A');
-              return { ...history._doc, date: createdOnIST, userName: history.user.name };
-          });
+            const orderHistory = order.map(history => {
+                const createdOnIST = moment(history.createdAt).tz('Asia/Kolkata').format('DD-MM-YYYY h:mm A');
+                return { ...history._doc, date: createdOnIST, userName: history.user.name };
+            });
 
-          const total = await Order.aggregate([
-              {
-                  $match: {
-                      status: { $in: ["Placed", "Delivered"] },
-                      createdAt: {
-                          $lt: endofMonth,
-                          $gte: startofMonth,
-                      },
-                  },
-              },
-              {
-                  $group: {
-                      _id: null,
-                      totalAmount: { $sum: "$total" },
-                  },
-              },
-          ]);
+            const total = await Order.aggregate([
+                {
+                    $match: {
+                        status: { $in: ["Placed", "Delivered"] },
+                        createdAt: {
+                            $lt: endofMonth,
+                            $gte: startofMonth,
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalAmount: { $sum: "$total" },
+                    },
+                },
+            ]);
 
-          const monthlySales = {
-              orderHistory,
-              total
-          }
+            const monthlySales = {
+                orderHistory,
+                total
+            }
 
-          resolve(monthlySales)
-      } catch (error) {
-          reject(error)
-      }
-  })
+            resolve(monthlySales)
+        } catch (error) {
+            reject(error)
+        }
+    })
 }
 
 
-const yearlySales= () => {
+const yearlySales = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const today = new Date().getFullYear();
@@ -431,7 +431,7 @@ const yearlySales= () => {
             const endofYear = new Date(today, 11, 31, 23, 59, 59, 999);
 
             const order = await Order.find({
-                status: { $nin: ["Order Cancelled","Pending"] },
+                status: { $nin: ["Order Cancelled", "Pending"] },
                 createdAt: {
                     $lt: endofYear,
                     $gte: startofYear,
@@ -474,7 +474,7 @@ const yearlySales= () => {
 }
 
 
-const salesWithDate= (req, res) => {
+const salesWithDate = (req, res) => {
     return new Promise(async (resolve, reject) => {
         try {
             const date = new Date();
@@ -529,7 +529,7 @@ const salesWithDate= (req, res) => {
 
 
 
-const salesPdf= (req, res) => {
+const salesPdf = (req, res) => {
     return new Promise(async (resolve, reject) => {
         try {
             let startY = 150;
@@ -641,7 +641,7 @@ const salesPdf= (req, res) => {
     })
 }
 
-  module.exports={
+module.exports = {
     orderSuccess,
     loadingDashboard,
     OrdersList,
@@ -651,4 +651,4 @@ const salesPdf= (req, res) => {
     yearlySales,
     salesWithDate,
     salesPdf
-   }
+}

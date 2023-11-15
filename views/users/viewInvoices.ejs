@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeKeeper</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/timekeeper3.png">
+</head>
+<body>
+    
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+<div class="container my-5 d-flex justify-content-center">
+   <div class="card card-1">
+       <div class="card-header bg-white">
+           <div class="media flex-sm-row flex-column-reverse justify-content-between">
+               <div class="col my-auto text-center">
+                <h5 class="color-1 mb-0 change-color" >Receipt</h5>
+               </div>
+           </div>
+       </div>
+       <div class="card-body">
+          
+           <% orderDetails.forEach((order) => { %>
+            <div class="row">
+                <div class="col">
+                    <div class="card card-2">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="sq align-self-center">
+                                    <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0"
+                                        src="/productsImages/<%= order.images %>" alt="" width="135" height="135" />
+                                </div>
+                                <div class="col my-auto text-end">
+                                    <h6 class="mb-0"><%= order.name %></h6>
+                                </div>
+                                <div class="col my-auto text-end">
+                                    <small>Qty: <%= order.quantity %></small>
+                                </div>
+                                <div class="col my-auto text-end">
+                                    <!-- Use text-end to align the content to the right -->
+                                    <small>Price: <%= order.price %></small>
+                                </div>
+                            </div>
+                            <hr class="my-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+             
+           <div class="row mt-4">
+               <div class="col">
+                   <div class="row justify-content-between">
+                       <div class="flex-sm-col text-right col">
+                           <p class="mb-1"><b>Total</b></p>
+                       </div>
+                       <div class="flex-sm-col col-auto">
+                           <p class="mb-1">&#8377;<%=total%></p>
+                       </div>
+                   </div>           
+                   <div class="row justify-content-between">
+                       <div class="flex-sm-col text-right col">
+                           <p class="mb-1"><b>Payment Method</b></p>
+                       </div>
+                       <div class="flex-sm-col col-auto">                       
+                           <p class="mb-1"><span style="color: rgb(18, 104, 28);">-<%=order.paymentMethod%></span></p>                             
+                       </div>
+                   </div>    
+               </div>
+           </div>
+           <hr class="my-3">
+
+           <div class="row invoice">
+               <div class="col">
+                   <p class="mb-1">ORDER ID : <%=orderId%> </p>
+                   <p class="mb-1">ORDER DATE : <%=date%></p>
+                   <p class="mb-1">TRACK ORDER : <%=order.status%></p>
+                   <!-- Add delivery address below -->
+                   <div class="delivery-address-card">
+                       <h6>DELIVERY ADDRESS :</h6>
+                       <div class="delivery-address-details">
+                           <p class="mb-0"><%=deliveryAddress.name%></p>
+                           <p class="mb-0"><%=deliveryAddress.homeAddress%></p>
+                           <p class="mb-0"><%=deliveryAddress.city%></p>
+                           <p class="mb-0"><%=deliveryAddress.street%></p>
+                           <p class="mb-0"><%=deliveryAddress.postalCode%></p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <br>
+
+           <button style="background-color: #4CAF50; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadInvoice()">Download Invoice</button>
+       </div>
+   </div>
+</div>
+
+
+<script>
+ function downloadInvoice() {
+          window.print();
+        }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

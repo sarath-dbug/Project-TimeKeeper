@@ -7,8 +7,8 @@ const ObjectId = mongoose.Types.ObjectId;
 const Razorpay = require('razorpay');
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_FbBfPtRDxh8Wyx',
-  key_secret: 'zrAqEoR5zwfUvRjAAxL7YILQ',
+    key_id: 'rzp_test_FbBfPtRDxh8Wyx',
+    key_secret: 'zrAqEoR5zwfUvRjAAxL7YILQ',
 });
 
 
@@ -33,7 +33,7 @@ module.exports = {
                     quantity: product.quantity,
                     price: product.subtotal
                 }))
-console.log(products + "**********");
+                console.log(products + "**********");
                 if (products) {
                     resolve(products)
                 }
@@ -73,7 +73,7 @@ console.log(products + "**********");
     placingOrder: async (userId, orderData, orderedProducts, totalOrderValue) => {
         return new Promise(async (resolve, reject) => {
             try {
-                
+
                 let orderStatus
                 console.log('Ordered Producttss', orderedProducts)
 
@@ -119,7 +119,7 @@ console.log(products + "**********");
 
 
     generateRazorpayOrder: (orderId, totalOrderValue) => {
-       let orderValue = totalOrderValue * 100
+        let orderValue = totalOrderValue * 100
 
         return new Promise((resolve, reject) => {
             try {
@@ -147,44 +147,44 @@ console.log(products + "**********");
 
     verifyOnlinePayment: (paymentData) => {
 
-        console.log('payment Data',paymentData);
+        console.log('payment Data', paymentData);
 
-        return new Promise((resolve, reject) => {                                           
+        return new Promise((resolve, reject) => {
 
             try {
                 const crypto = require('crypto'); // Requiring crypto Module here for generating server signature for payments verification
 
-                let razorpaySecretKey ='zrAqEoR5zwfUvRjAAxL7YILQ';
-    
-                let hmac = crypto.createHmac('sha256',razorpaySecretKey); // Hashing Razorpay secret key using SHA-256 Algorithm
+                let razorpaySecretKey = 'zrAqEoR5zwfUvRjAAxL7YILQ';
+
+                let hmac = crypto.createHmac('sha256', razorpaySecretKey); // Hashing Razorpay secret key using SHA-256 Algorithm
 
                 console.log(hmac)
-                 
+
                 hmac.update(paymentData['razorpayServerPaymentResponse[razorpay_order_id]'] + '|' + paymentData['razorpayServerPaymentResponse[razorpay_payment_id]']);
 
                 // Updating the hash (re-hashing) by adding Razprpay payment Id and order Id received from client as response
-    
+
                 let serverGeneratedSignature = hmac.digest('hex');
 
 
-                console.log('signature from server  ',serverGeneratedSignature)
+                console.log('signature from server  ', serverGeneratedSignature)
 
                 // Converted the final hashed result into hexa code and saving it as server generated signature
                 let razorpayServerGeneratedSignatureFromClient = paymentData['razorpayServerPaymentResponse[razorpay_signature]']
-    
+
                 if (serverGeneratedSignature === razorpayServerGeneratedSignatureFromClient) {
                     // Checking that is the signature generated in our server using the secret key we obtained by hashing secretkey,orderId & paymentId is same as the signature sent by the server 
-    
+
                     console.log("Payment Signature Verified");
-    
+
                     resolve()
-    
+
                 } else {
-    
+
                     console.log("Payment Signature Verification Failed");
-    
+
                     resolve()
-    
+
                 }
             } catch (error) {
                 reject(error)
@@ -197,24 +197,24 @@ console.log(products + "**********");
 
     xverifyOnlinePayment: (paymentData) => {
 
-        console.log('paymen Data-->',paymentData)
+        console.log('paymen Data-->', paymentData)
 
         return new Promise((resolve, reject) => {
             try {
                 const crypto = require('crypto');
                 const razorpaySecretKey = 'zrAqEoR5zwfUvRjAAxL7YILQ';
-                
+
                 const hmac = crypto.createHmac('sha256', razorpaySecretKey);
-    
+
                 const order_id = paymentData.razorpayServerPaymentResponse.razorpay_order_id;
                 const payment_id = paymentData.razorpayServerPaymentResponse.razorpay_payment_id;
-    
+
                 hmac.update(order_id + '|' + payment_id);
-                
+
                 const serverGeneratedSignature = hmac.digest('hex');
-                
+
                 const razorpayServerGeneratedSignatureFromClient = paymentData.razorpayServerPaymentResponse.razorpay_signature;
-                
+
                 if (serverGeneratedSignature === razorpayServerGeneratedSignatureFromClient) {
                     console.log("Payment Signature Verified");
                     resolve();
@@ -229,7 +229,7 @@ console.log(products + "**********");
     },
 
 
-    
+
     updateOnlineOrderPaymentStatus: (ordersCollectionId, onlinePaymentStatus) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -237,7 +237,7 @@ console.log(products + "**********");
                     const orderUpdate = await Order.findByIdAndUpdate({ _id: new ObjectId(ordersCollectionId) }, { $set: { status: "Placed" } }).then(() => {
                         resolve()
                     });
-    
+
                 } else {
                     const orderUpdate = await Order.findByIdAndUpdate({ _id: new ObjectId(ordersCollectionId) }, { $set: { status: "Failed" } }).then(() => {
                         resolve()
@@ -246,7 +246,7 @@ console.log(products + "**********");
             } catch (error) {
                 reject(error)
             }
-           
+
         })
     },
 
@@ -277,17 +277,17 @@ console.log(products + "**********");
                     const transactionData = {
                         status: 'Order',
                         amount: orderDetails.total,
-                        debitOrCredit: 'Debit', 
-                      };
+                        debitOrCredit: 'Debit',
+                    };
 
-                      const updatedWallet = await Wallet.findOneAndUpdate(
+                    const updatedWallet = await Wallet.findOneAndUpdate(
                         { userId: userId },
                         {
-                          $set: { walletAmount: updatedWalletAmount },
-                          $push: { transaction: transactionData },
+                            $set: { walletAmount: updatedWalletAmount },
+                            $push: { transaction: transactionData },
                         },
                         { new: true }
-                      ).exec();
+                    ).exec();
 
                     resolve(updatedWalletAmount);
                 } else {

@@ -1,20 +1,18 @@
+<%-include("../userHome/header.ejs")-%>
 
-    
-<%-include("header")-%>
-    
-<!-- Template CSS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    <!-- Template CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 
-    <main class="main"> 
+    <main class="main">
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-12">
                         <div class="product-detail accordion-detail">
                             <div class="row mb-50">
-                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
                                     <div class="detail-gallery">
                                         <span class="zoom-icon"><i class="fi-rs-search"></i></span>
                                         <!-- MAIN SLIDES -->
@@ -31,88 +29,121 @@
                                         </div>
                                         <!-- THUMBNAILS -->
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            <div><img src="/productsImages/<%=products.image[0]%>" alt="product image"></div>
-                                            <div><img src="/productsImages/<%=products.image[1]%>" alt="product image"></div>
-                                            <div><img src="/productsImages/<%=products.image[2]%>" alt="product image"></div>
+                                            <div><img src="/productsImages/<%=products.image[0]%>" alt="product image">
+                                            </div>
+                                            <div><img src="/productsImages/<%=products.image[1]%>" alt="product image">
+                                            </div>
+                                            <div><img src="/productsImages/<%=products.image[2]%>" alt="product image">
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- End Gallery -->
                                     <div class="social-icons single-share">
                                         <ul class="text-grey-5 d-inline-block">
                                             <li><strong class="mr-10">Share this:</strong></li>
-                                            <li class="social-facebook"><a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
-                                            <li class="social-twitter"> <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
-                                            <li class="social-instagram"><a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
-                                            <li class="social-linkedin"><a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
+                                            <li class="social-facebook"><a href="#"><img
+                                                        src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
+                                            <li class="social-twitter"> <a href="#"><img
+                                                        src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
+                                            <li class="social-instagram"><a href="#"><img
+                                                        src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                            </li>
+                                            <li class="social-linkedin"><a href="#"><img
+                                                        src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
-                                        <h2 class="title-detail"><%=products.product_name%></h2>
+                                        <h2 class="title-detail">
+                                            <%=products.product_name%>
+                                        </h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brands: <a href="shop-grid-right.html" style="color: black"><%=products.brand%></a></span>
+                                                <span> Brands: <a href="shop-grid-right.html" style="color: black">
+                                                        <%=products.brand%>
+                                                    </a></span>
                                             </div>
-                                            
+
                                             <div class="product-rate-cover text-end">
-                                                <!-- <div class="product-rate d-inline-block">
-                                                    <div class="product-rating" style="width:90%">
-                                                    </div>
-                                                </div> -->
-                                                <!-- <span class="font-small ml-5 text-muted"> (25 reviews)</span> -->
+                                              
                                             </div>
                                         </div>
                                         <div class="short-desc mb-30">
-                                            <p><%=products.description%></p>
+                                            <p>
+                                                <%=products.description%>
+                                            </p>
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
-                                                <ins><span class="" style="color: black">₹<%=products.sales_price%></span></ins>
-                                                <ins><span class="old-price font-md ml-15">₹<%=products.regular_price%></span></ins>
-                                                
+                                                <ins><span class="" style="color: black">₹<%=products.sales_price%>
+                                                    </span></ins>
+                                                <ins><span class="old-price font-md ml-15">₹<%=products.regular_price%>
+                                                    </span></ins>
+
                                             </div>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
 
                                         <% if (categoryOffer) { %>
-                                        <div class="short-desc mb-30">
-                                            <p style="color: rgb(29, 195, 59)">Special offer ₹<%=categoryOffer.price%></p>
-                                        </div>
-                                        <% } %> 
-
-                                        <div class="product_sort_info font-xs mb-30">
-                                            <ul>
-                                                <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand Warranty</li>
-                                                <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy</li>
-                                                <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-                                        <div class="detail-extralink">
-                                            <!-- <div class="detail-qty border radius">
-                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <span class="qty-val">1</span>
-                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                            </div> -->
-                                            <% if (products.stock !== 0) { %>
-                                                <div class="product-extra-link2">
-                                                    <button type="submit" class="button button-add-to-cart" onclick="addToCart('<%=products._id%>','<%=products.stock%>')">Add to cart</button>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addToWishList('<%=products._id%>')"><i class="fi-rs-heart"></i></a>  
-                                                </div>                                               
-                                            <% } else { %>
-                                                <li style="color: black">Availability:<span class="in-stock text-danger ml-5" >Out of stock</span></li>
-                                            <% } %>                                           
-                                        </div>
-                                        <ul class="product-meta font-xs color-grey mt-50">
-                                            <% if (products.stock !== 0) { %>
-                                                <li style="color: black">Availability:<span class="in-stock  ml-5" style="color: black"><%=products.stock%></span></li>
-                                            <% } else { %>
-                                                <!-- <li style="color: black">Availability:<span class="in-stock text-danger ml-5" >Out of stock</span></li> -->
+                                            <div class="short-desc mb-30">
+                                                <p style="color: rgb(29, 195, 59)">Special offer ₹
+                                                    <%=categoryOffer.price%>
+                                                </p>
+                                            </div>
                                             <% } %>
-                                            <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
-                                            <li class="mb-5">Tags: <a href="#" rel="tag">Men's Watches</a>, <a href="#" rel="tag">Women's Watches</a>, <a href="#" rel="tag">Vintage Watches</a> </li>                                                                                                                                      
-                                       </ul>
+
+                                                <div class="product_sort_info font-xs mb-30">
+                                                    <ul>
+                                                        <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL
+                                                            Jazeera Brand Warranty</li>
+                                                        <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day
+                                                            Return Policy</li>
+                                                        <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery
+                                                            available</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                                <div class="detail-extralink">
+                                          
+                                                    <% if (products.stock !==0) { %>
+                                                        <div class="product-extra-link2">
+                                                            <button type="submit" class="button button-add-to-cart"
+                                                                onclick="addToCart('<%=products._id%>','<%=products.stock%>')">Add
+                                                                to cart</button>
+
+                                                                <% if (exitWish !== null) { %>
+                                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" style="background-color: rgb(161, 186, 170);"
+                                                                onclick="addToWishList('<%=products._id%>')"><i
+                                                                    class="fi-rs-heart"></i></a>
+                                                                    <% } else { %>
+                                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                                        onclick="addToWishList('<%=products._id%>')"><i
+                                                                            class="fi-rs-heart"></i></a>
+                                                                        <% } %>
+                                                        </div>
+                                                        <% } else { %>
+                                                            <li style="color: black">Availability:<span
+                                                                    class="in-stock text-danger ml-5">Out of
+                                                                    stock</span></li>
+                                                            <% } %>
+                                                </div>
+                                                <ul class="product-meta font-xs color-grey mt-50">
+                                                    <% if (products.stock !==0) { %>
+                                                        <li style="color: black">Availability:<span
+                                                                class="in-stock  ml-5" style="color: black">
+                                                                <%=products.stock%>
+                                                            </span></li>
+                                                        <% } else { %>
+                                                            <!-- <li style="color: black">Availability:<span class="in-stock text-danger ml-5" >Out of stock</span></li> -->
+                                                            <% } %>
+                                                                <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
+                                                                <li class="mb-5">Tags: <a href="#" rel="tag">Men's
+                                                                        Watches</a>, <a href="#" rel="tag">Women's
+                                                                        Watches</a>, <a href="#" rel="tag">Vintage
+                                                                        Watches</a> </li>
+                                                </ul>
                                     </div>
                                     <!-- Detail Info -->
                                 </div>
@@ -120,7 +151,8 @@
                             <div class="tab-style3">
                                 <ul class="nav nav-tabs text-uppercase">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="Description-tab" data-bs-toggle="tab" href="#Description">Description</a>
+                                        <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
+                                            href="#Description">Description</a>
                                     </li>
                                     <!-- <li class="nav-item">
                                         <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab" href="#Additional-info">Additional info</a>
@@ -132,118 +164,311 @@
                                 <div class="tab-content shop_info_tab entry-main-content">
                                     <div class="tab-pane fade show active" id="Description">
                                         <div class="">
-                                            <p>Uninhibited carnally hired played in whimpered dear gorilla koala depending and much yikes off far quetzal goodness and from for grimaced goodness unaccountably and meadowlark near unblushingly crucial scallop
+                                            <p>Uninhibited carnally hired played in whimpered dear gorilla koala
+                                                depending and much yikes off far quetzal goodness and from for grimaced
+                                                goodness unaccountably and meadowlark near unblushingly crucial scallop
                                                 tightly neurotic hungrily some and dear furiously this apart.</p>
-                                            <p>Spluttered narrowly yikes left moth in yikes bowed this that grizzly much hello on spoon-fed that alas rethought much decently richly and wow against the frequent fluidly at formidable acceptably flapped
-                                                besides and much circa far over the bucolically hey precarious goldfinch mastodon goodness gnashed a jellyfish and one however because.
+                                            <p>Spluttered narrowly yikes left moth in yikes bowed this that grizzly much
+                                                hello on spoon-fed that alas rethought much decently richly and wow
+                                                against the frequent fluidly at formidable acceptably flapped
+                                                besides and much circa far over the bucolically hey precarious goldfinch
+                                                mastodon goodness gnashed a jellyfish and one however because.
                                             </p>
                                             <ul class="product-more-infor mt-30">
-                                                <li><span>Type Of Packing</span> Bottle</li>
-                                                <li><span>Color</span> Green, Pink, Powder Blue, Purple</li>
-                                                <li><span>Quantity Per Case</span> 100ml</li>
-                                                <li><span>Ethyl Alcohol</span> 70%</li>
+                                                <li><span>Type Of Packing</span> Watches</li>
+                                                <li><span>Color</span> Green, Black, Powder Blue, Purple</li>
+                                                <li><span>Quantity Of Product</span> 3.pcs</li>
                                                 <li><span>Piece In One</span> Carton</li>
                                             </ul>
                                             <hr class="wp-block-separator is-style-dots">
-                                            <p>Laconic overheard dear woodchuck wow this outrageously taut beaver hey hello far meadowlark imitatively egregiously hugged that yikes minimally unanimous pouted flirtatiously as beaver beheld above forward
-                                                energetic across this jeepers beneficently cockily less a the raucously that magic upheld far so the this where crud then below after jeez enchanting drunkenly more much wow callously irrespective limpet.</p>
+                                            <p>Laconic overheard dear woodchuck wow this outrageously taut beaver hey
+                                                hello far meadowlark imitatively egregiously hugged that yikes minimally
+                                                unanimous pouted flirtatiously as beaver beheld above forward
+                                                energetic across this jeepers beneficently cockily less a the raucously
+                                                that magic upheld far so the this where crud then below after jeez
+                                                enchanting drunkenly more much wow callously irrespective limpet.</p>
                                             <h4 class="mt-30">Packaging & Delivery</h4>
                                             <hr class="wp-block-separator is-style-wide">
-                                            <p>Less lion goodness that euphemistically robin expeditiously bluebird smugly scratched far while thus cackled sheepishly rigid after due one assenting regarding censorious while occasional or this more crane
-                                                went more as this less much amid overhung anathematic because much held one exuberantly sheep goodness so where rat wry well concomitantly.
+                                            <p>Less lion goodness that euphemistically robin expeditiously bluebird
+                                                smugly scratched far while thus cackled sheepishly rigid after due one
+                                                assenting regarding censorious while occasional or this more crane
+                                                went more as this less much amid overhung anathematic because much held
+                                                one exuberantly sheep goodness so where rat wry well concomitantly.
                                             </p>
-                                            <p>Scallop or far crud plain remarkably far by thus far iguana lewd precociously and and less rattlesnake contrary caustic wow this near alas and next and pled the yikes articulate about as less cackled dalmatian
-                                                in much less well jeering for the thanks blindly sentimental whimpered less across objectively fanciful grimaced wildly some wow and rose jeepers outgrew lugubrious luridly irrationally attractively
+                                            <p>Scallop or far crud plain remarkably far by thus far iguana lewd
+                                                precociously and and less rattlesnake contrary caustic wow this near
+                                                alas and next and pled the yikes articulate about as less cackled
+                                                dalmatian
+                                                in much less well jeering for the thanks blindly sentimental whimpered
+                                                less across objectively fanciful grimaced wildly some wow and rose
+                                                jeepers outgrew lugubrious luridly irrationally attractively
                                                 dachshund.
                                             </p>
+                                            <hr class="wp-block-separator is-style-dots">
                                         </div>
-                                    </div>                                                     
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row mt-60">
-                                <div class="col-12">
-                                    <h3 class="section-title style-1 mb-30">Related products</h3>
-                                </div>
-                                <div class="col-12">
-                                    <div class="row related-products">
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                            <section class="section-padding">
+                                <div class="container wow fadeIn animated">
+                                    <h5 class="section-title mb-20"><span style="color: #ceb97a;">RELATED
+                                        </span>PRODUCTS
+                                        GUIDE</h5>
+                                    <div class="carausel-6-columns-cover position-relative">
+                                        <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow"
+                                            id="carausel-6-columns-2-arrows">
+                                        </div>
+                                        <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-columns-2">
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="shop-product-right.html" tabindex="0">
-                                                            <img class="default-img" src="assets/imgs/runningImage/runningslide5.webp" alt="">
-                                                            <img class="hover-img" src="assets/imgs/runningImage/runningslide5.webp" alt="">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide7.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide7.webp"
+                                                                alt="">
                                                         </a>
                                                     </div>
                                                     <div class="product-action-1">
-                                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a>
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
+
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
                                                     </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
                                                         <span class="new" style="color: black">Hot</span>
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
-                                                    <h2><a href="shop-product-right.html">Vestibulum ante</a></h2>
+                                                    <h2><a href="shop-product-right.html">Lorem ipsum dolor</a></h2>
                                                     <!-- <div class="rating-result" title="90%">
                                                         <span>
                                                         </span>
                                                     </div> -->
                                                     <div class="product-price">
-                                                        <span style="color: black">₹21,750</span>
-                                                        <span class="old-price">₹22,800</span>
+                                                        <span style="color: black">₹97,350</span>
+                                                        <span class="old-price">₹99,500</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                            <!--End product-cart-wrap-2-->
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="shop-product-right.html" tabindex="0">
-                                                            <img class="default-img" src="assets/imgs/runningImage/runningslide7.webp" alt="">
-                                                            <img class="hover-img" src="assets/imgs/runningImage/runningslide7.webp" alt="">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide2.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide2.webp"
+                                                                alt="">
                                                         </a>
                                                     </div>
                                                     <div class="product-action-1">
-                                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a>
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
                                                     </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="new" style="color: black">Hot</span>
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="new" style="color: black">New</span>
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
-                                                    <h2><a href="shop-product-right.html">Vestibulum ante</a></h2>
+                                                    <h2><a href="shop-product-right.html">Aliquam posuere</a></h2>
                                                     <!-- <div class="rating-result" title="90%">
                                                         <span>
                                                         </span>
                                                     </div> -->
                                                     <div class="product-price">
-                                                        <span style="color: black">₹21,750</span>
-                                                        <span class="old-price">₹22,800</span>
+                                                        <span style="color: black">₹86,500</span>
+                                                        <span class="old-price">₹,88,800</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                            <!--End product-cart-wrap-2-->
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="shop-product-right.html" tabindex="0">
-                                                            <img class="default-img" src="assets/imgs/runningImage/runningslide3.webp" alt="">
-                                                            <img class="hover-img" src="assets/imgs/runningImage/runningslide3.webp" alt="">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide3.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide3.webp"
+                                                                alt="">
                                                         </a>
                                                     </div>
                                                     <div class="product-action-1">
-                                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a>
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
+
                                                     </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="new" style="color: black">Sale</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap">
+                                                    <h2><a href="shop-product-right.html">Sed dapibus orci</a></h2>
+                                                    <!-- <div class="rating-result" title="90%">
+                                                        <span>
+                                                        </span>
+                                                    </div> -->
+                                                    <div class="product-price">
+                                                        <span style="color: black">₹17,800</span>
+                                                        <span class="old-price">₹18,250</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--End product-cart-wrap-2-->
+                                            <div class="product-cart-wrap small hover-up">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide1.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide1.webp"
+                                                                alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
+
+                                                    </div>
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="new" style="color: black">-25%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap">
+                                                    <h2><a href="shop-product-right.html">Curabitur porta</a></h2>
+                                                    <!-- <div class="rating-result" title="90%">
+                                                        <span>
+                                                        </span>
+                                                    </div> -->
+                                                    <div class="product-price">
+                                                        <span style="color: black">₹14,360</span>
+                                                        <span class="old-price">₹17,405</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--End product-cart-wrap-2-->
+                                            <div class="product-cart-wrap small hover-up">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide5.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide5.webp"
+                                                                alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
+
+                                                    </div>
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="new" style="color: black">-25%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap">
+                                                    <h2><a href="shop-product-right.html">Curabitur porta</a></h2>
+                                                    <!-- <div class="rating-result" title="90%">
+                                                        <span>
+                                                        </span>
+                                                    </div> -->
+                                                    <div class="product-price">
+                                                        <span style="color: black">₹42,500</span>
+                                                        <span class="old-price">₹44,600</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--End product-cart-wrap-2-->
+                                            <div class="product-cart-wrap small hover-up">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide6.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide6.webp"
+                                                                alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
+
+                                                    </div>
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="new" style="color: black">New</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap">
+                                                    <h2><a href="shop-product-right.html">Praesent maximus</a></h2>
+                                                    <!-- <div class="rating-result" title="90%">
+                                                        <span>
+                                                        </span>
+                                                    </div> -->
+                                                    <div class="product-price">
+                                                        <span style="color: black">₹36,800 </span>
+                                                        <span class="old-price">₹37,000</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--End product-cart-wrap-2-->
+                                            <div class="product-cart-wrap small hover-up">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="shop-product-right.html">
+                                                            <img class="default-img"
+                                                                src="assets/imgs/runningImage/runningslide10.webp"
+                                                                alt="">
+                                                            <img class="hover-img"
+                                                                src="assets/imgs/runningImage/runningslide10.webp"
+                                                                alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                            href="shop-cart.html"><i
+                                                                class="fi-rs-shopping-bag-add"></i></a>
+
+                                                    </div>
+                                                    <div
+                                                        class="product-badges product-badges-position product-badges-mrg">
                                                         <span class="new" style="color: black">New</span>
                                                     </div>
                                                 </div>
@@ -260,50 +485,32 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                            <div class="product-cart-wrap small hover-up mb-0">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="shop-product-right.html" tabindex="0">
-                                                            <img class="default-img" src="assets/imgs/runningImage/runningslide1.webp" alt="">
-                                                            <img class="hover-img" src="assets/imgs/runningImage/runningslide1.webp" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="product-action-1">
-                                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a>
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
-                                                    </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="new" style="color: black">Hot</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <h2><a href="shop-product-right.html">Vestibulum ante</a></h2>
-                                                    <!-- <div class="rating-result" title="90%">
-                                                        <span>
-                                                        </span>
-                                                    </div> -->
-                                                    <div class="product-price">
-                                                        <span style="color: black">₹21,750</span>
-                                                        <span class="old-price">₹22,800</span>
-                                                    </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <hr class="wp-block-separator is-style-dots">
+                            <section class="mb-50">
+                                <div class="container">
+                                    <h4 class="section-title mb-20"><span style="color: #ceb97a;">Today’s</span>Offer
+                                    </h4>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="banner-bg wow fadeIn animated"
+                                                style="background-image: url('assets/imgs/slider/slide8.jpg')">
+                                                <div class="banner-content">
+                                                    <h5 class="text-grey-4 mb-15">Shop Today’s Deals</h5>
+                                                    <h2 class="fw-600">. Big Sale Up to
+                                                        40%</h2>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
-                                <img class="border-radius-10" src="assets/imgs/slider/slide8.jpg" alt="">
-                                <div class="banner-text">
-                                    <h4 class="mb-15 mt-40">Repair Services</h4>
-                                    <h2 class="fw-600 mb-20">We're an Apple <br>Authorised <br> Service Provider .</h2>
-                                </div>
-                            </div>
+                            </section>
+
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </section>
@@ -331,8 +538,8 @@
                                 icon: "success",
                                 timer: 5000,
                             }).then(() => {
-    
-                                if (response.newStock !== undefined){
+
+                                if (response.newStock !== undefined) {
                                     // Select the specific product card by its ID and update the stock
                                     const productStockElement = document.getElementById(`productStock_${proId}`);
                                     if (productStockElement) {
@@ -340,10 +547,10 @@
                                     }
                                 }
                             });
-    
+
                         }
-    
-                         else {
+
+                        else {
                             location.href = "/login";
                         }
                     },
@@ -358,43 +565,41 @@
                 });
             }
         }
-        </script>
+    </script>
 
-<script>
-	function addToWishList(proId) {
-		event.preventDefault();
-    $.ajax({
-      url: '/addToWishlist',
-      method: 'POST',
-      data: {
-        proId: proId
-      },
-      success: (response) => {
-        if (response.status===true) {
-          // Product added to Wishlist successfully
-		  Swal.fire({
-			position: 'centre',
-			icon: 'success',
-			title: 'Product added to wish list',
-			showConfirmButton: false,
-			timer: 1500
-			})
-          
+    <script>
+        function addToWishList(proId) {
+            event.preventDefault();
+            $.ajax({
+                url: '/addToWishlist',
+                method: 'POST',
+                data: {
+                    proId: proId
+                },
+                success: (response) => {
+                    if (response.status === true) {
+                        // Product added to Wishlist successfully
+                        Swal.fire({
+                            position: 'centre',
+                            icon: 'success',
+                            title: 'Product added to wish list',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
 
-        } else {
-          // Error adding product to Wishlist
-          Swal.fire({
-            icon: 'error',
-            title: 'Product already exist in Wishlist',
-            timer: 2000
-          });
 
+                    } else {
+                        // Error adding product to Wishlist
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Product already exist in Wishlist',
+                            timer: 2000
+                        });
+
+                    }
+                }
+            })
         }
-      }
-    })
-  }
-</script>
+    </script>
 
-    <%-include("footer")-%>
-    
-    
+<%-include("../userHome/footer.ejs")-%>

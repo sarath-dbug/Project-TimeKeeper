@@ -12,12 +12,12 @@ const wishListSchema = new mongoose.Schema({
         ref: "Product",
       },
       quantity: {
-        type: Number, 
-        default: 1,   
+        type: Number,
+        default: 1,
       },
-      subtotal:{
-        type:Number,
-        default:0
+      subtotal: {
+        type: Number,
+        default: 0
       },
       createdAt: {
         type: Date,

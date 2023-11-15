@@ -1,248 +1,270 @@
 <%-include('header')%>
-  <!-- Template CSS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    <!-- Template CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 
-<main class="main">
+    <main class="main">
 
-    <section class="mt-50 mb-50">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="table-responsive">
-                        <table class="table shopping-summery text-center clean">
-                            <thead>
-                                <tr class="main-heading">
-                                    <th scope="col">Image</th>
-                                    <!-- <th scope="col">stock</th> -->
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Subtotal</th>
-                                    <th scope="col">Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody  id="cart-items-table">
-                               <%if(products && products.length >0) {%>
-                                <%products.forEach(product =>{%>
-                                <tr>
-                                    
-                                    <td class="image product-thumbnail"><img src="/productsImages/<%=product.productId.image[0]%>" alt="#"></td>
-                                    <td class="text-center stock" data-productid="<%= product.productId._id %>" data-stock="<%= product.productId.stock %>" hidden>
-                                        <%= product.productId.stock %>
-                                    </td>
-                                    
-                                    <td class="product-des product-name">
-                                        <h5 class="product-name"><a href="shop-product-right.html"><%=product.productId.product_name%> </a></h5>
-                                        <p class="font-xs"></p>
-                                    </td>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table shopping-summery text-center clean">
+                                <thead>
+                                    <tr class="main-heading">
+                                        <th scope="col">Image</th>
+                                        <!-- <th scope="col">stock</th> -->
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart-items-table">
+                                    <%if(products && products.length>0) {%>
+                                        <%products.forEach(product=>{%>
+                                            <tr>
 
-                                    <td class="price" data-title="Price"><span><%=product.productId.sales_price%></span></td>
-                              
-                                    <td class="text-center" data-title="Stock">
-                                        <div class="detail-qty border radius m-auto" >
-                                            <a href="#" class="qty-down" onclick="changeQuantity('<%=product.productId._id%>',-1)"><i class="fi-rs-angle-small-down"></i></a>
-                                            <span class="qty-val"><%=product.quantity%></span>
-                                           
-                                            <a href="#" class="qty-up" onclick="changeQuantity('<%=product.productId._id%>',1)"><i class="fi-rs-angle-small-up"></i></a>
-                                        </div>
-                                    </td>
-                                    
-                                    <td class="text-right" data-title="Cart">
-                                        <span>₹<span class="subtotal" id="subtotal-<%= product.productId %>"><%=product.subtotal%></span></span>
-                                    </td>
-                                    <td class="action" data-title="Remove"><a href="#" class="text-muted" onclick="removeCartItem('<%= product.productId._id %>')">
-                                        <i class="fi-rs-trash"></i></a></td>
+                                                <td class="image product-thumbnail"><img
+                                                        src="/productsImages/<%=product.productId.image[0]%>" alt="#">
+                                                </td>
+                                                <td class="text-center stock"
+                                                    data-productid="<%= product.productId._id %>"
+                                                    data-stock="<%= product.productId.stock %>" hidden>
+                                                    <%= product.productId.stock %>
+                                                </td>
 
-                                </tr>
-                                <%})%>
-                                <%}else{%>
-                                    <tr>
-                                        <td colspan="6" class="text-center">
-                                          <p>No items in the cart</p>
-                                        </td>
-                                      </tr>
-                                    <tr>
-                                 <%}%>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                                <td class="product-des product-name">
+                                                    <h5 class="product-name"><a href="shop-product-right.html">
+                                                            <%=product.productId.product_name%>
+                                                        </a></h5>
+                                                    <p class="font-xs"></p>
+                                                </td>
 
-                    <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
-                    
-                    <div class="row mb-50">
-                        <div class="col-lg-6 col-md-12">
-                            <div class="border p-md-4 p-30 border-radius cart-totals">
-                                <div class="heading_s1 mb-3">
-                                    <h4>Cart Totals</h4>
+                                                <td class="price" data-title="Price"><span>
+                                                        <%=product.productId.sales_price%>
+                                                    </span></td>
+
+                                                <td class="text-center" data-title="Stock">
+                                                    <div class="detail-qty border radius m-auto">
+                                                        <a href="#" class="qty-down"
+                                                            onclick="changeQuantity('<%=product.productId._id%>',-1)"><i
+                                                                class="fi-rs-angle-small-down"></i></a>
+                                                        <span class="qty-val">
+                                                            <%=product.quantity%>
+                                                        </span>
+
+                                                        <a href="#" class="qty-up"
+                                                            onclick="changeQuantity('<%=product.productId._id%>',1)"><i
+                                                                class="fi-rs-angle-small-up"></i></a>
+                                                    </div>
+                                                </td>
+
+                                                <td class="text-right" data-title="Cart">
+                                                    <span>₹<span class="subtotal"
+                                                            id="subtotal-<%= product.productId %>">
+                                                            <%=product.subtotal%>
+                                                        </span></span>
+                                                </td>
+                                                <td class="action" data-title="Remove"><a href="#" class="text-muted"
+                                                        onclick="removeCartItem('<%= product.productId._id %>')">
+                                                        <i class="fi-rs-trash"></i></a></td>
+
+                                            </tr>
+                                            <%})%>
+                                                <%}else{%>
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">
+                                                            <p>No items in the cart</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <%}%>
+                                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+
+                        <div class="row mb-50">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="border p-md-4 p-30 border-radius cart-totals">
+                                    <div class="heading_s1 mb-3">
+                                        <h4>Cart Totals</h4>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="cart_total_label">Cart Subtotal</td>
+                                                    <td class="cart_total_amount"><span
+                                                            class="font-xl fw-900 text-brand"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="cart_total_label">Shipping</td>
+                                                    <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free
+                                                        Shipping</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="cart_total_label">Total</td>
+                                                    <td class="cart_total_amount"><strong><span
+                                                                class="font-xl fw-900 text-brand"></span></strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- <a href="/checkOut?id=<%=user._id%>" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a> -->
+
+                                        <a href="#" class="btn" onclick="proceedToCheckout('<%=user._id%>')">
+                                            <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut
+                                        </a>
+
+                                        <a class="btn" href="/home"><i class="fi-rs-shopping-bag mr-10"></i>Continue
+                                            Shopping</a>
+                                    </div>
+
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <td class="cart_total_label">Cart Subtotal</td>
-                                                <td class="cart_total_amount"><span class="font-xl fw-900 text-brand"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cart_total_label">Shipping</td>
-                                                <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free Shipping</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cart_total_label">Total</td>
-                                                <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand"></span></strong></td>
-                                            </tr>
-                                        </tbody>                      
-                                    </table>
-                                    <!-- <a href="/checkOut?id=<%=user._id%>" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a> -->
-
-                                    <a href="#" class="btn" onclick="proceedToCheckout('<%=user._id%>')">
-                                        <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut
-                                    </a>
-
-                                    <a class="btn" href="/home"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 
 
-<script>
-    // ...
+    <script>
+        // ...
 
-    function proceedToCheckout(userId) {
-        // Check if any product quantities exceed the available stock
-        let exceedsStock = false;
+        function proceedToCheckout(userId) {
+            // Check if any product quantities exceed the available stock
+            let exceedsStock = false;
 
-        // Loop through each product in the cart
-        $('tr').each(function() {
-            const productId = $(this).find('td.stock').data('productid');
-            var stock = parseInt($(this).find('td.stock').data('stock'));
-            var quantity = parseInt($(this).find('span.qty-val').text());
+            // Loop through each product in the cart
+            $('tr').each(function () {
+                const productId = $(this).find('td.stock').data('productid');
+                var stock = parseInt($(this).find('td.stock').data('stock'));
+                var quantity = parseInt($(this).find('span.qty-val').text());
 
-            if (quantity > stock) {
-                qty = quantity;
-                stk = stock;
-                exceedsStock = true;
-                return false; // Break the loop
-            }
-        });
-
-        if (exceedsStock) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Quantity Exceeded',
-                text: 'One or more product quantities exceed the available stock('+stk+'). Please adjust your quantity('+qty+')before proceeding to checkout.',
+                if (quantity > stock) {
+                    qty = quantity;
+                    stk = stock;
+                    exceedsStock = true;
+                    return false; // Break the loop
+                }
             });
-        } else {
-            // If no products exceed stock, proceed to checkout
-            window.location.href = '/checkOut?id=' + userId;
+
+            if (exceedsStock) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Quantity Exceeded',
+                    text: 'One or more product quantities exceed the available stock(' + stk + '). Please adjust your quantity(' + qty + ')before proceeding to checkout.',
+                });
+            } else {
+                // If no products exceed stock, proceed to checkout
+                window.location.href = '/checkOut?id=' + userId;
+            }
         }
-    }
-</script>
+    </script>
 
-<script>
-     $(document).ready(function () {
-        // Call updateCartTotals() on page load to display initial cart totals
-        updateCartTotals();
-         });
-         
-    function changeQuantity(productId, quantityChange) {     
-        $.ajax({
-            type: 'POST',
-            url: '/updateQuandity',
-            data: {
-                productId: productId,
-                quantityChange: quantityChange
-            },
-            success: function (data) {
-                if (data.status) {
-                    // Update the quantity display
-                    const qtySpan = $(`span.qty-val[data-productid="${productId}"]`);
-                    const newQty = parseInt(qtySpan.text()) + quantityChange;
-                    qtySpan.text(newQty);
-                    // Update the subtotal display
-                    const price = parseFloat($(`td.price[data-productid="${productId}"] span`).text());
-                    const subtotal = (newQty * price).toFixed(2);
-                    $(`span#subtotal-${productId}`).text(subtotal);
-                    // Update the cart totals
-                    updateCartTotals();
-                    
-                    }
-                 
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    
- }
-    function updateCartTotals() {
-        let totalSubtotal =0;
-        $('.subtotal').each(function() {
-            const price = parseFloat($(this).closest('tr').find('.price span').text());
-            const quantity = parseInt($(this).closest('tr').find('.qty-val').text());
-            const subtotal = (quantity * price);
-            totalSubtotal += subtotal;
-            $(this).text(subtotal.toFixed(2));
-        });
-
-        $('.cart_total_amount .font-xl').text('₹' + totalSubtotal.toFixed(2));
-    }
-
-
-function removeCartItem(productId) {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Proceed with removing the item from the cart
-      $.ajax({
-        type: 'POST',
-        url: '/removeCartItem',
-        data: {
-          productId: productId,
-        },
-        success: function (data) {
-        
-          if (data.status) {
-            // Remove the cart item from the table
-            $(`tr[data-productid="${productId}"]`).remove();
-
-            // Update the cart totals
+    <script>
+        $(document).ready(function () {
+            // Call updateCartTotals() on page load to display initial cart totals
             updateCartTotals();
+        });
 
-            // Show success Swal message for item deletion
-            Swal.fire(
-              'Deleted!',
-              'The item has been successfully removed from your cart.',
-              'success'
-            ).then(() => {
-              // Reload the current location after the user clicks "OK"
-              window.location.reload();
+        function changeQuantity(productId, quantityChange) {
+            $.ajax({
+                type: 'POST',
+                url: '/updateQuandity',
+                data: {
+                    productId: productId,
+                    quantityChange: quantityChange
+                },
+                success: function (data) {
+                    if (data.status) {
+                        // Update the quantity display
+                        const qtySpan = $(`span.qty-val[data-productid="${productId}"]`);
+                        const newQty = parseInt(qtySpan.text()) + quantityChange;
+                        qtySpan.text(newQty);
+                        // Update the subtotal display
+                        const price = parseFloat($(`td.price[data-productid="${productId}"] span`).text());
+                        const subtotal = (newQty * price).toFixed(2);
+                        $(`span#subtotal-${productId}`).text(subtotal);
+                        // Update the cart totals
+                        updateCartTotals();
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
             });
-          }
-        },
-        error: function (error) {
-          console.log(error);
-        },
-      });
-    }
-  });
-}
-</script>
 
-<%-include('footer')%>
+        }
+        function updateCartTotals() {
+            let totalSubtotal = 0;
+            $('.subtotal').each(function () {
+                const price = parseFloat($(this).closest('tr').find('.price span').text());
+                const quantity = parseInt($(this).closest('tr').find('.qty-val').text());
+                const subtotal = (quantity * price);
+                totalSubtotal += subtotal;
+                $(this).text(subtotal.toFixed(2));
+            });
+
+            $('.cart_total_amount .font-xl').text('₹' + totalSubtotal.toFixed(2));
+        }
+
+
+        function removeCartItem(productId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Proceed with removing the item from the cart
+                    $.ajax({
+                        type: 'POST',
+                        url: '/removeCartItem',
+                        data: {
+                            productId: productId,
+                        },
+                        success: function (data) {
+
+                            if (data.status) {
+                                // Remove the cart item from the table
+                                $(`tr[data-productid="${productId}"]`).remove();
+
+                                // Update the cart totals
+                                updateCartTotals();
+
+                                // Show success Swal message for item deletion
+                                Swal.fire(
+                                    'Deleted!',
+                                    'The item has been successfully removed from your cart.',
+                                    'success'
+                                ).then(() => {
+                                    // Reload the current location after the user clicks "OK"
+                                    window.location.reload();
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+                }
+            });
+        }
+    </script>
+
+    <%-include('footer')%>

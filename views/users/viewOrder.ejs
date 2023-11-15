@@ -263,18 +263,12 @@
                    </div>
                </div>
            </div>
-       </div>
-       <div class="card-footer">
-           <div class="jumbotron-fluid">
-               <div class="row justify-content-between">
-                   <div class="col-auto my-auto">
-                       <h2 class="mb-0 font-weight-bold">TOTAL PAID :</h2>
-                   </div>
-                   <div class="col-auto my-auto ml-auto">
-                       <h1 class="display-3">&#8377;<%=total%></h1>
-                   </div>
-               </div>
-           </div>
+           <form id="viewInvoiceForm" method="GET" action="/viewInvoice">
+            <input type="hidden" name="orderId" value="<%= orderId %>">
+            <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;">
+                View Invoice
+            </button>
+        </form>
        </div>
    </div>
 </div>
@@ -303,6 +297,17 @@
 </div>
 
 <script>
+ 
+    document.getElementById('viewInvoiceForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // This prevents the default form submission behavior
+        // Now, submit the form programmatically
+        this.submit();
+    });
+</script>
+
+
+<script>
+
    function showCancelConfirmationModal(orderId) {
        var confirmCancelBtn = document.getElementById("confirmCancelBtn");
        confirmCancelBtn.value = orderId;

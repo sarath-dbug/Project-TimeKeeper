@@ -6,8 +6,9 @@ const Category = require('../models/categoryModel')
 const Refer = require('../models/referralModel')
 const Wallet = require('../models/walletModel')
 const Banner = require("../models/bannerModel");
-const categoryOffer = require ('../models/categoryOfferModel')
+const categoryOffer = require('../models/categoryOfferModel')
 const wishListModel = require('../models/wishListModel')
+const Cart = require('../models/cartModel')
 const { ObjectId } = require("mongodb");
 
 
@@ -64,14 +65,23 @@ const insertUser = async (req, res) => {
             // Update the referrer's wallet
             const referrerWallet = await Wallet.findOne({ userId: userRefer._id });
             if (referrerWallet) {
-               referrerWallet.walletAmount += totalReferrerAmount;
-               await referrerWallet.save();
+               const referrerTransaction = {
+                  status: "Referral",
+                  amount: totalReferrerAmount,
+                  debitOrCredit: "Credit"
+               };
+               const updateData = {
+                  userId: userRefer._id,
+                  walletAmount: referrerWallet.walletAmount += totalReferrerAmount,
+                  transaction: [referrerTransaction]
+               }
+               await updateData.save();
             } else {
                const referrerTransaction = {
-                  status: "Referral", 
-                  amount: totalRefereeAmount, 
-                  debitOrCredit: "Credit" 
-                };
+                  status: "Referral",
+                  amount: totalReferrerAmount,
+                  debitOrCredit: "Credit"
+               };
 
                const newWallet = new Wallet({
                   userId: userRefer._id,
@@ -86,10 +96,10 @@ const insertUser = async (req, res) => {
 
             if (userReferee) {
                const refereeTransaction = {
-                  status: "Referral", 
-                  amount: totalRefereeAmount, 
-                  debitOrCredit: "Credit" 
-                };
+                  status: "Referral",
+                  amount: totalRefereeAmount,
+                  debitOrCredit: "Credit"
+               };
 
                const refereeWallet = new Wallet({
                   userId: userReferee._id,
@@ -244,13 +254,26 @@ const loadHome = async (req, res) => {
       const productData = await Product.find({})
       const bannerData = await Banner.find();
 
-      res.render('home', { products: productData,Banners:bannerData, isAuthenticated });
+      const userCart = await Cart.findOne({ user: req.session.user_id });
+      let cartCount = 0
+      if (userCart) {
+         cartCount = userCart.products.length;
+      }
+      const userWishlist = await wishListModel.findOne({ user: req.session.user_id });
+      let wishCount = 0;
+      if (userWishlist) {
+         wishCount = userWishlist.wishList.length;
+      }
+
+
+
+      res.render('home', { products: productData, Banners: bannerData, cartCount, wishCount, isAuthenticated });
    } else {
       const isAuthenticated = false
       const productData = await Product.find({})
       const bannerData = await Banner.find();
 
-      res.render('home', { products: productData,Banners:bannerData, isAuthenticated });
+      res.render('home', { products: productData, Banners: bannerData, isAuthenticated });
    }
 
 }
@@ -279,9 +302,8 @@ const verfiyUser = async (req, res) => {
       if (userData) {
          if (userData.is_blocked === false) {
             if (userData.password === password) {
-               const isAuthenticated = true
                req.session.user_id = userData._id
-               res.render('home', { products: productData,Banners:bannerData, isAuthenticated });
+               res.redirect("/home")
             } else {
                res.render('login', { message: '', errMessage: "Invalid email or password", isAuthenticated });
             }
@@ -350,6 +372,16 @@ const viewShop = async (req, res) => {
 
       if (req.session.user_id) {
          const isAuthenticated = true
+         const userCart = await Cart.findOne({ user: req.session.user_id });
+         let cartCount = 0
+         if (userCart) {
+            cartCount = userCart.products.length;
+         }
+         const userWishlist = await wishListModel.findOne({ user: req.session.user_id });
+         let wishCount = 0;
+         if (userWishlist) {
+            wishCount = userWishlist.wishList.length;
+         }
          res.render('shop', {
             isAuthenticated,
             user: userData,
@@ -359,6 +391,8 @@ const viewShop = async (req, res) => {
             totalPages: totalPages,
             currentPage: currentPage,
             totalProducts: totalProducts,
+            wishCount,
+            cartCount
          });
       } else {
          const isAuthenticated = false
@@ -385,17 +419,30 @@ const loadProductDetails = async (req, res) => {
    try {
       const product_id = req.query.product_id;
       const productData = await Product.findOne({ _id: product_id });
-      const categoryOfferData = await categoryOffer.findOne({ name:productData.category});
-    
+      const categoryOfferData = await categoryOffer.findOne({ name: productData.category });
+
       if (!productData) {
          return res.status(404).send('Product not found');
       }
       if (req.session.user_id) {
          const isAuthenticated = true
-         res.render('productDetails', { products: productData,categoryOffer:categoryOfferData, isAuthenticated });
+         const exitWish = await wishListModel.findOne({ user: req.session.user_id, 'wishList.productId': product_id });
+         const userCart = await Cart.findOne({ user: req.session.user_id });
+         let cartCount = 0
+         if (userCart) {
+            cartCount = userCart.products.length;
+         }
+         const userWishlist = await wishListModel.findOne({ user: req.session.user_id });
+         let wishCount = 0;
+         if (userWishlist) {
+            wishCount = userWishlist.wishList.length;
+         }
+
+         res.render('productDetails', { products: productData, categoryOffer: categoryOfferData, exitWish,cartCount,wishCount, isAuthenticated });
       } else {
          const isAuthenticated = false
-         res.render('productDetails', { products: productData,categoryOffer:categoryOfferData, isAuthenticated });
+         const exitWish = await wishListModel.findOne({ user: req.session.user_id, 'wishList.productId': product_id });
+         res.render('productDetails', { products: productData, categoryOffer: categoryOfferData, exitWish, isAuthenticated });
       }
 
    } catch (error) {
@@ -423,14 +470,14 @@ const searchProducts = async (req, res) => {
 };
 
 
-const loadAbout = async (req,res)=>{
+const loadAbout = async (req, res) => {
    try {
       if (req.session.user_id) {
          const isAuthenticated = true
          res.render('about', { isAuthenticated });
       } else {
          const isAuthenticated = false
-         res.render('about', {isAuthenticated });
+         res.render('about', { isAuthenticated });
       }
    } catch (error) {
       console.log(error);

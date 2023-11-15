@@ -2,32 +2,32 @@
 
 <script>
 
-const userRefer = await User.find({referCode: req.session.userData.refer})
-console.log(userRefer+"userRefer*********");
-const referAmt = await Refer.find()
-console.log(referAmt+"referAmt*******");
-const referrerwallet = await Wallet.findOne({ userId: userRefer._id })
-console.log(referrerwallet+"referrerwallet*********");
+   const userRefer = await User.find({ referCode: req.session.userData.refer })
+   console.log(userRefer + "userRefer*********");
+   const referAmt = await Refer.find()
+   console.log(referAmt + "referAmt*******");
+   const referrerwallet = await Wallet.findOne({ userId: userRefer._id })
+   console.log(referrerwallet + "referrerwallet*********");
 
-if (referrerwallet) {
-// Wallet exists, increment the wallet amount
-const updatedWallet = await Wallet.findOneAndUpdate(
-   { userId: userRefer._id },
-   { $inc: { walletAmount: referAmt.referrer} },
-   { new: true }
-).exec();
+   if (referrerwallet) {
+      // Wallet exists, increment the wallet amount
+      const updatedWallet = await Wallet.findOneAndUpdate(
+         { userId: userRefer._id },
+         { $inc: { walletAmount: referAmt.referrer } },
+         { new: true }
+      ).exec();
 
-} else {
-// Wallet doesn't exist, create a new wallet with the order value as the initial amount
-const newWallet = new Wallet({
-   userId: userRefer._id,
-   walletAmount: referAmt.referrer,
-});
+   } else {
+      // Wallet doesn't exist, create a new wallet with the order value as the initial amount
+      const newWallet = new Wallet({
+         userId: userRefer._id,
+         walletAmount: referAmt.referrer,
+      });
 
-const createdWallet = await newWallet.save();
-console.log(createdWallet, "created new wallet with order value");
-}
-if(userRefer){
+      const createdWallet = await newWallet.save();
+      console.log(createdWallet, "created new wallet with order value");
+   }
+   if (userRefer) {
 
-}
+   }
 </script>

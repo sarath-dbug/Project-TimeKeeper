@@ -1,5 +1,5 @@
 <%-include("header")-%>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <section class="content-main">
         <div class="content-header">
             <div>
@@ -39,30 +39,50 @@
                     <tbody>
                         <%userOrder.forEach(order=>{%>
                             <tr>
-                                <td><%=order._id%></td>
-                                <td><%=order.addressDetails.name%></td>
-                                <td><%=order.total%></td>
-                                <td><span class="badge rounded-pill alert-warning"><%=order.status%></span></td>
-                                <td><%= order.createdAt.toLocaleDateString() %></td>              
                                 <td>
-                                <a href="/admin/orderDetails?id=<%=order._id%>" class="btn btn-md rounded font-sm">Detail</a>
-                                <div class="dropdown">
-                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
-                                    <div class="dropdown-menu">
-                
-                                    <%if(order.status==='Placed'){%>
-                                            <a class="dropdown-item" href="/admin/updateStatus?id=<%= order._id %>&status=Dispatched" >Dispatch Order</a>
-                                            <a class="dropdown-item" href="/admin/updateStatus?id=<%= order._id %>&status=Order Cancelled" >Cancel Order</a>
-                                            <%}else if(order.status==='Dispatched'){%>
-                                            <a class="dropdown-item" href="/admin/updateStatus?id=<%= order._id %>&status=Delivered">delivered</a>
-                                            <%}else if(order.status==='Requested Return'){%>
-                                                <a class="dropdown-item" href="/admin/acceptReturn?id=<%=order._id%>">Accept</a>
-                                                <a class="dropdown-item" href="/admin/DeclineReturn/<%=order._id%>">Decline</a>  
-                                        <%}%>
+                                    <%=order._id%>
+                                </td>
+                                <td>
+                                    <%=order.addressDetails.name%>
+                                </td>
+                                <td>
+                                    <%=order.total%>
+                                </td>
+                                <td><span class="badge rounded-pill alert-warning">
+                                        <%=order.status%>
+                                    </span></td>
+                                <td>
+                                    <%= order.createdAt.toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <a href="/admin/orderDetails?id=<%=order._id%>"
+                                        class="btn btn-md rounded font-sm">Detail</a>
+                                    <div class="dropdown">
+                                        <a href="#" data-bs-toggle="dropdown"
+                                            class="btn btn-light rounded btn-sm font-sm"> <i
+                                                class="material-icons md-more_horiz"></i> </a>
+                                        <div class="dropdown-menu">
 
+                                            <%if(order.status==='Placed'){%>
+                                                <a class="dropdown-item"
+                                                    href="/admin/updateStatus?id=<%= order._id %>&status=Dispatched">Dispatch
+                                                    Order</a>
+                                                <a class="dropdown-item"
+                                                    href="/admin/updateStatus?id=<%= order._id %>&status=Order Cancelled">Cancel
+                                                    Order</a>
+                                                <%}else if(order.status==='Dispatched' ){%>
+                                                    <a class="dropdown-item"
+                                                        href="/admin/updateStatus?id=<%= order._id %>&status=Delivered">delivered</a>
+                                                    <%}else if(order.status==='Requested Return' ){%>
+                                                        <a class="dropdown-item"
+                                                            href="/admin/acceptReturn?id=<%=order._id%>">Accept</a>
+                                                        <a class="dropdown-item"
+                                                            href="/admin/DeclineReturn/<%=order._id%>">Decline</a>
+                                                        <%}%>
+
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
                             </tr>
                             <% }); %>
                     </tbody>
@@ -140,10 +160,10 @@
 
         </script>
 
-<script>
-    $(document).ready( function () {
-    $('#myTable').DataTable();
-} );
-</script>
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script>
 
-<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

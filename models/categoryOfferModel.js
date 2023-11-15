@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
-const categoryOfferSchema =  new mongoose.Schema({
+const categoryOfferSchema = new mongoose.Schema({
 
-    name:{
-        type:String,
-        required:false
+    name: {
+        type: String,
+        required: false
     },
-    price:{
-        type:Number,
-        required:true
+    price: {
+        type: Number,
+        required: true
     }
 
 })

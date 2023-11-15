@@ -234,7 +234,7 @@ const checkOut = async (req, res) => {
     const totalqty = products.map((product, index) => {
       return product.quantity ? product.quantity : null;
     });
-   
+
     let categoryOfferDiscount = 0;
     if (categoryOfferName) {
       const categoryOfferData = await categoryOffer.find({ name: categoryOfferName });
@@ -244,13 +244,13 @@ const checkOut = async (req, res) => {
         return item.price * quantity;
       });
       const totalPrice = calculatedTotals.reduce((acc, total) => acc + total, 0);
-      
-      categoryOfferDiscount = totalPrice 
+
+      categoryOfferDiscount = totalPrice
     } else {
       categoryOfferDiscount = 0;
     }
     TotalAmount = TotalAmount - categoryOfferDiscount
-          saved = saved + categoryOfferDiscount
+    saved = saved + categoryOfferDiscount
 
 
     if (userId) {
