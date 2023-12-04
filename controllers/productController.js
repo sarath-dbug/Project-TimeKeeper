@@ -138,7 +138,7 @@ const editProductAdd = async (req, res) => {
 
       const productData = await Product.find({})
       
-      res.render('productList', { categories: categorieData, products: productData, brands: brandData })
+      res.redirect("/admin/productList");
    } catch (error) {
       console.log(error.message);
    }
