@@ -447,6 +447,7 @@ const loadProductDetails = async (req, res) => {
 
    } catch (error) {
       console.log(error.message);
+      res.status(500).render('error', { errorMessage: 'Internal Server Error' });
    }
 }
 

@@ -115,7 +115,7 @@ const editProductAdd = async (req, res) => {
       const product = await Product.findById({ _id: productId }).lean();
       const categorieData = await Category.find({})
       const brandData = await Brand.find({})
-      const productData = await Product.find({})
+      
 
       let updatedData = {
          product_name: req.body.product_name,
@@ -135,6 +135,9 @@ const editProductAdd = async (req, res) => {
          { _id: productId },
          { $set: updatedData }
       );
+
+      const productData = await Product.find({})
+      
       res.render('productList', { categories: categorieData, products: productData, brands: brandData })
    } catch (error) {
       console.log(error.message);

@@ -76,10 +76,10 @@
                                                                     src="/productsImages/<%=products.image[1]%>" alt="">
                                                             </a>
                                                         </div>
-                                                        <div class="product-action-1">                                                      
+                                                        <div class="product-action-1">
                                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                                 onclick="addToWishList('<%=products._id%>')"><i
-                                                                    class="fi-rs-heart"></i></a>                                                          
+                                                                    class="fi-rs-heart"></i></a>
                                                         </div>
                                                         <div
                                                             class="product-badges product-badges-position product-badges-mrg">
@@ -423,7 +423,7 @@
                                 title: "Added To Cart",
                                 text: "Your Product has been added to Cart",
                                 icon: "success",
-                                timer: 5000,
+                                timer: 1500,
                             }).then(() => {
 
                                 if (response.newStock !== undefined) {
@@ -433,6 +433,10 @@
                                         productStockElement.textContent = 'Available stock' + response.newStock;
                                     }
                                 }
+
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
                             });
 
                         }
@@ -474,6 +478,9 @@
                             timer: 1500
                         })
 
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
 
                     } else {
                         // Error adding product to Wishlist
